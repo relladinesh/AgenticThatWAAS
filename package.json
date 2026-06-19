@@ -6,7 +6,8 @@
   "scripts": {
     "predev": "node generate.js",
     "dev": "vite",
-    "build": "node generate.js && node push-registry.js && node auto-screenshot.js && vite build",
+    "auto-sync": "node generate.js && node auto-screenshot.js && git add src/templates/ \"data csv/\" public/previews/ && git commit -m \"Auto-sync templates and screenshots from local\" && git push",
+    "build": "node generate.js && node push-registry.js && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

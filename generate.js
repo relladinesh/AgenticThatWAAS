@@ -26,6 +26,9 @@ if (!fs.existsSync(csvOutputDir)) {
 }
 const csvOutPath = path.join(csvOutputDir, 'business_templates.csv');
 
+// Initialize hierarchy before parsing existing records
+const hierarchy = {};
+
 // Read existing CSV to find diffs and populate hierarchy with manual additions
 let existingRecords = new Set();
 if (fs.existsSync(csvOutPath)) {
@@ -55,20 +58,13 @@ if (fs.existsSync(csvOutPath)) {
       let businessType = parts[2] ? parts[2].replace(/^"|"$/g, '').trim() : '';
       
       if (category && businessType) {
-        // Convert 'food and beverage' back to 'Food And Beverage' for hierarchy keys
-        const displayCat = category.split(/[- ]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-        const displayBiz = businessType.split(/[- ]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-        
-        if (!hierarchy[displayCat]) {
-          hierarchy[displayCat] = new Set();
-        }
-        hierarchy[displayCat].add(displayBiz);
+        // We intentionally DO NOT add these to the hierarchy anymore.
+        // leads.csv is the ONLY source of truth for allowed Business Types.
       }
     }
   }
 }
 
-const hierarchy = {};
 
 // Only attempt to read the raw leads CSV if it actually exists (e.g. locally)
 if (fs.existsSync(csvFilePath)) {
@@ -169,10 +165,11 @@ if (fs.existsSync(sourceTemplatesDir)) {
         if (fs.statSync(bizPath).isDirectory()) {
           const displayBiz = biz.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
           
-          // Smart deduplication for business names
+          // Only process this folder if it matches a known business type from leads.csv!
+          // We DO NOT add unknown folders to the hierarchy, because they might be specific client names.
           const existingBiz = Array.from(hierarchy[targetCat]).find(b => toKebabCase(b) === biz);
           if (!existingBiz) {
-            hierarchy[targetCat].add(displayBiz);
+             console.log(`Skipping custom folder in source: ${biz} (Not a recognized business type in leads.csv)`);
           }
         }
       }

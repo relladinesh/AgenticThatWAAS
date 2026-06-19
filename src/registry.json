@@ -89,15 +89,6 @@
         "t2",
         "t3"
       ]
-    },
-    "Bakery": {
-      "path": "food-and-beverage/bakery",
-      "templates": [
-        "t1",
-        "t2",
-        "t3",
-        "t4"
-      ]
     }
   },
   "Retail": {
@@ -134,13 +125,6 @@
         "t2",
         "t3"
       ]
-    },
-    "Legal Law Firm": {
-      "path": "finance/legal-law-firm",
-      "templates": [
-        "t1",
-        "t2"
-      ]
     }
   },
   "Education": {
@@ -170,13 +154,6 @@
         "t2",
         "t3"
       ]
-    },
-    "Salon": {
-      "path": "beauty-and-wellness/salon",
-      "templates": [
-        "t1",
-        "t2"
-      ]
     }
   },
   "IT and Technology": {
@@ -205,20 +182,6 @@
         "t2",
         "t3"
       ]
-    },
-    "Property Management Companies": {
-      "path": "real-estate/property-management-companies",
-      "templates": [
-        "t1",
-        "t2"
-      ]
-    },
-    "Rental Properties": {
-      "path": "real-estate/rental-properties",
-      "templates": [
-        "t1",
-        "t2"
-      ]
     }
   },
   "Finance and Professional Services": {
@@ -231,37 +194,7 @@
     }
   },
   "Bakery": {},
-  "Energy And Infrastructure": {
-    "Solar Panel Installer": {
-      "path": "energy-and-infrastructure/solar-panel-installer",
-      "templates": [
-        "t1",
-        "t2"
-      ]
-    }
-  },
-  "General": {
-    "General": {
-      "path": "general/general",
-      "templates": [
-        "t1",
-        "t2",
-        "t3",
-        "t4",
-        "t5",
-        "t6",
-        "t7",
-        "t8"
-      ]
-    }
-  },
-  "Public Government Others": {
-    "Municipal Corporations": {
-      "path": "public-government-others/municipal-corporations",
-      "templates": [
-        "t1",
-        "t2"
-      ]
-    }
-  }
+  "Energy And Infrastructure": {},
+  "General": {},
+  "Public Government Others": {}
 }

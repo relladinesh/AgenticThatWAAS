@@ -15,7 +15,8 @@ const nodeCmd = isWindows ? 'node.exe' : 'node';
 
 const viteProcess = spawn(npxCmd, ['vite', '--port', '5173'], {
   stdio: 'ignore',
-  cwd: __dirname
+  cwd: __dirname,
+  shell: true
 });
 
 // Give Vite 4 seconds to spin up before running screenshots
@@ -23,7 +24,8 @@ setTimeout(() => {
   console.log("📸 Running screenshot generator...");
   const screenshotProcess = spawn(nodeCmd, ['generate-screenshots.js'], {
     stdio: 'inherit',
-    cwd: __dirname
+    cwd: __dirname,
+    shell: true
   });
 
   screenshotProcess.on('close', (code) => {
