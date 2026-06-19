@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import fs from 'fs'; import { spawn, exec } from 'child_process';
+import fs from 'fs'; import { spawn, exec, execSync } from 'child_process';
 
 const masterCsvPath = path.resolve(__dirname, 'data/master_csv_of_templates.csv');
 
