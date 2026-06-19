@@ -17,34 +17,34 @@ const toKebabCase = (str: string) => {
 const parseCSV = (csvStr: string) => {
   const lines = csvStr.trim().split('\n');
   const reg: any = {};
-  
+
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i].trim();
     if (!line) continue;
-    
+
     const parts = [];
     let currentPart = '';
     let inQuotes = false;
     for (let j = 0; j < line.length; j++) {
       const char = line[j];
-      if (char === '"' && line[j+1] !== '"') inQuotes = !inQuotes;
-      else if (char === '"' && line[j+1] === '"') { currentPart += '"'; j++; }
+      if (char === '"' && line[j + 1] !== '"') inQuotes = !inQuotes;
+      else if (char === '"' && line[j + 1] === '"') { currentPart += '"'; j++; }
       else if (char === ',' && !inQuotes) { parts.push(currentPart); currentPart = ''; }
       else currentPart += char;
     }
     parts.push(currentPart);
-    
+
     const [id, cat, biz, tpl, path, code] = parts;
     if (!cat || !biz) continue;
-    
+
     if (!reg[cat]) reg[cat] = {};
     if (!reg[cat][biz]) {
-      reg[cat][biz] = { 
-        templates: [], 
-        path: `${toKebabCase(cat)}/${toKebabCase(biz)}` 
+      reg[cat][biz] = {
+        templates: [],
+        path: `${toKebabCase(cat)}/${toKebabCase(biz)}`
       };
     }
-    
+
     if (tpl) {
       const existing = reg[cat][biz].templates.find((t: any) => t.id === tpl);
       if (!existing) {
@@ -60,6 +60,7 @@ const registry = parseCSV(rawCsv);
 export default function Showcase() {
   const [search, setSearch] = useState('');
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
   const [expandedCats, setExpandedCats] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
     Object.keys(registry).forEach(cat => {
@@ -67,7 +68,7 @@ export default function Showcase() {
     });
     return initial;
   });
-  
+
   const [selectedCat, setSelectedCat] = useState<string | null>(Object.keys(registry)[0] || null);
   const [selectedBiz, setSelectedBiz] = useState<string | null>(
     Object.keys(registry)[0] ? Object.keys((registry as any)[Object.keys(registry)[0]])[0] : null
@@ -95,6 +96,24 @@ export default function Showcase() {
       alert('Error downloading CSV: ' + error.message);
     } finally {
       setIsDownloading(false);
+    }
+  };
+
+  const handleSyncTemplates = async () => {
+    setIsSyncing(true);
+    try {
+      const response = await fetch('/api/sync-business-templates', { method: 'POST' });
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to sync templates');
+      }
+      alert('✅ Successfully generated and pushed business_templates.csv to GitHub!');
+      // Reload to show the new templates
+      window.location.reload();
+    } catch (error: any) {
+      alert('Error syncing templates: ' + error.message);
+    } finally {
+      setIsSyncing(false);
     }
   };
 
@@ -129,8 +148,8 @@ export default function Showcase() {
     return result;
   }, [search]);
 
-  const currentTemplates = (selectedCat && selectedBiz && (registry as any)[selectedCat]?.[selectedBiz]) 
-    ? (registry as any)[selectedCat][selectedBiz] 
+  const currentTemplates = (selectedCat && selectedBiz && (registry as any)[selectedCat]?.[selectedBiz])
+    ? (registry as any)[selectedCat][selectedBiz]
     : null;
 
   return (
@@ -148,28 +167,38 @@ export default function Showcase() {
           </div>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-            <input 
-              type="text" 
-              placeholder="Search businesses..." 
+            <input
+              type="text"
+              placeholder="Search businesses..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
             />
           </div>
-          <button
-            onClick={handleDownloadMaster}
-            disabled={isDownloading}
-            className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-900 hover:bg-indigo-600 text-white text-sm font-medium rounded-lg transition-all shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
-          >
-            <Download className="w-4 h-4" />
-            {isDownloading ? 'Downloading...' : 'Download Master CSV'}
-          </button>
+          <div className="mt-4 flex gap-2">
+            <button
+              onClick={handleSyncTemplates}
+              disabled={isSyncing}
+              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              <CheckCircle2 className="w-4 h-4" />
+              {isSyncing ? 'Syncing...' : 'Sync'}
+            </button>
+            <button
+              onClick={handleDownloadMaster}
+              disabled={isDownloading}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-slate-900 hover:bg-indigo-600 text-white text-sm font-medium rounded-lg transition-all shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              <Download className="w-4 h-4" />
+              {isDownloading ? 'Downloading...' : 'Download'}
+            </button>
+          </div>
         </div>
-        
+
         <div className="flex-1 overflow-y-auto p-4 scrollbar-hide">
           {Object.entries(filteredRegistry).map(([cat, bizObj]) => (
             <div key={cat} className="mb-2">
-              <button 
+              <button
                 onClick={() => toggleCat(cat)}
                 className="w-full flex items-center justify-between py-2 px-3 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg transition-colors group"
               >
@@ -180,7 +209,7 @@ export default function Showcase() {
                   <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600" />
                 )}
               </button>
-              
+
               {expandedCats[cat] && (
                 <div className="mt-1 ml-2 pl-2 border-l border-slate-100 flex flex-col gap-1">
                   {Object.keys(bizObj as any).map(biz => {
@@ -189,11 +218,10 @@ export default function Showcase() {
                       <button
                         key={biz}
                         onClick={() => selectBiz(cat, biz)}
-                        className={`text-left px-3 py-2 text-sm rounded-md transition-all capitalize ${
-                          isSelected 
-                            ? 'bg-indigo-50 text-indigo-700 font-medium' 
+                        className={`text-left px-3 py-2 text-sm rounded-md transition-all capitalize ${isSelected
+                            ? 'bg-indigo-50 text-indigo-700 font-medium'
                             : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
-                        }`}
+                          }`}
                       >
                         {biz.replace(/-/g, ' ')}
                       </button>
@@ -234,22 +262,22 @@ export default function Showcase() {
                     const tplCode = tplObj.code || `Template ${tpl}`;
                     const urlSlug = tplObj.code ? tplObj.code.toLowerCase() : tpl;
                     const toPath = `/templates/${currentTemplates.path}/${urlSlug}`;
-                    
+
                     return (
                       <div key={tpl} className="bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col">
                         <div className="aspect-[16/10] bg-slate-100 relative overflow-hidden">
-                          <img 
-                            src={`/previews/${currentTemplates.path}/${tpl}.png?v=${new Date().getTime()}`} 
+                          <img
+                            src={`/previews/${currentTemplates.path}/${tpl}.png?v=${new Date().getTime()}`}
                             onError={(e) => {
                               // Use a generic valid Unsplash image as fallback if the preview is missing
                               (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80';
                             }}
-                            alt={`${tplCode.toUpperCase()} Preview`} 
+                            alt={`${tplCode.toUpperCase()} Preview`}
                             className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         </div>
-                        
+
                         <div className="p-6 flex-1 flex flex-col">
                           <div className="flex justify-between items-start mb-4">
                             <div>
@@ -262,8 +290,8 @@ export default function Showcase() {
                           </div>
 
                           <div className="mt-auto pt-6 border-t border-slate-100 flex items-center gap-3">
-                            <Link 
-                              to={toPath} 
+                            <Link
+                              to={toPath}
                               target="_blank"
                               className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors"
                             >

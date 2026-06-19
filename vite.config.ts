@@ -52,31 +52,31 @@ export default defineConfig({
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
           if (req.url === '/api/sync-business-templates' && req.method === 'POST') {
-             const isWindows = /^win/.test(process.platform);
-             const nodeCmd = isWindows ? 'node.exe' : 'node';
-             
-             // 1. Run generate.js
-             const cp = spawn(nodeCmd, ['generate.js'], { cwd: process.cwd() });
-             
-             cp.on('close', (code) => {
-               if (code !== 0) {
-                 res.statusCode = 500;
-                 return res.end(JSON.stringify({ error: 'Failed to generate templates' }));
-               }
-               
-               // 2. Commit and Push to GitHub
-               const gitCmd = `git add "data csv/business_templates.csv" "src/registry.json" "src/templates/" && git commit -m "Auto-sync business templates from UI button" && git push`;
-               exec(gitCmd, { cwd: process.cwd() }, (error: any, stdout: string, stderr: string) => {
-                 if (error) {
-                   res.statusCode = 500;
-                   res.end(JSON.stringify({ error: `GitHub Push Failed: ${stderr || error.message}` }));
-                 } else {
-                   res.statusCode = 200;
-                   res.end(JSON.stringify({ success: true, message: 'Successfully generated and pushed business templates to GitHub!' }));
-                 }
-               });
-             });
-             return;
+            const isWindows = /^win/.test(process.platform);
+            const nodeCmd = isWindows ? 'node.exe' : 'node';
+
+            // 1. Run generate.js
+            const cp = spawn(nodeCmd, ['generate.js'], { cwd: process.cwd() });
+
+            cp.on('close', (code) => {
+              if (code !== 0) {
+                res.statusCode = 500;
+                return res.end(JSON.stringify({ error: 'Failed to generate templates' }));
+              }
+
+              // 2. Commit and Push to GitHub
+              const gitCmd = `git add "data csv/business_templates.csv" "src/registry.json" "src/templates/" && git commit -m "Auto-sync business templates from UI button" && git push`;
+              exec(gitCmd, { cwd: process.cwd() }, (error: any, stdout: string, stderr: string) => {
+                if (error) {
+                  res.statusCode = 500;
+                  res.end(JSON.stringify({ error: `GitHub Push Failed: ${stderr || error.message}` }));
+                } else {
+                  res.statusCode = 200;
+                  res.end(JSON.stringify({ success: true, message: 'Successfully generated and pushed business templates to GitHub!' }));
+                }
+              });
+            });
+            return;
           }
 
           if (req.url === '/api/save-master' && req.method === 'POST') {
