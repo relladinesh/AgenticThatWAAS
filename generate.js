@@ -53,15 +53,21 @@ if (fs.existsSync(csvOutPath)) {
     parts.push(currentPart);
 
     // id, category, business_type, template_name, template_path, template_code
-    if (parts.length >= 3) {
+    if (parts.length >= 4) {
       let category = parts[1] ? parts[1].replace(/^"|"$/g, '').trim() : '';
       let businessType = parts[2] ? parts[2].replace(/^"|"$/g, '').trim() : '';
+      let templateId = parts[3] ? parts[3].replace(/^"|"$/g, '').trim() : '';
 
       if (category && businessType) {
         if (!hierarchy[category]) {
           hierarchy[category] = new Set();
         }
         hierarchy[category].add(businessType);
+        
+        if (!global.requestedTemplates) global.requestedTemplates = {};
+        if (!global.requestedTemplates[category]) global.requestedTemplates[category] = {};
+        if (!global.requestedTemplates[category][businessType]) global.requestedTemplates[category][businessType] = new Set();
+        if (templateId) global.requestedTemplates[category][businessType].add(templateId);
       }
     }
   }
@@ -247,9 +253,14 @@ for (const [category, businessTypes] of Object.entries(hierarchy)) {
       }
     }
 
-    // If no templates found, create a dummy boilerplate t1.tsx
-    if (foundTemplates.length === 0) {
-      const boilerplate = `export default function Template(props: any) {
+    // Check if requested templates are missing and generate boilerplate for them
+    let requested = [];
+    if (global.requestedTemplates && global.requestedTemplates[category] && global.requestedTemplates[category][businessType]) {
+      requested = Array.from(global.requestedTemplates[category][businessType]);
+    }
+    if (requested.length === 0) requested.push('t1');
+
+    const boilerplate = `export default function Template(props: any) {
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-8 font-sans">
       <div className="max-w-2xl w-full bg-white p-12 rounded-3xl shadow-xl text-center border border-slate-100">
@@ -272,9 +283,13 @@ for (const [category, businessTypes] of Object.entries(hierarchy)) {
   );
 }
 `;
-      const dummyPath = path.join(bizDir, 't1.tsx');
-      fs.writeFileSync(dummyPath, boilerplate);
-      foundTemplates.push('t1');
+
+    for (const reqTpl of requested) {
+      if (!foundTemplates.includes(reqTpl)) {
+        const dummyPath = path.join(bizDir, \`\${reqTpl}.tsx\`);
+        fs.writeFileSync(dummyPath, boilerplate);
+        foundTemplates.push(reqTpl);
+      }
     }
 
     // Sort templates like t1, t2, t3

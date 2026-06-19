@@ -8,7 +8,20 @@ const masterCsvPath = path.resolve(__dirname, 'data/master_csv_of_templates.csv'
 export default defineConfig({
   plugins: [
     react(),
-
+    {
+      name: 'force-generate-on-build',
+      buildStart() {
+        console.log('🚀 [Vite Plugin] Forcing template generation...');
+        try {
+          const isWindows = /^win/.test(process.platform);
+          const nodeCmd = isWindows ? 'node.exe' : 'node';
+          execSync(`${nodeCmd} generate.js`, { cwd: process.cwd(), stdio: 'inherit' });
+          console.log('✅ [Vite Plugin] Generation complete!');
+        } catch (error) {
+          console.error('❌ [Vite Plugin] Failed to generate templates:', error);
+        }
+      }
+    },
     {
       name: 'master-csv-writer',
       configureServer(server) {
