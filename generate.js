@@ -26,14 +26,45 @@ if (!fs.existsSync(csvOutputDir)) {
 }
 const csvOutPath = path.join(csvOutputDir, 'business_templates.csv');
 
-// Read existing CSV to find diffs
+// Read existing CSV to find diffs and populate hierarchy with manual additions
 let existingRecords = new Set();
 if (fs.existsSync(csvOutPath)) {
   const existingCsv = fs.readFileSync(csvOutPath, 'utf8');
   const lines = existingCsv.split('\n');
   for (let i = 1; i < lines.length; i++) {
-    if (!lines[i].trim()) continue;
-    existingRecords.add(lines[i].trim());
+    const line = lines[i].trim();
+    if (!line) continue;
+    existingRecords.add(line);
+    
+    // Parse to support manual additions to business_templates.csv
+    const parts = [];
+    let currentPart = '';
+    let inQuotes = false;
+    for (let j = 0; j < line.length; j++) {
+      const char = line[j];
+      if (char === '"' && line[j+1] !== '"') inQuotes = !inQuotes;
+      else if (char === '"' && line[j+1] === '"') { currentPart += '"'; j++; }
+      else if (char === ',' && !inQuotes) { parts.push(currentPart); currentPart = ''; }
+      else currentPart += char;
+    }
+    parts.push(currentPart);
+
+    // id, category, business_type, template_name, template_path, template_code
+    if (parts.length >= 3) {
+      let category = parts[1] ? parts[1].replace(/^"|"$/g, '').trim() : '';
+      let businessType = parts[2] ? parts[2].replace(/^"|"$/g, '').trim() : '';
+      
+      if (category && businessType) {
+        // Convert 'food and beverage' back to 'Food And Beverage' for hierarchy keys
+        const displayCat = category.split(/[- ]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        const displayBiz = businessType.split(/[- ]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        
+        if (!hierarchy[displayCat]) {
+          hierarchy[displayCat] = new Set();
+        }
+        hierarchy[displayCat].add(displayBiz);
+      }
+    }
   }
 }
 
@@ -83,53 +114,7 @@ if (fs.existsSync(csvFilePath)) {
 }
 }
 
-// Read master_csv_of_templates.csv to include dynamically added templates
-const masterCsvPath = path.join(__dirname, 'data', 'master_csv_of_templates.csv');
-if (fs.existsSync(masterCsvPath)) {
-  const masterContent = fs.readFileSync(masterCsvPath, 'utf8');
-  const masterLines = masterContent.split('\n');
 
-  for (let i = 1; i < masterLines.length; i++) {
-    const line = masterLines[i].trim();
-    if (!line) continue;
-  
-    const parts = [];
-    let currentPart = '';
-    let inQuotes = false;
-    
-    for (let j = 0; j < line.length; j++) {
-      const char = line[j];
-      if (char === '"' && line[j+1] !== '"') {
-        inQuotes = !inQuotes;
-      } else if (char === '"' && line[j+1] === '"') {
-        currentPart += '"';
-        j++;
-      } else if (char === ',' && !inQuotes) {
-        parts.push(currentPart);
-        currentPart = '';
-      } else {
-        currentPart += char;
-      }
-    }
-    parts.push(currentPart);
-
-    if (parts.length >= 2) {
-      // business_name is index 0, category is index 1
-      let businessType = parts[0] ? parts[0].replace(/^"|"$/g, '').trim() : '';
-      let category = parts[1] ? parts[1].replace(/^"|"$/g, '').trim() : '';
-      
-      const displayCat = category.split(/[- ]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-      const displayBiz = businessType.split(/[- ]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-      
-      if (displayCat && displayBiz) {
-        if (!hierarchy[displayCat]) {
-          hierarchy[displayCat] = new Set();
-        }
-        hierarchy[displayCat].add(displayBiz);
-      }
-    }
-  }
-}
 
 // Force inject Legal / Law Firm so it can be previewed even if not in CSV
 if (!hierarchy['Finance and Professional Services']) {

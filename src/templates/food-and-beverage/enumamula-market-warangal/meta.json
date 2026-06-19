@@ -1,0 +1,10 @@
+{
+  "name": "Enumamula Market   Warangal",
+  "category": "Food And Beverage",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1"
+  ]
+}

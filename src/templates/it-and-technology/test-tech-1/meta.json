@@ -1,0 +1,10 @@
+{
+  "name": "Test Tech 1",
+  "category": "It And Technology",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1"
+  ]
+}

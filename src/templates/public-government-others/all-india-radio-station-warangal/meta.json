@@ -1,0 +1,10 @@
+{
+  "name": "All India Radio Station, Warangal",
+  "category": "Public Government Others",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1"
+  ]
+}

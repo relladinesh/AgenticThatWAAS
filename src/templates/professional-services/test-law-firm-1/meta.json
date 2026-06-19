@@ -1,0 +1,10 @@
+{
+  "name": "Test Law Firm 1",
+  "category": "Professional Services",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1"
+  ]
+}

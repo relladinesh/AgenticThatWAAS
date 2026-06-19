@@ -1,0 +1,10 @@
+{
+  "name": "Warangal Sports World",
+  "category": "Beauty And Wellness",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1"
+  ]
+}

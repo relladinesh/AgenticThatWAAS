@@ -1,0 +1,10 @@
+{
+  "name": "Test Edu 1",
+  "category": "Education",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1"
+  ]
+}

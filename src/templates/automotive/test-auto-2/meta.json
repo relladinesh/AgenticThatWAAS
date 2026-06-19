@@ -1,0 +1,10 @@
+{
+  "name": "Test Auto 2",
+  "category": "Automotive",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1"
+  ]
+}

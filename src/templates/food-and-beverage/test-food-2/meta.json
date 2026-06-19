@@ -1,0 +1,10 @@
+{
+  "name": "Test Food 2",
+  "category": "Food And Beverage",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "Warangal Travels & Cabs",
+  "category": "Automotive",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1"
+  ]
+}

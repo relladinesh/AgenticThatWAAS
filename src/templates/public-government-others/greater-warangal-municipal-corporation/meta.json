@@ -1,0 +1,10 @@
+{
+  "name": "Greater Warangal Municipal Corporation",
+  "category": "Public Government Others",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1"
+  ]
+}

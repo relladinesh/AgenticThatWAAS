@@ -1,0 +1,10 @@
+{
+  "name": "Test Clinic 2",
+  "category": "Healthcare",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1"
+  ]
+}

@@ -80,9 +80,21 @@ async function captureScreenshots() {
     console.log(`[${i}/${lines.length-1}] 📸 Capturing: ${catSlug} / ${bizSlug} / ${tplName} ...`);
     
     try {
-      await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
-      // Wait an extra 3 seconds for heavy framer-motion animations to settle before snapping
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      // Increase timeout to allow Vite time to compile new routes on the first hit
+      await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
+      
+      // Wait specifically for the template to mount (replaces the Suspense loading fallback)
+      await page.waitForSelector('#template-loaded-marker', { timeout: 60000 });
+      
+      // Hide the 'Back to Showcase' button so it doesn't appear in the hero screenshot
+      await page.evaluate(() => {
+        const btn = document.getElementById('back-to-showcase-btn');
+        if (btn) btn.style.display = 'none';
+      });
+
+      console.log(`    ⏳ Waiting 10 seconds for images and animations to load completely...`);
+      // Wait exactly 10 seconds for heavy framer-motion animations to settle and large images to load before snapping
+      await new Promise(resolve => setTimeout(resolve, 10000));
       
       // Capture the top part of the screen exactly as the hero section
       await page.screenshot({ path: savePath, clip: { x: 0, y: 0, width: 1920, height: 1080 } });

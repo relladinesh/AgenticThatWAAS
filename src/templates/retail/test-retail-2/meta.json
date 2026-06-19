@@ -1,0 +1,10 @@
+{
+  "name": "Test Retail 2",
+  "category": "Retail",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1"
+  ]
+}

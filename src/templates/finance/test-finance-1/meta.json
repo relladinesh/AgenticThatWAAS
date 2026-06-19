@@ -1,0 +1,10 @@
+{
+  "name": "Test Finance 1",
+  "category": "Finance",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1"
+  ]
+}

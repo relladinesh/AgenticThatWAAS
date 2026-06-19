@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, ChevronDown, ChevronRight, ExternalLink, Eye, LayoutTemplate, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { Search, ChevronDown, ChevronRight, ExternalLink, Eye, LayoutTemplate, CheckCircle2, ArrowLeft, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import rawCsv from '../../data csv/business_templates.csv?raw';
 
@@ -59,6 +59,7 @@ const registry = parseCSV(rawCsv);
 
 export default function Showcase() {
   const [search, setSearch] = useState('');
+  const [isDownloading, setIsDownloading] = useState(false);
   const [expandedCats, setExpandedCats] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
     Object.keys(registry).forEach(cat => {
@@ -71,6 +72,31 @@ export default function Showcase() {
   const [selectedBiz, setSelectedBiz] = useState<string | null>(
     Object.keys(registry)[0] ? Object.keys((registry as any)[Object.keys(registry)[0]])[0] : null
   );
+
+  const handleDownloadMaster = async () => {
+    setIsDownloading(true);
+    try {
+      const response = await fetch('/api/download-master');
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to download master CSV');
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'master_csv_of_templates.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error: any) {
+      alert('Error downloading CSV: ' + error.message);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   const toggleCat = (cat: string) => {
     setExpandedCats(prev => ({ ...prev, [cat]: !prev[cat] }));
@@ -130,6 +156,14 @@ export default function Showcase() {
               className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
             />
           </div>
+          <button
+            onClick={handleDownloadMaster}
+            disabled={isDownloading}
+            className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-900 hover:bg-indigo-600 text-white text-sm font-medium rounded-lg transition-all shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
+          >
+            <Download className="w-4 h-4" />
+            {isDownloading ? 'Downloading...' : 'Download Master CSV'}
+          </button>
         </div>
         
         <div className="flex-1 overflow-y-auto p-4 scrollbar-hide">
@@ -207,7 +241,8 @@ export default function Showcase() {
                           <img 
                             src={`/previews/${currentTemplates.path}/${tpl}.png?v=${new Date().getTime()}`} 
                             onError={(e) => {
-                              (e.target as HTMLImageElement).src = `https://images.unsplash.com/photo-${1460925895917 + idx * 100}-afdab827c52f?auto=format&fit=crop&w=800&q=80`;
+                              // Use a generic valid Unsplash image as fallback if the preview is missing
+                              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80';
                             }}
                             alt={`${tplCode.toUpperCase()} Preview`} 
                             className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"

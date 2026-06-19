@@ -1,0 +1,10 @@
+{
+  "name": "Generator For Rent",
+  "category": "Real Estate",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1"
+  ]
+}

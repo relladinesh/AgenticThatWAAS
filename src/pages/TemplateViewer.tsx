@@ -33,10 +33,10 @@ export default function TemplateViewer() {
   const fallbackData = {
     name: business ? business.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : "Premium Business Demo",
     tagline: `Premium ${category ? category.replace(/-/g, ' ') : 'business'} solutions designed for excellence.`,
-    about: "We provide high-impact solutions, operational optimization, and growth consulting for businesses globally. This is a demonstration of our premium template architecture.",
-    services: ["Strategic Planning", "Operational Efficiency", "Client Success", "Financial Advisory"],
-    courses: ["Beginner Course", "Advanced Mastery"],
-    specialties: ["Custom Design", "Premium Build"],
+    about: undefined,
+    services: undefined,
+    courses: undefined,
+    specialties: undefined,
     email: "contact@business.com",
     phone: "+1 (555) 019-2834",
     address: "100 Main Street, Demo City, ST 12345",
@@ -44,23 +44,12 @@ export default function TemplateViewer() {
     slug: business || "premium-business",
     specialization: "General Practice",
     experience: "15 Years",
-    testimonials: [
-      { name: "John Doe", review: "Amazing service and highly recommended! The team was exceptional." },
-      { name: "Jane Smith", review: "Exceeded all expectations. Would absolutely work with them again." }
-    ],
-    bestSellers: [
-      { name: "Signature Item", price: "$45", description: "Our most popular offering." },
-      { name: "Premium Package", price: "$120", description: "The complete experience." }
-    ],
+    testimonials: undefined,
+    bestSellers: undefined,
     openingHours: "Mon-Fri: 9am - 6pm",
-    instructors: [
-      { name: "Alex Johnson", subject: "Core Concepts" }
-    ],
+    instructors: undefined,
     successRate: "99%",
-    team: [
-      { name: "Sarah Connor", role: "Director", experience: "10 Years" },
-      { name: "James Dean", role: "Specialist", experience: "5 Years" }
-    ]
+    team: undefined
   };
 
   let templateData = fallbackData;
@@ -78,7 +67,7 @@ export default function TemplateViewer() {
            address: parsed.location || fallbackData.address,
            website: parsed.website || fallbackData.website,
            email: parsed.email || fallbackData.email,
-           about: parsed.about || fallbackData.about,
+           about: parsed.about || undefined,
            slug: parsed.slug || fallbackData.slug
         };
       }
@@ -96,10 +85,11 @@ export default function TemplateViewer() {
         </div>
       </div>
     }>
-      <>
+      <div id="template-loaded-marker">
         <TemplateComponent data={templateData} />
         
         <button
+          id="back-to-showcase-btn"
           onClick={() => {
             window.close();
             // Fallback in case the browser prevents closing tabs not opened by JS
@@ -112,7 +102,7 @@ export default function TemplateViewer() {
           <ArrowLeft className="w-4 h-4" />
           Back to Showcase
         </button>
-      </>
+      </div>
     </Suspense>
   );
 }

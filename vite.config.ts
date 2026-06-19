@@ -35,6 +35,29 @@ export default defineConfig({
             });
           }, 2000); // Wait 2s for Vite to finish compiling the module
         }
+        
+        // Auto-detect manual additions to business_templates.csv or leads.csv
+        if (normalizedFile.endsWith('.csv') && !normalizedFile.includes('master_csv_of_templates')) {
+          const now = Date.now();
+          const lastRun = (globalThis as any).lastGenerateRun || 0;
+          
+          // Debounce by 10 seconds to prevent infinite loops when generate.js overwrites the CSV
+          if (now - lastRun > 10000) {
+             (globalThis as any).lastGenerateRun = now;
+             console.log(`\n🔄 CSV change detected: ${path.basename(file)}. Auto-generating missing template folders...`);
+             
+             const isWindows = /^win/.test(process.platform);
+             const nodeCmd = isWindows ? 'node.exe' : 'node';
+             const cp = spawn(nodeCmd, ['generate.js'], { 
+                stdio: 'inherit',
+                cwd: process.cwd() 
+             });
+             
+             cp.on('close', () => {
+               server.ws.send({ type: 'full-reload' });
+             });
+          }
+        }
       }
     },
     {

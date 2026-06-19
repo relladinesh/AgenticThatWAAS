@@ -1,0 +1,10 @@
+{
+  "name": "Test Real Estate 2",
+  "category": "Real Estate",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1"
+  ]
+}
