@@ -58,8 +58,10 @@ if (fs.existsSync(csvOutPath)) {
       let businessType = parts[2] ? parts[2].replace(/^"|"$/g, '').trim() : '';
 
       if (category && businessType) {
-        // We intentionally DO NOT add these to the hierarchy anymore.
-        // leads.csv is the ONLY source of truth for allowed Business Types.
+        if (!hierarchy[category]) {
+          hierarchy[category] = new Set();
+        }
+        hierarchy[category].add(businessType);
       }
     }
   }
