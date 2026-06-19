@@ -27,6 +27,31 @@ export default defineConfig({
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
 
+          if (req.url === '/api/sync-business-templates' && req.method === 'POST') {
+            try {
+              console.log('🔄 Triggered Git Push from UI...');
+              const isWindows = /^win/.test(process.platform);
+              const nodeCmd = isWindows ? 'node.exe' : 'node';
+              const gitCmd = `${nodeCmd} generate.js && git add "data csv/" "src/templates/" generate.js push-registry.js && git commit -m "Auto-sync templates from local UI" && git push`;
+
+              exec(gitCmd, { cwd: process.cwd() }, (error: any, stdout: string, stderr: string) => {
+                if (error && !stdout.includes('nothing to commit') && !stderr.includes('nothing to commit')) {
+                  console.error(`❌ GitHub Push Failed: ${error.message}`);
+                } else {
+                  console.log(`✅ Successfully pushed changes to GitHub! Vercel build triggered.`);
+                }
+              });
+
+              res.setHeader('Content-Type', 'application/json');
+              res.statusCode = 200;
+              res.end(JSON.stringify({ success: true }));
+            } catch (e) {
+              res.statusCode = 500;
+              res.end(JSON.stringify({ error: e instanceof Error ? e.message : 'Unknown error' }));
+            }
+            return;
+          }
+
           if (req.url === '/api/save-master' && req.method === 'POST') {
             let body = '';
             req.on('data', chunk => {

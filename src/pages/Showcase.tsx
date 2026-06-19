@@ -102,17 +102,17 @@ export default function Showcase() {
   const handleSyncTemplates = async () => {
     setIsSyncing(true);
     try {
+      // Trigger our local Vite endpoint which automatically pushes to GitHub
       const response = await fetch('/api/sync-business-templates', { method: 'POST' });
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || 'Failed to sync templates');
-      }
-      alert('✅ Successfully generated and pushed business_templates.csv to GitHub!');
-      // Reload to show the new templates
+      if (!response.ok) throw new Error('Failed to push to GitHub');
+      
+      // Wait for 45 seconds to give Vercel time to detect the commit, build the site, and deploy
+      await new Promise(resolve => setTimeout(resolve, 45000));
+      
+      // Reload to show the new templates after deployment
       window.location.reload();
     } catch (error: any) {
-      alert('Error syncing templates: ' + error.message);
-    } finally {
+      alert('Error triggering deployment: ' + error.message);
       setIsSyncing(false);
     }
   };
@@ -153,7 +153,25 @@ export default function Showcase() {
     : null;
 
   return (
-    <div className="flex h-screen bg-surface overflow-hidden font-sans">
+    <>
+      {isSyncing && (
+        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-slate-900/40 backdrop-blur-md transition-all">
+          <div className="bg-white p-8 rounded-2xl shadow-2xl flex flex-col items-center text-center max-w-sm border border-slate-100 animate-in fade-in zoom-in duration-300">
+            <div className="w-14 h-14 mb-6 text-indigo-600 relative">
+              <div className="absolute inset-0 border-4 border-indigo-100 rounded-full"></div>
+              <div className="absolute inset-0 border-4 border-indigo-600 rounded-full border-t-transparent animate-spin"></div>
+            </div>
+            <h3 className="text-xl font-bold text-slate-900 mb-2">Syncing Deployment</h3>
+            <p className="text-sm text-slate-500 mb-6">
+              Please wait while the system updates the registry and rebuilds the showcase. The page will refresh automatically.
+            </p>
+            <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden relative">
+              <div className="absolute inset-0 bg-indigo-600 rounded-full animate-[progress_2s_ease-in-out_infinite]"></div>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="flex h-screen bg-surface overflow-hidden font-sans">
       <aside className="w-80 bg-white border-r border-border flex flex-col shadow-sm z-10 shrink-0">
         <div className="p-6 border-b border-border">
           <div className="flex items-center gap-3 mb-4">
@@ -326,5 +344,6 @@ export default function Showcase() {
         </div>
       </main>
     </div>
+    </>
   );
 }
