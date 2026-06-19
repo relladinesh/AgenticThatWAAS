@@ -135,6 +135,7 @@ export default function MunicipalCorpT1({ data }: TemplateProps) {
           </div>
 
           <div className="lg:col-span-5 relative w-full aspect-[4/5] lg:aspect-[3/4] bg-[#F8FAFC] rounded-[2.5rem] overflow-hidden group shadow-2xl">
+            <img
               src="https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=2000&auto=format&fit=crop" 
               alt="City Architecture" 
               className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-[3s] ease-out" 
@@ -254,6 +255,7 @@ export default function MunicipalCorpT1({ data }: TemplateProps) {
         <div className="grid lg:grid-cols-2 gap-20 items-center">
           
           <div className="relative h-[600px] rounded-[2.5rem] overflow-hidden">
+            <img
               src="https://images.unsplash.com/photo-1577495508048-b635879837f1?q=80&w=2000&auto=format&fit=crop" 
               alt="Mayor's Office" 
               className="object-cover w-full h-full"
