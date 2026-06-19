@@ -1,0 +1,11 @@
+{
+  "name": "Jewellery Store",
+  "category": "Retail And Stores",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1",
+    "t2"
+  ]
+}

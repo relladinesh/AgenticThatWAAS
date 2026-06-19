@@ -1,0 +1,12 @@
+{
+  "name": "Solar Panel Installer",
+  "category": "Construction",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1",
+    "t2",
+    "t3"
+  ]
+}

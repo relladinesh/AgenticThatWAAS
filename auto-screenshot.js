@@ -1,0 +1,37 @@
+import { spawn } from 'child_process';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+if (process.env.VERCEL || process.env.CI) {
+  console.log("⏭️ Skipping automated screenshots during CI/CD deployment.");
+  process.exit(0);
+}
+
+console.log("🚀 Starting background Vite server for automated screenshots...");
+
+const isWindows = /^win/.test(process.platform);
+const npxCmd = isWindows ? 'npx.cmd' : 'npx';
+const nodeCmd = isWindows ? 'node.exe' : 'node';
+
+const viteProcess = spawn(npxCmd, ['vite', '--port', '5173'], {
+  stdio: 'ignore',
+  cwd: __dirname
+});
+
+// Give Vite 4 seconds to spin up before running screenshots
+setTimeout(() => {
+  console.log("📸 Running screenshot generator...");
+  const screenshotProcess = spawn(nodeCmd, ['generate-screenshots.js'], {
+    stdio: 'inherit',
+    cwd: __dirname
+  });
+
+  screenshotProcess.on('close', (code) => {
+    console.log("🛑 Shutting down background Vite server...");
+    viteProcess.kill();
+    process.exit(code);
+  });
+}, 4000);

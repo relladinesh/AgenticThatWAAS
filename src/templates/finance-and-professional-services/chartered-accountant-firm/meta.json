@@ -1,0 +1,11 @@
+{
+  "name": "Chartered Accountant Firm",
+  "category": "Finance And Professional Services",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1",
+    "t2"
+  ]
+}

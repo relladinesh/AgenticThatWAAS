@@ -1,0 +1,267 @@
+{
+  "Professional Services": {
+    "Legal / Law Firm": {
+      "path": "professional-services/legal-law-firm",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    }
+  },
+  "Healthcare": {
+    "General Clinic / Polyclinic": {
+      "path": "healthcare/general-clinic-polyclinic",
+      "templates": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5"
+      ]
+    },
+    "Pharmacy / Medical Store": {
+      "path": "healthcare/pharmacy-medical-store",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "Diagnostic Lab / Pathology": {
+      "path": "healthcare/diagnostic-lab-pathology",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "Dental Clinic": {
+      "path": "healthcare/dental-clinic",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    }
+  },
+  "Automotive": {
+    "Two-Wheeler Dealership": {
+      "path": "automotive/two-wheeler-dealership",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "Car / Bike Service Center": {
+      "path": "automotive/car-bike-service-center",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "Car Dealership (New)": {
+      "path": "automotive/car-dealership-new",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    }
+  },
+  "Construction": {
+    "Solar Panel Installer": {
+      "path": "construction/solar-panel-installer",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    }
+  },
+  "Food and Beverage": {
+    "Restaurant / Dine-in": {
+      "path": "food-and-beverage/restaurant-dine-in",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "Bakery": {
+      "path": "food-and-beverage/bakery",
+      "templates": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ]
+    }
+  },
+  "Retail": {
+    "Jewellery Store": {
+      "path": "retail/jewellery-store",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "Electronics / Mobile Store": {
+      "path": "retail/electronics-mobile-store",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    }
+  },
+  "Finance": {
+    "Insurance Agency / Broker": {
+      "path": "finance/insurance-agency-broker",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "Chartered Accountant Firm": {
+      "path": "finance/chartered-accountant-firm",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "Legal Law Firm": {
+      "path": "finance/legal-law-firm",
+      "templates": [
+        "t1",
+        "t2"
+      ]
+    }
+  },
+  "Education": {
+    "Coaching Center / Tuition": {
+      "path": "education/coaching-center-tuition",
+      "templates": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ]
+    }
+  },
+  "Beauty and Wellness": {
+    "Beauty Salon / Parlour": {
+      "path": "beauty-and-wellness/beauty-salon-parlour",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "Gym / Fitness Center": {
+      "path": "beauty-and-wellness/gym-fitness-center",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "Salon": {
+      "path": "beauty-and-wellness/salon",
+      "templates": [
+        "t1",
+        "t2"
+      ]
+    }
+  },
+  "IT and Technology": {
+    "Software Development Company": {
+      "path": "it-and-technology/software-development-company",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "Digital Marketing Agency": {
+      "path": "it-and-technology/digital-marketing-agency",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    }
+  },
+  "Real Estate": {
+    "Property Dealer / Broker": {
+      "path": "real-estate/property-dealer-broker",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "Property Management Companies": {
+      "path": "real-estate/property-management-companies",
+      "templates": [
+        "t1",
+        "t2"
+      ]
+    },
+    "Rental Properties": {
+      "path": "real-estate/rental-properties",
+      "templates": [
+        "t1",
+        "t2"
+      ]
+    }
+  },
+  "Finance and Professional Services": {
+    "Legal / Law Firm": {
+      "path": "finance-and-professional-services/legal-law-firm",
+      "templates": [
+        "t1",
+        "t2"
+      ]
+    }
+  },
+  "Bakery": {},
+  "Energy And Infrastructure": {
+    "Solar Panel Installer": {
+      "path": "energy-and-infrastructure/solar-panel-installer",
+      "templates": [
+        "t1",
+        "t2"
+      ]
+    }
+  },
+  "General": {
+    "General": {
+      "path": "general/general",
+      "templates": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5",
+        "t6",
+        "t7",
+        "t8"
+      ]
+    }
+  },
+  "Public Government Others": {
+    "Municipal Corporations": {
+      "path": "public-government-others/municipal-corporations",
+      "templates": [
+        "t1",
+        "t2"
+      ]
+    }
+  }
+}

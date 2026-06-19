@@ -1,0 +1,13 @@
+{
+  "name": "Bakery",
+  "category": "Food and Beverage",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1",
+    "t2",
+    "t3",
+    "t4"
+  ]
+}

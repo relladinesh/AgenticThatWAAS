@@ -1,0 +1,11 @@
+{
+  "name": "Digital Marketing Agency",
+  "category": "Technology",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1",
+    "t2"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Software Development Company",
+  "category": "IT and Technology",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1",
+    "t2",
+    "t3"
+  ]
+}

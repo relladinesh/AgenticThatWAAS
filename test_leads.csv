@@ -1,0 +1,21 @@
+Lead ID,Business Name,Category,Business Type,City,State,Tier,Pincode,Address,Email,Website,Google Maps URL,Has Website,Business Status,Google Rating,Total Reviews,Lead Status,Priority,Notes,Created At
+1,Test Law Firm 1,Professional Services,Legal / Law Firm,Warangal,Telangana,Tier 2,506001,"123 Test St",info@testlaw1.com,http://testlaw1.com,,Y,Active,4.5,10,New,Medium,,2026-06-19 10:00:00
+2,Test Law Firm 2,Professional Services,Legal / Law Firm,Warangal,Telangana,Tier 2,506001,"124 Test St",info@testlaw2.com,http://testlaw2.com,,Y,Active,4.6,15,New,Medium,,2026-06-19 10:00:00
+3,Test Clinic 1,Healthcare,General Clinic / Polyclinic,Warangal,Telangana,Tier 2,506001,"125 Test St",info@testclinic1.com,http://testclinic1.com,,Y,Active,4.2,20,New,Medium,,2026-06-19 10:00:00
+4,Test Clinic 2,Healthcare,General Clinic / Polyclinic,Warangal,Telangana,Tier 2,506001,"126 Test St",info@testclinic2.com,http://testclinic2.com,,Y,Active,4.8,120,New,Medium,,2026-06-19 10:00:00
+5,Test Auto 1,Automotive,Two-Wheeler Dealership,Warangal,Telangana,Tier 2,506001,"127 Test St",info@testauto1.com,http://testauto1.com,,Y,Active,4.1,50,New,Medium,,2026-06-19 10:00:00
+6,Test Auto 2,Automotive,Two-Wheeler Dealership,Warangal,Telangana,Tier 2,506001,"128 Test St",info@testauto2.com,http://testauto2.com,,Y,Active,4.9,500,New,Medium,,2026-06-19 10:00:00
+7,Test Retail 1,Retail,Jewellery Store,Warangal,Telangana,Tier 2,506001,"129 Test St",info@testretail1.com,http://testretail1.com,,Y,Active,4.4,45,New,Medium,,2026-06-19 10:00:00
+8,Test Retail 2,Retail,Jewellery Store,Warangal,Telangana,Tier 2,506001,"130 Test St",info@testretail2.com,http://testretail2.com,,Y,Active,4.7,450,New,Medium,,2026-06-19 10:00:00
+9,Test Food 1,Food and Beverage,Restaurant / Dine-in,Warangal,Telangana,Tier 2,506001,"131 Test St",info@testfood1.com,http://testfood1.com,,Y,Active,4.0,25,New,Medium,,2026-06-19 10:00:00
+10,Test Food 2,Food and Beverage,Restaurant / Dine-in,Warangal,Telangana,Tier 2,506001,"132 Test St",info@testfood2.com,http://testfood2.com,,Y,Active,4.3,125,New,Medium,,2026-06-19 10:00:00
+11,Test Tech 1,IT and Technology,Software Development Company,Warangal,Telangana,Tier 2,506001,"133 Test St",info@testtech1.com,http://testtech1.com,,Y,Active,4.5,10,New,Medium,,2026-06-19 10:00:00
+12,Test Tech 2,IT and Technology,Software Development Company,Warangal,Telangana,Tier 2,506001,"134 Test St",info@testtech2.com,http://testtech2.com,,Y,Active,4.6,15,New,Medium,,2026-06-19 10:00:00
+13,Test Real Estate 1,Real Estate,Property Dealer / Broker,Warangal,Telangana,Tier 2,506001,"135 Test St",info@testre1.com,http://testre1.com,,Y,Active,4.2,20,New,Medium,,2026-06-19 10:00:00
+14,Test Real Estate 2,Real Estate,Property Dealer / Broker,Warangal,Telangana,Tier 2,506001,"136 Test St",info@testre2.com,http://testre2.com,,Y,Active,4.8,120,New,Medium,,2026-06-19 10:00:00
+15,Test Beauty 1,Beauty and Wellness,Beauty Salon / Parlour,Warangal,Telangana,Tier 2,506001,"137 Test St",info@testbeauty1.com,http://testbeauty1.com,,Y,Active,4.1,50,New,Medium,,2026-06-19 10:00:00
+16,Test Beauty 2,Beauty and Wellness,Beauty Salon / Parlour,Warangal,Telangana,Tier 2,506001,"138 Test St",info@testbeauty2.com,http://testbeauty2.com,,Y,Active,4.9,500,New,Medium,,2026-06-19 10:00:00
+17,Test Edu 1,Education,Coaching Center / Tuition,Warangal,Telangana,Tier 2,506001,"139 Test St",info@testedu1.com,http://testedu1.com,,Y,Active,4.4,45,New,Medium,,2026-06-19 10:00:00
+18,Test Edu 2,Education,Coaching Center / Tuition,Warangal,Telangana,Tier 2,506001,"140 Test St",info@testedu2.com,http://testedu2.com,,Y,Active,4.7,450,New,Medium,,2026-06-19 10:00:00
+19,Test Finance 1,Finance,Chartered Accountant Firm,Warangal,Telangana,Tier 2,506001,"141 Test St",info@testfin1.com,http://testfin1.com,,Y,Active,4.0,25,New,Medium,,2026-06-19 10:00:00
+20,Test Finance 2,Finance,Chartered Accountant Firm,Warangal,Telangana,Tier 2,506001,"142 Test St",info@testfin2.com,http://testfin2.com,,Y,Active,4.3,125,New,Medium,,2026-06-19 10:00:00

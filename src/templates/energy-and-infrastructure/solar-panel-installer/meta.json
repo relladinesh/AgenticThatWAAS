@@ -1,0 +1,11 @@
+{
+  "name": "Solar Panel Installer",
+  "category": "Energy And Infrastructure",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1",
+    "t2"
+  ]
+}

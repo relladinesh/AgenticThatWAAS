@@ -1,0 +1,12 @@
+{
+  "name": "Property Dealer / Broker",
+  "category": "Real Estate",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1",
+    "t2",
+    "t3"
+  ]
+}
