@@ -286,7 +286,7 @@ for (const [category, businessTypes] of Object.entries(hierarchy)) {
 
     for (const reqTpl of requested) {
       if (!foundTemplates.includes(reqTpl)) {
-        const dummyPath = path.join(bizDir, \`\${reqTpl}.tsx\`);
+        const dummyPath = path.join(bizDir, `${reqTpl}.tsx`);
         fs.writeFileSync(dummyPath, boilerplate);
         foundTemplates.push(reqTpl);
       }
