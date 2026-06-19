@@ -172,44 +172,8 @@ if (fs.existsSync(sourceTemplatesDir)) {
   }
 }
 
-// CRITICAL: ALWAYS SCAN src/templates TO REBUILD HIERARCHY!
-// This allows Vercel to rebuild business_templates.csv purely from the pushed React folders
-if (fs.existsSync(templatesDir)) {
-  const catFolders = fs.readdirSync(templatesDir);
-  for (const cat of catFolders) {
-    const catPath = path.join(templatesDir, cat);
-    if (fs.statSync(catPath).isDirectory()) {
-      const displayCat = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-      
-      if (!hierarchy[displayCat]) {
-        hierarchy[displayCat] = new Set();
-      }
-      
-      const bizFolders = fs.readdirSync(catPath);
-      for (const biz of bizFolders) {
-        const bizPath = path.join(catPath, biz);
-        if (fs.statSync(bizPath).isDirectory()) {
-          // Read meta.json to get the exact proper display names if it exists
-          const metaPath = path.join(bizPath, 'meta.json');
-          let displayBiz = biz.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-          if (fs.existsSync(metaPath)) {
-            try {
-              const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
-              if (meta.name) displayBiz = meta.name;
-              if (meta.category && !hierarchy[meta.category]) {
-                hierarchy[meta.category] = new Set();
-                hierarchy[displayCat] = hierarchy[meta.category]; // merge reference
-                delete hierarchy[displayCat];
-                displayCat = meta.category;
-              }
-            } catch(e) {}
-          }
-          hierarchy[displayCat].add(displayBiz);
-        }
-      }
-    }
-  }
-}
+// We no longer scan src/templates to add to the hierarchy.
+// leads.csv is the STRICT single source of truth. Any folder not defined in leads.csv will be permanently ignored.
 
 if (!fs.existsSync(templatesDir)) {
   fs.mkdirSync(templatesDir, { recursive: true });
