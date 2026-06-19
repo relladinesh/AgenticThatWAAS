@@ -323,8 +323,7 @@ for (const [category, businessTypes] of Object.entries(hierarchy)) {
   }
 }
 
-const registryPath = path.join(__dirname, 'src', 'registry.json');
-fs.writeFileSync(registryPath, JSON.stringify(templatesRegistry, null, 2));
+
 
 // Generate Business Templates CSV
 let csvOutput = "id,category,business_type,template_name,template_path,template_code\n";

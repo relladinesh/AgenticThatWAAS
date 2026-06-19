@@ -24,7 +24,7 @@ try {
   console.log('Checking for newly generated registry files...');
   
   // Check if there are any changes in the specific files we care about
-  const status = execSync('git status --porcelain "data csv/" "src/registry.json" "src/templates/"').toString();
+  const status = execSync('git status --porcelain "data csv/" "src/templates/"').toString();
   
   if (!status.trim()) {
     console.log('No new files or templates to push. Everything is up to date.');
@@ -41,7 +41,7 @@ try {
   
   console.log('Adding generated files to commit...');
   // Force add just in case they were in .gitignore
-  execSync('git add -f "data csv/business_templates.csv" "src/registry.json" "src/templates/"');
+  execSync('git add -f "data csv/business_templates.csv" "src/templates/"');
   
   // IMPORTANT: We use [skip ci] so Vercel doesn't trigger an infinite build loop!
   console.log('Committing files...');

@@ -64,7 +64,6 @@ id,category,business_type,template_name,template_path,template_code
 63,"real estate","property dealer / broker","t3","/templates/real-estate/property-dealer-broker/t3","pd-t3"
 64,"finance and professional services","legal / law firm","t1","/templates/finance-and-professional-services/legal-law-firm/t1","l-t1"
 65,"finance and professional services","legal / law firm","t2","/templates/finance-and-professional-services/legal-law-firm/t2","l-t2"
-66,"finance and professional services","legal / law firmcccc","t1","/templates/finance-and-professional-services/legal-law-firmcccc/t1","l-t1"
 67,"professional services","legal / law firm","t1","/templates/professional-services/legal-law-firm/t1","l-t1"
 68,"professional services","legal / law firm","t2","/templates/professional-services/legal-law-firm/t2","l-t2"
 69,"professional services","legal / law firm","t3","/templates/professional-services/legal-law-firm/t3","l-t3"
@@ -129,4 +128,4 @@ id,category,business_type,template_name,template_path,template_code
 128,"real estate","property dealer / broker","t2","/templates/real-estate/property-dealer-broker/t2","pd-t2"
 129,"real estate","property dealer / broker","t3","/templates/real-estate/property-dealer-broker/t3","pd-t3"
 130,"finance and professional services","legal / law firm","t1","/templates/finance-and-professional-services/legal-law-firm/t1","l-t1"
-131,"finance and professional services","legal / law firm","t2","/templates/finance-and-professional-services/legal-law-firm/t2","l-t2"
+131,"finance and professional services","legal / law firme","t2","/templates/finance-and-professional-services/legal-law-firm/t2","l-t2"
