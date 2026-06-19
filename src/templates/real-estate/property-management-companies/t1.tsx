@@ -147,9 +147,7 @@ export default function PropertyManagementT1({ data }: TemplateProps) {
           <img
             src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000&auto=format&fit=crop"
             alt="Corporate Real Estate"
-            fill
-            className="object-cover scale-105"
-            priority
+            className="object-cover w-full h-full scale-105"
           />
         </motion.div>
 

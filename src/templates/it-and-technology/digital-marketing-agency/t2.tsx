@@ -149,9 +149,7 @@ export default function DigitalMarketingT2({ data }: TemplateProps) {
             <img
               src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop"
               alt="Digital Marketing Dashboard"
-              fill
-              className="object-cover"
-              priority
+              className="object-cover w-full h-full"
             />
             {/* Floating UI Elements inside Hero Image */}
             <motion.div 

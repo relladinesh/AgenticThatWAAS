@@ -134,7 +134,7 @@ export default function RentalPropertiesT1({ data }: TemplateProps) {
               
               {/* Floating Property Cards */}
               <motion.div style={{ y: yParallaxSlow }} className="absolute top-[15%] left-[10%] bg-white/90 backdrop-blur-xl border border-[#E2E8F0] p-4 rounded-2xl flex gap-4 items-center shadow-xl hover:scale-105 transition-transform cursor-pointer">
-                 <div className="w-16 h-16 rounded-xl overflow-hidden relative"><img src={properties[0].img} fill alt="" className="object-cover"/></div>
+                 <div className="w-16 h-16 rounded-xl overflow-hidden relative"><img src={properties[0].img} alt="" className="object-cover w-full h-full"/></div>
                  <div>
                    <p className="font-bold text-sm text-[#0F172A]">{properties[0].name}</p>
                    <p className="text-[#3B82F6] font-bold">{properties[0].price}</p>
@@ -142,7 +142,7 @@ export default function RentalPropertiesT1({ data }: TemplateProps) {
               </motion.div>
 
               <motion.div style={{ y: yParallax }} className="absolute bottom-[20%] right-[10%] bg-white/90 backdrop-blur-xl border border-[#E2E8F0] p-4 rounded-2xl flex gap-4 items-center shadow-xl hover:scale-105 transition-transform cursor-pointer">
-                 <div className="w-16 h-16 rounded-xl overflow-hidden relative"><img src={properties[1].img} fill alt="" className="object-cover"/></div>
+                 <div className="w-16 h-16 rounded-xl overflow-hidden relative"><img src={properties[1].img} alt="" className="object-cover w-full h-full"/></div>
                  <div>
                    <p className="font-bold text-sm text-[#0F172A]">{properties[1].name}</p>
                    <p className="text-[#8B5CF6] font-bold">{properties[1].price}</p>
@@ -196,7 +196,7 @@ export default function RentalPropertiesT1({ data }: TemplateProps) {
                   className="bg-white border border-[#E2E8F0] rounded-3xl overflow-hidden group hover:shadow-[0_20px_60px_rgba(0,0,0,0.06)] hover:border-[#CBD5E1] transition-all cursor-pointer"
                 >
                   <div className="relative h-[300px] overflow-hidden">
-                    <img src={prop.img} alt={prop.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <img src={prop.img} alt={prop.name} className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-700" />
                     <div className="absolute top-4 right-4 w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-[#ef4444] hover:text-white text-[#0F172A] transition-colors shadow-sm">
                       <Heart className="w-5 h-5" />
                     </div>

@@ -134,9 +134,7 @@ export default function SolarPanelInstallerT2({ data }: TemplateProps) {
               <img
                 src="https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=2072&auto=format&fit=crop"
                 alt="Industrial Solar Installation"
-                fill
-                className="object-cover object-center opacity-80"
-                priority
+                className="object-cover w-full h-full object-center opacity-80"
               />
             </motion.div>
             {/* Gradient Overlay left-to-right */}
@@ -192,8 +190,7 @@ export default function SolarPanelInstallerT2({ data }: TemplateProps) {
                 <img
                   src="https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=2072&auto=format&fit=crop"
                   alt="GreenLogix Hub"
-                  fill
-                  className="object-cover"
+                  className="object-cover w-full h-full"
                 />
               </div>
               <div className="flex-1">
@@ -256,7 +253,7 @@ export default function SolarPanelInstallerT2({ data }: TemplateProps) {
               </div>
               <div className="mt-auto z-10 flex flex-col items-center">
                 <div className="relative w-full h-32 mb-4">
-                   <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=2072&auto=format&fit=crop" alt="Panel" fill className="object-cover rounded-xl" />
+                   <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=2072&auto=format&fit=crop" alt="Panel" className="object-cover w-full h-full rounded-xl" />
                 </div>
                 <div className="text-4xl font-bold text-slate-900 self-start">5,200<span className="text-sm text-slate-500 font-medium"> kWh/day</span></div>
               </div>
@@ -282,8 +279,7 @@ export default function SolarPanelInstallerT2({ data }: TemplateProps) {
               <img
                 src="https://images.unsplash.com/photo-1592833159155-c62df1b65634?q=80&w=2069&auto=format&fit=crop"
                 alt="Solar Panel Wiring"
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
               />
             </motion.div>
 
@@ -367,8 +363,7 @@ export default function SolarPanelInstallerT2({ data }: TemplateProps) {
               <img
                 src="https://images.unsplash.com/photo-1613665813446-82a78c468a1d?q=80&w=2058&auto=format&fit=crop"
                 alt="Solar Engineer"
-                fill
-                className="object-cover"
+                className="object-cover w-full h-full"
               />
             </div>
           </div>
@@ -408,8 +403,7 @@ export default function SolarPanelInstallerT2({ data }: TemplateProps) {
                 <img
                   src="https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=2072&auto=format&fit=crop"
                   alt="Retail Center"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
                 />
               </div>
               <div className="px-6 py-5 relative z-10 text-white flex justify-between items-center">
@@ -429,8 +423,7 @@ export default function SolarPanelInstallerT2({ data }: TemplateProps) {
                 <img
                   src="https://images.unsplash.com/photo-1592833159155-c62df1b65634?q=80&w=2069&auto=format&fit=crop"
                   alt="Corporate Tower"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute top-3 right-3 bg-white p-2 rounded-full">
                   <ArrowRight className="w-4 h-4 text-[#FF5A36] -rotate-45" />
@@ -452,8 +445,7 @@ export default function SolarPanelInstallerT2({ data }: TemplateProps) {
                 <img
                   src="https://images.unsplash.com/photo-1613665813446-82a78c468a1d?q=80&w=2058&auto=format&fit=crop"
                   alt="Manufacturing Plant"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
                 />
               </div>
               <div className="px-6 py-5 relative z-10 text-white flex justify-between items-center">
@@ -519,7 +511,7 @@ export default function SolarPanelInstallerT2({ data }: TemplateProps) {
                 <h3 className="text-xl font-bold text-slate-900 mb-8">Reduce Carbon Footprint</h3>
                 <div className="flex flex-col sm:flex-row gap-6 items-center sm:items-end w-full">
                   <div className="relative w-full sm:w-40 h-24 rounded-lg overflow-hidden flex-shrink-0">
-                    <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=2072&auto=format&fit=crop" alt="Solar Farm" fill className="object-cover" />
+                    <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=2072&auto=format&fit=crop" alt="Solar Farm" className="object-cover w-full h-full" />
                   </div>
                   <div className="text-center sm:text-left">
                     <div className="text-5xl md:text-6xl font-bold text-slate-900 mb-2">4,000+</div>

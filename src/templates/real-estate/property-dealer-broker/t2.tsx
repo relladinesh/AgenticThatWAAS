@@ -183,9 +183,7 @@ export default function PropertyDealerT2({ data }: TemplateProps) {
             <img
               src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2000&auto=format&fit=crop"
               alt="Luxury Architecture"
-              fill
-              className="object-cover opacity-90"
-              priority
+              className="object-cover w-full h-full opacity-90"
             />
           </div>
           {/* Architectural Lines Overlay */}
@@ -259,8 +257,7 @@ export default function PropertyDealerT2({ data }: TemplateProps) {
                     <img
                       src={featuredProperties[activePropertyIndex].image}
                       alt={featuredProperties[activePropertyIndex].title}
-                      fill
-                      className="object-cover"
+                      className="object-cover w-full h-full"
                     />
                  </div>
                  <div className="flex flex-col justify-center">

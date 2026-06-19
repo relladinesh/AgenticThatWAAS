@@ -1,11 +1,11 @@
 
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { TemplateProps } from "@/types";
 import { 
   Menu, X, ArrowRight, Sparkles, BarChart, PenTool, Code, 
   Megaphone, Target, Mail, Phone, ChevronRight, CheckCircle2, 
-  Globe2, Layers, Zap, Play, ArrowUpRight
+  Globe2, Play, ArrowUpRight
 } from "lucide-react";
 
 export default function DigitalMarketingT2({ data }: TemplateProps) {

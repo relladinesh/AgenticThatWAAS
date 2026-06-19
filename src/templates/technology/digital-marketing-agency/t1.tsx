@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { TemplateProps } from "@/types";
 import { 
@@ -7,12 +7,9 @@ import {
   Menu, 
   X, 
   MonitorSmartphone, 
-  BarChart3, 
   Megaphone, 
-  Code2, 
   Layers, 
-  Globe2,
-  ChevronRight
+  Globe2
 } from "lucide-react";
 
 export default function DigitalMarketingT1({ data }: TemplateProps) {
@@ -240,8 +237,7 @@ export default function DigitalMarketingT1({ data }: TemplateProps) {
             <img
               src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop"
               alt="Digital Agency Workspace"
-              fill
-              className="object-cover"
+              className="object-cover w-full h-full"
             />
             <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-6">
               <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white mb-8 cursor-pointer hover:scale-110 transition-transform">

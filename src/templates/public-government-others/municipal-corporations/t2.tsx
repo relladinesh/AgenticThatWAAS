@@ -123,11 +123,9 @@ export default function MunicipalCorpT2({ data }: TemplateProps) {
           <div className="relative min-h-[50vh] lg:min-h-full p-6 lg:py-12 lg:pr-12">
             <div className="relative w-full h-full rounded-[2rem] overflow-hidden bg-[#F3F4F6]">
               <img 
-                src="https://images.unsplash.com/photo-1513828583688-c52646db42da?q=80&w=2000&auto=format&fit=crop" 
-                alt="City Infrastructure Data" 
-                fill 
-                className="object-cover opacity-90" 
-                priority
+                src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2000&auto=format&fit=crop" 
+                alt="City Council" 
+                className="object-cover w-full h-full scale-105 group-hover:scale-100 transition-transform duration-[3s] ease-out" 
               />
               
               {/* Soft Glass Overlay Card */}
