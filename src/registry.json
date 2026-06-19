@@ -1,4 +1,204 @@
 {
+  "professional services": {
+    "legal / law firm": {
+      "path": "professional-services/legal-law-firm",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    }
+  },
+  "healthcare": {
+    "general clinic / polyclinic": {
+      "path": "healthcare/general-clinic-polyclinic",
+      "templates": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5"
+      ]
+    },
+    "pharmacy / medical store": {
+      "path": "healthcare/pharmacy-medical-store",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "diagnostic lab / pathology": {
+      "path": "healthcare/diagnostic-lab-pathology",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "dental clinic": {
+      "path": "healthcare/dental-clinic",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    }
+  },
+  "automotive": {
+    "two-wheeler dealership": {
+      "path": "automotive/two-wheeler-dealership",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "car / bike service center": {
+      "path": "automotive/car-bike-service-center",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "car dealership (new)": {
+      "path": "automotive/car-dealership-new",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    }
+  },
+  "construction": {
+    "solar panel installer": {
+      "path": "construction/solar-panel-installer",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    }
+  },
+  "food and beverage": {
+    "restaurant / dine-in": {
+      "path": "food-and-beverage/restaurant-dine-in",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    }
+  },
+  "retail": {
+    "jewellery store": {
+      "path": "retail/jewellery-store",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "electronics / mobile store": {
+      "path": "retail/electronics-mobile-store",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    }
+  },
+  "finance": {
+    "insurance agency / broker": {
+      "path": "finance/insurance-agency-broker",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "chartered accountant firm": {
+      "path": "finance/chartered-accountant-firm",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    }
+  },
+  "education": {
+    "coaching center / tuition": {
+      "path": "education/coaching-center-tuition",
+      "templates": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ]
+    }
+  },
+  "beauty and wellness": {
+    "beauty salon / parlour": {
+      "path": "beauty-and-wellness/beauty-salon-parlour",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "gym / fitness center": {
+      "path": "beauty-and-wellness/gym-fitness-center",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    }
+  },
+  "it and technology": {
+    "software development company": {
+      "path": "it-and-technology/software-development-company",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    },
+    "digital marketing agency": {
+      "path": "it-and-technology/digital-marketing-agency",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    }
+  },
+  "real estate": {
+    "property dealer / broker": {
+      "path": "real-estate/property-dealer-broker",
+      "templates": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    }
+  },
+  "finance and professional services": {
+    "legal / law firm": {
+      "path": "finance-and-professional-services/legal-law-firm",
+      "templates": [
+        "t1",
+        "t2"
+      ]
+    },
+    "legal / law firmcccc": {
+      "path": "finance-and-professional-services/legal-law-firmcccc",
+      "templates": [
+        "t1"
+      ]
+    }
+  },
   "Professional Services": {
     "Legal / Law Firm": {
       "path": "professional-services/legal-law-firm",
