@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import fs from 'fs';import { spawn, exec } from 'child_process';
+import fs from 'fs'; import { spawn, exec } from 'child_process';
 
 const masterCsvPath = path.resolve(__dirname, 'data/master_csv_of_templates.csv');
 
@@ -16,32 +16,32 @@ export default defineConfig({
         if (normalizedFile.endsWith('.csv') && !normalizedFile.includes('master_csv_of_templates')) {
           const now = Date.now();
           const lastRun = (globalThis as any).lastGenerateRun || 0;
-          
+
           // Debounce by 10 seconds
           if (now - lastRun > 10000) {
-             (globalThis as any).lastGenerateRun = now;
-             console.log(`\n🔄 CSV change detected: ${path.basename(file)}. Auto-generating and pushing...`);
-             
-             const isWindows = /^win/.test(process.platform);
-             const nodeCmd = isWindows ? 'node.exe' : 'node';
-             const cp = spawn(nodeCmd, ['generate.js'], { 
-                stdio: 'inherit',
-                cwd: process.cwd() 
-             });
-             
-             cp.on('close', () => {
-               server.ws.send({ type: 'full-reload' });
-               
-               // Automatically commit and push business_templates.csv to GitHub
-               const gitCmd = `git add "data csv/business_templates.csv" "src/registry.json" "src/templates/" && git commit -m "Auto-sync templates after CSV change" && git push`;
-               exec(gitCmd, { cwd: process.cwd() }, (error: any) => {
-                 if (error) {
-                   console.error(`❌ GitHub Push Failed: ${error.message}`);
-                 } else {
-                   console.log(`✅ Automatically pushed business_templates.csv to GitHub`);
-                 }
-               });
-             });
+            (globalThis as any).lastGenerateRun = now;
+            console.log(`\n🔄 CSV change detected: ${path.basename(file)}. Auto-generating and pushing...`);
+
+            const isWindows = /^win/.test(process.platform);
+            const nodeCmd = isWindows ? 'node.exe' : 'node';
+            const cp = spawn(nodeCmd, ['generate.js'], {
+              stdio: 'inherit',
+              cwd: process.cwd()
+            });
+
+            cp.on('close', () => {
+              server.ws.send({ type: 'full-reload' });
+
+              // Automatically commit and push business_templates.csv to GitHub
+              const gitCmd = `git add "data csv/business_templates.csv" "src/registry.json" "src/templates/" && git commit -m "Auto-sync templates after CSV change" && git push`;
+              exec(gitCmd, { cwd: process.cwd() }, (error: any) => {
+                if (error) {
+                  console.error(`❌ GitHub Push Failed: ${error.message}`);
+                } else {
+                  console.log(`✅ Automatically pushed business_templates.csv to GitHub`);
+                }
+              });
+            });
           }
         }
       }
@@ -51,6 +51,34 @@ export default defineConfig({
       name: 'master-csv-writer',
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
+          if (req.url === '/api/sync-business-templates' && req.method === 'POST') {
+             const isWindows = /^win/.test(process.platform);
+             const nodeCmd = isWindows ? 'node.exe' : 'node';
+             
+             // 1. Run generate.js
+             const cp = spawn(nodeCmd, ['generate.js'], { cwd: process.cwd() });
+             
+             cp.on('close', (code) => {
+               if (code !== 0) {
+                 res.statusCode = 500;
+                 return res.end(JSON.stringify({ error: 'Failed to generate templates' }));
+               }
+               
+               // 2. Commit and Push to GitHub
+               const gitCmd = `git add "data csv/business_templates.csv" "src/registry.json" "src/templates/" && git commit -m "Auto-sync business templates from UI button" && git push`;
+               exec(gitCmd, { cwd: process.cwd() }, (error: any, stdout: string, stderr: string) => {
+                 if (error) {
+                   res.statusCode = 500;
+                   res.end(JSON.stringify({ error: `GitHub Push Failed: ${stderr || error.message}` }));
+                 } else {
+                   res.statusCode = 200;
+                   res.end(JSON.stringify({ success: true, message: 'Successfully generated and pushed business templates to GitHub!' }));
+                 }
+               });
+             });
+             return;
+          }
+
           if (req.url === '/api/save-master' && req.method === 'POST') {
             let body = '';
             req.on('data', chunk => {
@@ -61,7 +89,7 @@ export default defineConfig({
                 const payload = JSON.parse(body);
                 const dir = path.dirname(masterCsvPath);
                 if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-                
+
                 let isNewFile = !fs.existsSync(masterCsvPath);
                 let existingContent = '';
                 if (!isNewFile) {
@@ -69,22 +97,22 @@ export default defineConfig({
                 } else {
                   existingContent = 'business_name,category,template_code,slug,url,date_generated\n';
                 }
-                
+
                 const rows = Array.isArray(payload) ? payload : [payload];
                 const timestamp = new Date().toISOString();
-                
+
                 // Deduplication logic: parse existing URLs
                 const existingUrls = new Set();
                 const lines = existingContent.split('\n');
                 for (const line of lines) {
                   const parts = line.split('","');
                   if (parts.length >= 5) {
-                     // The URL is the 5th column
-                     let urlPart = parts[4].replace(/"/g, '').trim();
-                     existingUrls.add(urlPart.toLowerCase());
+                    // The URL is the 5th column
+                    let urlPart = parts[4].replace(/"/g, '').trim();
+                    existingUrls.add(urlPart.toLowerCase());
                   }
                 }
-                
+
                 let appendContent = '';
                 if (isNewFile) {
                   appendContent = 'business_name,category,template_code,slug,url,date_generated\n';
@@ -97,13 +125,13 @@ export default defineConfig({
                     existingUrls.add(safeUrl);
                   }
                 }
-                
+
                 if (appendContent) {
                   fs.appendFileSync(masterCsvPath, appendContent);
-                  
+
                   // Automatically commit and push to GitHub
                   const gitCmd = `git add "${masterCsvPath}" && git commit -m "Auto-update master CSV with Vercel links" && git push`;
-                  
+
                   exec(gitCmd, { cwd: __dirname }, (error: any, stdout: string, stderr: string) => {
                     if (error) {
                       console.error(`❌ GitHub Push Failed: ${error.message}`);
@@ -112,7 +140,7 @@ export default defineConfig({
                     }
                   });
                 }
-                
+
                 res.statusCode = 200;
                 res.end(JSON.stringify({ success: true, newRowsAdded: !!appendContent }));
               } catch (e) {
@@ -123,16 +151,16 @@ export default defineConfig({
             return;
           }
           if (req.url === '/api/download-master' && req.method === 'GET') {
-             if (fs.existsSync(masterCsvPath)) {
-               res.setHeader('Content-Type', 'text/csv');
-               res.setHeader('Content-Disposition', 'attachment; filename="master_csv_of_templates.csv"');
-               const stream = fs.createReadStream(masterCsvPath);
-               stream.pipe(res);
-             } else {
-               res.statusCode = 404;
-               res.end('Not found');
-             }
-             return;
+            if (fs.existsSync(masterCsvPath)) {
+              res.setHeader('Content-Type', 'text/csv');
+              res.setHeader('Content-Disposition', 'attachment; filename="master_csv_of_templates.csv"');
+              const stream = fs.createReadStream(masterCsvPath);
+              stream.pipe(res);
+            } else {
+              res.statusCode = 404;
+              res.end('Not found');
+            }
+            return;
           }
           next();
         });

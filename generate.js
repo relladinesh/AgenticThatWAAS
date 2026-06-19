@@ -38,15 +38,15 @@ if (fs.existsSync(csvOutPath)) {
     const line = lines[i].trim();
     if (!line) continue;
     existingRecords.add(line);
-    
+
     // Parse to support manual additions to business_templates.csv
     const parts = [];
     let currentPart = '';
     let inQuotes = false;
     for (let j = 0; j < line.length; j++) {
       const char = line[j];
-      if (char === '"' && line[j+1] !== '"') inQuotes = !inQuotes;
-      else if (char === '"' && line[j+1] === '"') { currentPart += '"'; j++; }
+      if (char === '"' && line[j + 1] !== '"') inQuotes = !inQuotes;
+      else if (char === '"' && line[j + 1] === '"') { currentPart += '"'; j++; }
       else if (char === ',' && !inQuotes) { parts.push(currentPart); currentPart = ''; }
       else currentPart += char;
     }
@@ -56,7 +56,7 @@ if (fs.existsSync(csvOutPath)) {
     if (parts.length >= 3) {
       let category = parts[1] ? parts[1].replace(/^"|"$/g, '').trim() : '';
       let businessType = parts[2] ? parts[2].replace(/^"|"$/g, '').trim() : '';
-      
+
       if (category && businessType) {
         // We intentionally DO NOT add these to the hierarchy anymore.
         // leads.csv is the ONLY source of truth for allowed Business Types.
@@ -74,40 +74,40 @@ if (fs.existsSync(csvFilePath)) {
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i].trim();
     if (!line) continue;
-  
-  // Robust CSV parser
-  const parts = [];
-  let currentPart = '';
-  let inQuotes = false;
-  
-  for (let j = 0; j < line.length; j++) {
-    const char = line[j];
-    if (char === '"' && line[j+1] !== '"') {
-      inQuotes = !inQuotes;
-    } else if (char === '"' && line[j+1] === '"') {
-      currentPart += '"';
-      j++; // skip escaped quote
-    } else if (char === ',' && !inQuotes) {
-      parts.push(currentPart);
-      currentPart = '';
-    } else {
-      currentPart += char;
-    }
-  }
-  parts.push(currentPart);
 
-  if (parts.length >= 4) {
-    let category = parts[2] ? parts[2].replace(/^"|"$/g, '').trim() : '';
-    let businessType = parts[3] ? parts[3].replace(/^"|"$/g, '').trim() : '';
-    
-    if (category && businessType) {
-      if (!hierarchy[category]) {
-        hierarchy[category] = new Set();
+    // Robust CSV parser
+    const parts = [];
+    let currentPart = '';
+    let inQuotes = false;
+
+    for (let j = 0; j < line.length; j++) {
+      const char = line[j];
+      if (char === '"' && line[j + 1] !== '"') {
+        inQuotes = !inQuotes;
+      } else if (char === '"' && line[j + 1] === '"') {
+        currentPart += '"';
+        j++; // skip escaped quote
+      } else if (char === ',' && !inQuotes) {
+        parts.push(currentPart);
+        currentPart = '';
+      } else {
+        currentPart += char;
       }
-      hierarchy[category].add(businessType);
+    }
+    parts.push(currentPart);
+
+    if (parts.length >= 4) {
+      let category = parts[2] ? parts[2].replace(/^"|"$/g, '').trim() : '';
+      let businessType = parts[3] ? parts[3].replace(/^"|"$/g, '').trim() : '';
+
+      if (category && businessType) {
+        if (!hierarchy[category]) {
+          hierarchy[category] = new Set();
+        }
+        hierarchy[category].add(businessType);
+      }
     }
   }
-}
 }
 
 
@@ -124,7 +124,7 @@ const getTargetCategoryKebab = (sourceKebab) => {
   if (sourceKebab === 'food-and-hospitality') return 'food-and-beverage';
   if (sourceKebab === 'technology') return 'it-and-technology';
   // Note: finance-and-professional-services covers two CSV categories, we'll map to 'finance' as primary fallback
-  if (sourceKebab === 'finance-and-professional-services') return 'finance'; 
+  if (sourceKebab === 'finance-and-professional-services') return 'finance';
   return sourceKebab;
 };
 
@@ -144,7 +144,7 @@ if (fs.existsSync(sourceTemplatesDir)) {
     const catPath = path.join(sourceTemplatesDir, cat);
     if (fs.statSync(catPath).isDirectory()) {
       const displayCat = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-      
+
       const mappedKebab = getTargetCategoryKebab(cat);
       let targetCat = Object.keys(hierarchy).find(k => toKebabCase(k) === mappedKebab);
       if (!targetCat) {
@@ -154,17 +154,17 @@ if (fs.existsSync(sourceTemplatesDir)) {
         hierarchy[displayCat] = new Set();
         targetCat = displayCat;
       }
-      
+
       const bizFolders = fs.readdirSync(catPath);
       for (const biz of bizFolders) {
         const bizPath = path.join(catPath, biz);
         if (fs.statSync(bizPath).isDirectory()) {
           const displayBiz = biz.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-          
+
           // Only add if it exists in leads.csv OR if the user is running this locally to import
           const existingBiz = Array.from(hierarchy[targetCat]).find(b => toKebabCase(b) === biz);
           if (!existingBiz) {
-             console.log(`Skipping custom folder in source: ${biz} (Not in leads.csv)`);
+            console.log(`Skipping custom folder in source: ${biz} (Not in leads.csv)`);
           }
         }
       }
@@ -186,7 +186,7 @@ for (const [category, businessTypes] of Object.entries(hierarchy)) {
   const catDir = path.join(templatesDir, catKebab);
   const sourceCatKebab = getSourceCategoryKebab(catKebab);
   const sourceCatDir = path.join(sourceTemplatesDir, sourceCatKebab);
-  
+
   if (!fs.existsSync(catDir)) {
     fs.mkdirSync(catDir, { recursive: true });
   }
@@ -197,7 +197,7 @@ for (const [category, businessTypes] of Object.entries(hierarchy)) {
     const bizKebab = toKebabCase(bizType);
     const bizDir = path.join(catDir, bizKebab);
     const sourceBizDir = path.join(sourceCatDir, bizKebab);
-    
+
     if (!fs.existsSync(bizDir)) {
       fs.mkdirSync(bizDir, { recursive: true });
     }
@@ -210,7 +210,7 @@ for (const [category, businessTypes] of Object.entries(hierarchy)) {
         if (file.endsWith('.tsx') && file.startsWith('t')) {
           const templateName = file.replace('.tsx', '');
           foundTemplates.push(templateName);
-          
+
           // Copy and clean up Next.js specific things
           let content = fs.readFileSync(path.join(sourceBizDir, file), 'utf8');
           content = content.replace(/"use client";?\n?/g, '');
@@ -223,15 +223,15 @@ for (const [category, businessTypes] of Object.entries(hierarchy)) {
           content = content.replace(/<\/Link>/g, '</a>');
           // Fix Next.js Image src object bug
           content = content.replace(/src=\{([^}]+)\}/g, (match, p1) => {
-             if (p1.includes('.src')) return match;
-             return match;
+            if (p1.includes('.src')) return match;
+            return match;
           });
 
           fs.writeFileSync(path.join(bizDir, file), content);
         }
       }
     }
-    
+
     // After copying, scan the local bizDir to include any files that were already there
     if (fs.existsSync(bizDir)) {
       const localFiles = fs.readdirSync(bizDir);
@@ -244,7 +244,7 @@ for (const [category, businessTypes] of Object.entries(hierarchy)) {
         }
       }
     }
-    
+
     // If no templates found, create a dummy boilerplate t1.tsx
     if (foundTemplates.length === 0) {
       const boilerplate = `export default function Template(props: any) {
@@ -296,12 +296,12 @@ for (const [category, businessTypes] of Object.entries(hierarchy)) {
       };
       fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2));
     } else {
-       // Update meta.json with actual found templates
-       try {
-         const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
-         meta.templates = foundTemplates;
-         fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2));
-       } catch(e) {}
+      // Update meta.json with actual found templates
+      try {
+        const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+        meta.templates = foundTemplates;
+        fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2));
+      } catch (e) { }
     }
   }
 }
