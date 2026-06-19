@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Search, ChevronDown, ChevronRight, ExternalLink, Eye, LayoutTemplate, CheckCircle2, ArrowLeft, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import rawCsv from '../../data csv/business_templates.csv?raw';
@@ -73,6 +73,38 @@ export default function Showcase() {
   const [selectedBiz, setSelectedBiz] = useState<string | null>(
     Object.keys(registry)[0] ? Object.keys((registry as any)[Object.keys(registry)[0]])[0] : null
   );
+
+  useEffect(() => {
+    let initialVersion: number | null = null;
+    
+    // Fetch initial version on mount
+    fetch('/version.json?t=' + Date.now())
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data && data.version) initialVersion = data.version;
+      })
+      .catch(() => {});
+
+    // Poll every 10 seconds
+    const interval = setInterval(() => {
+      fetch('/version.json?t=' + Date.now())
+        .then(res => res.ok ? res.json() : null)
+        .then(data => {
+          if (data && data.version && initialVersion && data.version !== initialVersion) {
+            // New version detected from Vercel!
+            setIsSyncing(true);
+            setTimeout(() => {
+              window.location.reload();
+            }, 5000); // Show message for 5 seconds then reload
+          } else if (!initialVersion && data && data.version) {
+            initialVersion = data.version;
+          }
+        })
+        .catch(() => {});
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleDownloadMaster = async () => {
     setIsDownloading(true);
@@ -157,9 +189,9 @@ export default function Showcase() {
               <div className="absolute inset-0 border-4 border-indigo-100 rounded-full"></div>
               <div className="absolute inset-0 border-4 border-indigo-600 rounded-full border-t-transparent animate-spin"></div>
             </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-2">Fetching Updates...</h3>
+            <h3 className="text-xl font-bold text-slate-900 mb-2">New Update Detected!</h3>
             <p className="text-sm text-slate-500 mb-6">
-              Please wait while Vercel finishes deploying the latest changes. The page will refresh automatically when ready.
+              Vercel just finished deploying new templates. The page is automatically refreshing to show the latest changes...
             </p>
             <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden relative">
               <div className="absolute inset-0 bg-indigo-600 rounded-full animate-[progress_2s_ease-in-out_infinite]"></div>
@@ -190,14 +222,7 @@ export default function Showcase() {
             />
           </div>
           <div className="mt-4 flex gap-2">
-            <button
-              onClick={handleSyncTemplates}
-              disabled={isSyncing}
-              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
-            >
-              <CheckCircle2 className="w-4 h-4" />
-              {isSyncing ? 'Refreshing...' : 'Refresh Updates'}
-            </button>
+
             <button
               onClick={handleDownloadMaster}
               disabled={isDownloading}

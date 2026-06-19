@@ -7,6 +7,14 @@ const masterCsvPath = path.resolve(__dirname, 'data/master_csv_of_templates.csv'
 
 export default defineConfig({
   plugins: [
+    {
+      name: 'generate-version-json',
+      buildStart() {
+        const publicDir = path.resolve(__dirname, 'public');
+        if (!fs.existsSync(publicDir)) fs.mkdirSync(publicDir, { recursive: true });
+        fs.writeFileSync(path.join(publicDir, 'version.json'), JSON.stringify({ version: Date.now() }));
+      }
+    },
     react(),
     {
       name: 'force-generate-on-build',
