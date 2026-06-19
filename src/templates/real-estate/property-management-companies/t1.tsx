@@ -1,5 +1,5 @@
 
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { TemplateProps } from "@/types";
 import { 
@@ -147,7 +147,9 @@ export default function PropertyManagementT1({ data }: TemplateProps) {
           <img
             src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000&auto=format&fit=crop"
             alt="Corporate Real Estate"
-            className="object-cover w-full h-full scale-105"
+            fill
+            className="object-cover scale-105"
+            priority
           />
         </motion.div>
 

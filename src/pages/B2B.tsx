@@ -86,13 +86,20 @@ export default function B2B() {
     
     // After completely finishing generation of ALL items, save to master CSV in exact order
     try {
-      const successfulSites = sites.map(site => ({
-          businessName: site.businessName,
-          category: site.category,
-          template: site.template,
-          slug: site.slug,
-          url: `${window.location.origin}${site.route}`
-      }));
+      const successfulSites = sites.map(site => {
+          // Use production Vercel URL instead of localhost for the generated CSV
+          const baseUrl = import.meta.env.VITE_VERCEL_URL || 'https://showcasepro.vercel.app';
+          const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+          const finalUrlBase = isLocalhost ? baseUrl : window.location.origin;
+
+          return {
+            businessName: site.businessName,
+            category: site.category,
+            template: site.template,
+            slug: site.slug,
+            url: `${finalUrlBase}${site.route}`
+          };
+      });
       
       await fetch('/api/save-master', {
         method: 'POST',

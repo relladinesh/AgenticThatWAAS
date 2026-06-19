@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
   Sun,
@@ -122,7 +122,9 @@ export default function SolarPanelInstallerT1({ data }: TemplateProps) {
           <img
             src="https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=2072&auto=format&fit=crop"
             alt="Solar Panels on Modern Roof"
-            className="object-cover w-full h-full object-center"
+            fill
+            className="object-cover object-center"
+            priority
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#001736]/90 via-[#001736]/50 to-transparent" />
         </div>
@@ -293,7 +295,8 @@ export default function SolarPanelInstallerT1({ data }: TemplateProps) {
                   <img
                     src={service.img}
                     alt={service.title}
-                    className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
                   <h3 className="absolute bottom-6 left-6 text-2xl font-bold text-white">{service.title}</h3>

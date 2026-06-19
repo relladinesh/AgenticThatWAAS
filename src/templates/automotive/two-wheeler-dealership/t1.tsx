@@ -26,8 +26,69 @@ export default function AutomotiveTwoWheelerDealershipT1({ data }: TemplateProps
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
+
+    const categoryImages: Record<string, string[]> = {
+      'automotive': [
+        "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=1200&q=80",
+        "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=1200&q=80",
+        "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=1200&q=80"
+      ],
+      'real estate': [
+        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80",
+        "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=80",
+        "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&q=80"
+      ],
+      'finance': [
+        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80",
+        "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=1200&q=80",
+        "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1200&q=80"
+      ],
+      'technology': [
+        "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=80",
+        "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&q=80",
+        "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&q=80"
+      ],
+      'energy': [
+        "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1200&q=80",
+        "https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1200&q=80",
+        "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1200&q=80"
+      ],
+      'retail': [
+        "https://images.unsplash.com/photo-1441984904996-e0b6ba687e07?w=1200&q=80",
+        "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&q=80",
+        "https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=1200&q=80"
+      ],
+      'food': [
+        "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=80",
+        "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?w=1200&q=80",
+        "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=1200&q=80"
+      ],
+      'default': [
+        "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80",
+        "https://images.unsplash.com/photo-1556761175-5973dc0f32d7?w=1200&q=80",
+        "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&q=80",
+        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80"
+      ]
+    };
+
+    const desig = (data?.designation || "default").toLowerCase();
+    let pool = categoryImages.default;
+    
+    for (const [key, images] of Object.entries(categoryImages)) {
+      if (desig.includes(key)) {
+        pool = images;
+        break;
+      }
+    }
+
+    setDynamicImages(pool.sort(() => 0.5 - Math.random()) as any);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [data]);
+
+  const getImg = (fallback: string, index: number, override?: string) => {
+    if (override) return override;
+    return dynamicImages.length !== 0 ? dynamicImages[index % dynamicImages.length] : fallback;
+  };
 
   const name = data?.name || "Premium Business";
   const tagline = data?.tagline || data?.about?.slice(0, 60) + "..." || "Delivering exceptional quality and service.";
@@ -149,7 +210,7 @@ export default function AutomotiveTwoWheelerDealershipT1({ data }: TemplateProps
               
               <div className="relative rounded-[2rem] overflow-hidden aspect-[4/5] bg-slate-800 border-4 border-[#0F172A] z-10 shadow-2xl translate-y-8">
                 <img 
-                  src={"https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=600&q=80"} 
+                  src={getImg("https://images.unsplash.com/photo-1558981420-c532902e58b4?w=600&q=80", 0, data?.image)} 
                   alt="Sports Bike" 
                   className="w-full h-full object-cover transition-all duration-1000 scale-105 hover:scale-100" 
                 />
@@ -157,14 +218,14 @@ export default function AutomotiveTwoWheelerDealershipT1({ data }: TemplateProps
               <div className="space-y-4">
                 <div className="relative rounded-[2rem] overflow-hidden aspect-square bg-slate-800 border-4 border-[#0F172A] z-10 shadow-2xl">
                   <img 
-                    src={"https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=600&q=80"} 
+                    src={getImg("https://images.unsplash.com/photo-1620803350172-23c21a115403?w=600&q=80", 1)} 
                     alt="Cruiser Bike" 
                     className="w-full h-full object-cover transition-all duration-1000 scale-105 hover:scale-100" 
                   />
                 </div>
                 <div className="relative rounded-[2rem] overflow-hidden aspect-square bg-slate-800 border-4 border-[#0F172A] z-10 shadow-2xl">
                   <img 
-                    src={"https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?w=600&q=80"} 
+                    src={getImg("https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=600&q=80", 2)} 
                     alt="Street Bike" 
                     className="w-full h-full object-cover transition-all duration-1000 scale-105 hover:scale-100" 
                   />
@@ -239,12 +300,12 @@ export default function AutomotiveTwoWheelerDealershipT1({ data }: TemplateProps
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-6 mt-12">
                 <div className="rounded-[2rem] overflow-hidden aspect-[4/5] shadow-lg">
-                  <img src={"https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&q=80"} alt="Strategy" className="w-full h-full object-cover" />
+                  <img src={getImg("https://images.unsplash.com/photo-1542744173-8e7e53415bb0", 1)} alt="Strategy" className="w-full h-full object-cover" />
                 </div>
               </div>
               <div className="space-y-6">
                 <div className="rounded-[2rem] overflow-hidden aspect-[4/5] shadow-lg">
-                  <img src={"https://images.unsplash.com/photo-1502744688674-c619d1586c9e?w=600&q=80"} alt="Execution" className="w-full h-full object-cover" />
+                  <img src={getImg("https://images.unsplash.com/photo-1507679799987-c73779587ccf", 2)} alt="Execution" className="w-full h-full object-cover" />
                 </div>
                 <div className="bg-[#0F172A] rounded-[2rem] p-8 text-white shadow-xl relative overflow-hidden group">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-[#2563EB] opacity-20 rounded-bl-[100px] group-hover:scale-150 transition-transform duration-700"></div>

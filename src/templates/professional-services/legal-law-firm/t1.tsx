@@ -1,465 +1,359 @@
-import { useState, useEffect, useRef } from "react";
+
 import { TemplateProps } from "@/types";
-import { motion, useScroll, useTransform, AnimatePresence, useSpring } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { 
   Scale, 
-  ArrowRight, 
-  Shield, 
-  Landmark, 
+  ShieldCheck, 
   Phone, 
-  MapPin, 
-  Menu, 
+  Mail, 
+  ArrowRight, 
+  BookOpen, 
+  Building, 
+  Menu,
   X,
-  Play
+  Award, 
+  MapPin,
+  CheckCircle
 } from "lucide-react";
 
 export default function LawFirmPremiumT1({ data }: TemplateProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [hoveredPractice, setHoveredPractice] = useState<number | null>(null);
-  
-  const containerRef = useRef<HTMLDivElement>(null);
-  const horizontalRef = useRef<HTMLDivElement>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  const { scrollYProgress } = useScroll({ target: containerRef });
-  const smoothProgress = useSpring(scrollYProgress, { damping: 15, mass: 0.27, stiffness: 55 });
-  
-  const yBg = useTransform(smoothProgress, [0, 1], ["0%", "40%"]);
-  const yText = useTransform(smoothProgress, [0, 1], ["0%", "100%"]);
-  const opacityHero = useTransform(smoothProgress, [0, 0.15], [1, 0]);
-
-  const { scrollYProgress: horizontalProgress } = useScroll({ 
-    target: horizontalRef,
-    offset: ["start start", "end end"]
-  });
-  const xTransform = useTransform(horizontalProgress, [0, 1], ["0%", "-70%"]);
+  const { scrollYProgress } = useScroll();
+  const yParallax = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const name = data?.name || "Vanguard & Sterling";
-  const tagline = data?.tagline || "Unrelenting Advocacy. Unprecedented Results.";
-  const about = data?.about || "We represent the ambitious, the innovators, and the leaders. Operating exclusively at the highest echelons of corporate and civil litigation, our firm is built on a foundation of aggressive representation, unyielding ethical standards, and a legacy of landmark victories.";
-
+  const name = data?.name || "Sterling & Associates";
+  const tagline = data?.tagline || "Unwavering commitment. Unmatched results.";
+  const about = data?.about || "We are a premier law firm dedicated to providing exceptional legal representation. Our elite team of attorneys brings decades of experience to complex litigation, corporate law, and personal injury cases.";
+  
   const practiceAreas = [
-    { title: "Corporate Governance", desc: "Navigating regulatory frameworks and high-stakes board disputes.", img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80" },
-    { title: "Complex Litigation", desc: "Aggressive, strategic representation in multi-jurisdictional conflicts.", img: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=800&q=80" },
-    { title: "Mergers & Acquisitions", desc: "Structuring secure, highly profitable transitions and buyouts.", img: "https://images.unsplash.com/photo-1556761175-5973dc0f32d7?w=800&q=80" },
-    { title: "Intellectual Property", desc: "Fierce defense of your proprietary assets and innovations.", img: "https://images.unsplash.com/photo-1505664159858-80a69620d18f?w=800&q=80" }
+    { title: "Corporate Law", desc: "Navigating complex corporate governance and M&A.", icon: Building },
+    { title: "Civil Litigation", desc: "Aggressive representation in high-stakes disputes.", icon: Scale },
+    { title: "Intellectual Property", desc: "Protecting your most valuable ideas and assets.", icon: BookOpen },
+    { title: "Criminal Defense", desc: "Relentless advocacy when your freedom is on the line.", icon: ShieldCheck }
   ];
 
-  return (
-    <div ref={containerRef} className="bg-[#FCFBF9] text-[#1A1515] font-sans selection:bg-[#4A0404] selection:text-[#FCFBF9]">
-      
-      {/* CUSTOM CURSOR */}
-      <motion.div 
-        className="fixed w-10 h-10 rounded-full border border-[#4A0404] pointer-events-none z-[100] hidden lg:flex items-center justify-center mix-blend-multiply"
-        animate={{ x: mousePosition.x - 20, y: mousePosition.y - 20 }}
-        transition={{ type: "spring", stiffness: 400, damping: 28, mass: 0.5 }}
-      >
-        <div className="w-1.5 h-1.5 bg-[#C19B6C] rounded-full" />
-      </motion.div>
+  const email = data?.email || "consultations@sterlinglaw.com";
+  const phone = data?.phone || "+1 (800) 555-0199";
+  const address = data?.address || "100 Justice Avenue, Suite 400, New York, NY";
 
-      {/* NAVIGATION */}
-      <nav className="fixed w-full z-50 px-8 py-8 bg-[#FCFBF9]/90 backdrop-blur-md border-b border-[#4A0404]/10 transition-all duration-500">
-        <div className="max-w-[1400px] mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-4 group cursor-pointer">
-            <div className="w-10 h-10 border border-[#4A0404] flex items-center justify-center group-hover:bg-[#4A0404] transition-colors duration-500">
-              <Scale className="w-5 h-5 text-[#4A0404] group-hover:text-[#FCFBF9] transition-colors duration-500" />
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#FAFAFA] text-[#111827] font-sans selection:bg-[#B8985B] selection:text-white overflow-x-hidden">
+      
+      {/* NAVBAR */}
+      <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${isScrolled ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-200 py-4" : "bg-transparent py-8"}`}>
+        <div className="max-w-7xl mx-auto px-8 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className={`w-10 h-10 rounded-none flex items-center justify-center transition-colors duration-500 ${isScrolled ? "bg-[#111827] text-[#B8985B]" : "bg-[#B8985B] text-[#111827]"}`}>
+              <Scale className="w-5 h-5" />
             </div>
-            <span className="font-serif text-2xl tracking-widest uppercase text-[#1A1515]">
-              {name.split(' ')[0]}
+            <span className={`font-serif font-bold text-2xl tracking-tight transition-colors duration-500 ${isScrolled ? "text-[#111827]" : "text-white"}`}>
+              {name.split(' ')[0]}<span className="font-light text-[#B8985B]">LAW</span>
             </span>
           </div>
-          
-          <button 
-            onClick={() => setIsMenuOpen(true)}
-            className="flex items-center gap-3 text-sm font-semibold tracking-[0.2em] uppercase text-[#1A1515] hover:text-[#4A0404] transition-colors"
-          >
-            Menu <Menu className="w-5 h-5" />
+
+          <div className={`hidden md:flex items-center gap-10 font-medium text-sm tracking-widest uppercase transition-colors duration-500 ${isScrolled ? "text-gray-600" : "text-gray-200"}`}>
+            <a href="#about" className="hover:text-[#B8985B] transition-colors">Firm Overview</a>
+            <a href="#practice" className="hover:text-[#B8985B] transition-colors">Practice Areas</a>
+            <a href="#attorneys" className="hover:text-[#B8985B] transition-colors">Attorneys</a>
+            <a href="#contact" className="hover:text-[#B8985B] transition-colors">Contact</a>
+          </div>
+
+          <div className="hidden md:block">
+            <a href="#contact" className={`px-8 py-3 text-sm font-semibold tracking-widest uppercase transition-all border ${isScrolled ? "bg-[#111827] text-white border-[#111827] hover:bg-[#B8985B] hover:border-[#B8985B]" : "bg-transparent text-white border-white hover:bg-white hover:text-[#111827]"}`}>
+              Free Consultation
+            </a>
+          </div>
+
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden p-2">
+            {isMenuOpen ? <X className={`w-6 h-6 ${isScrolled ? "text-[#111827]" : "text-white"}`} /> : <Menu className={`w-6 h-6 ${isScrolled ? "text-[#111827]" : "text-white"}`} />}
           </button>
         </div>
+
+        {/* Mobile menu */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="md:hidden bg-[#111827] border-t border-gray-800 overflow-hidden">
+              <div className="px-8 py-8 space-y-6 text-white text-sm uppercase tracking-widest font-semibold">
+                <a href="#about" onClick={() => setIsMenuOpen(false)} className="block hover:text-[#B8985B]">Firm Overview</a>
+                <a href="#practice" onClick={() => setIsMenuOpen(false)} className="block hover:text-[#B8985B]">Practice Areas</a>
+                <a href="#attorneys" onClick={() => setIsMenuOpen(false)} className="block hover:text-[#B8985B]">Attorneys</a>
+                <a href="#contact" onClick={() => setIsMenuOpen(false)} className="block text-[#B8985B]">Free Consultation</a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
-      {/* OVERLAY MENU */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: "-100%" }}
-            animate={{ opacity: 1, y: "0%" }}
-            exit={{ opacity: 0, y: "-100%" }}
-            transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 z-[110] bg-[#4A0404] flex flex-col"
-          >
-            <div className="p-8 max-w-[1400px] mx-auto w-full flex justify-between items-center border-b border-white/20">
-              <span className="font-serif text-2xl tracking-widest uppercase text-[#FCFBF9]">
-                {name.split(' ')[0]}
-              </span>
-              <button 
-                onClick={() => setIsMenuOpen(false)}
-                className="flex items-center gap-3 text-sm font-semibold tracking-[0.2em] uppercase text-[#C19B6C] hover:text-[#FCFBF9] transition-colors"
-              >
-                Close <X className="w-5 h-5" />
-              </button>
-            </div>
-            
-            <div className="flex-1 flex items-center max-w-[1400px] mx-auto w-full p-8">
-              <div className="flex flex-col gap-4">
-                {[
-                  { name: 'Firm Overview', id: 'overview' }, 
-                  { name: 'Practice Areas', id: 'practice' }, 
-                  { name: 'Partners', id: 'partners' }, 
-                  { name: 'Contact', id: 'contact' }
-                ].map((item, i) => (
-                  <motion.div 
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3 + (i * 0.1), duration: 0.8 }}
-                    key={item.name}
-                  >
-                    <a href={`#${item.id}`} onClick={() => setIsMenuOpen(false)} className="group flex items-center gap-8 w-max">
-                      <span className="text-[#C19B6C] font-serif text-xl italic">0{i + 1}</span>
-                      <span className="text-5xl md:text-7xl font-serif text-[#FCFBF9]/60 group-hover:text-[#FCFBF9] transition-colors duration-500 uppercase tracking-tighter">
-                        {item.name}
-                      </span>
-                    </a>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* HERO SECTION */}
+      <section className="relative h-screen min-h-[700px] flex items-center bg-[#111827] overflow-hidden">
+        {/* Background Image with Parallax */}
+        <motion.div style={{ y: yParallax }} className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=1600&q=80" 
+            alt="Law Library" 
+            className="w-full h-full object-cover opacity-[0.35] grayscale" 
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#111827] via-[#111827]/80 to-transparent"></div>
+        </motion.div>
 
-      {/* HERO SECTION - Cashmere & Oxblood */}
-      <section className="relative min-h-screen w-full flex items-center pt-32 pb-20 overflow-hidden bg-[#FCFBF9]">
-        <div className="max-w-[1400px] mx-auto w-full px-8 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-          <motion.div style={{ opacity: opacityHero, y: yText }} className="lg:col-span-7 flex flex-col justify-center">
-            <motion.div 
-              initial={{ opacity: 0, width: 0 }}
-              animate={{ opacity: 1, width: "4rem" }}
-              transition={{ duration: 1 }}
-              className="h-[2px] bg-[#4A0404] mb-8"
-            ></motion.div>
+        <div className="max-w-7xl mx-auto px-8 relative z-10 w-full mt-20">
+          <div className="max-w-3xl space-y-8">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex items-center gap-4 text-[#B8985B]">
+              <div className="h-px w-12 bg-[#B8985B]"></div>
+              <span className="uppercase tracking-[0.3em] text-xs font-semibold">Elite Legal Representation</span>
+            </motion.div>
             
             <motion.h1 
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, delay: 0.2 }}
-              className="text-6xl sm:text-7xl lg:text-[6.5rem] font-serif leading-[1] tracking-tight text-[#1A1515] uppercase mb-8"
+              initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-5xl md:text-7xl font-serif text-white leading-[1.1]"
             >
-              Excellence. <br/>
-              <span className="text-[#4A0404] italic lowercase font-light">precision.</span> <br/>
-              Results.
+              Justice. <br />
+              <span className="text-gray-400 font-light italic">Integrity.</span> <br />
+              <span className="text-[#B8985B]">Results.</span>
             </motion.h1>
             
-            <motion.p 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.6 }}
-              className="text-gray-600 text-xl font-light max-w-lg leading-relaxed border-l border-[#C19B6C] pl-6"
-            >
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.4 }} className="text-gray-300 text-lg md:text-xl leading-relaxed font-light max-w-xl">
               {tagline}
             </motion.p>
             
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.8 }}
-              className="mt-12 flex items-center gap-8"
-            >
-              <a href="#contact" className="relative group overflow-hidden border border-[#4A0404] text-[#4A0404] px-10 py-5 font-bold tracking-widest text-sm uppercase transition-colors hover:text-[#FCFBF9]">
-                <span className="relative z-10 flex items-center gap-3">Consultation <ArrowRight className="w-4 h-4" /></span>
-                <div className="absolute inset-0 bg-[#4A0404] transform scale-y-0 origin-bottom group-hover:scale-y-100 transition-transform duration-500 ease-out z-0"></div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }} className="flex flex-wrap gap-6 pt-8">
+              <a href="#contact" className="bg-[#B8985B] text-[#111827] px-10 py-4 font-semibold uppercase tracking-widest text-sm hover:bg-white transition-all duration-300 flex items-center gap-3">
+                Review Your Case <ArrowRight className="w-4 h-4" />
               </a>
-              <div className="flex items-center gap-4 group cursor-pointer">
-                <div className="w-12 h-12 rounded-full border border-[#1A1515]/20 flex items-center justify-center group-hover:border-[#4A0404] transition-colors">
-                  <Play className="w-4 h-4 text-[#1A1515] group-hover:text-[#4A0404] ml-1 transition-colors" />
+              <div className="flex items-center gap-4 text-white">
+                <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center">
+                  <Phone className="w-4 h-4" />
                 </div>
-                <span className="text-xs tracking-[0.2em] font-semibold text-[#1A1515] uppercase group-hover:text-[#4A0404] transition-colors">Firm Overview</span>
+                <div>
+                  <div className="text-xs text-gray-400 uppercase tracking-widest">Available 24/7</div>
+                  <div className="font-serif text-lg">{phone}</div>
+                </div>
               </div>
             </motion.div>
-          </motion.div>
-
-          <motion.div 
-            style={{ y: yBg }} 
-            className="lg:col-span-5 h-[60vh] lg:h-[80vh] relative w-full overflow-hidden"
-          >
-            <div className="absolute inset-0 bg-[#C19B6C]/10 mix-blend-multiply z-10"></div>
-            <img 
-              src={data?.image || "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=1200&q=80"} 
-              alt="Law Firm Architecture" 
-              className="w-full h-full object-cover scale-110"
-            />
-            {/* Decorative corners */}
-            <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#4A0404] z-20 m-6"></div>
-            <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#4A0404] z-20 m-6"></div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* STATS TICKER */}
-      <section className="border-y border-[#1A1515]/10 bg-white py-16 overflow-hidden">
-        <div className="max-w-[1400px] mx-auto px-8 grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-[#1A1515]/10">
+      {/* STATS BAR */}
+      <section className="bg-[#0A0F1A] border-y border-white/10 py-12">
+        <div className="max-w-7xl mx-auto px-8 grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-white/10">
           {[
-            { num: "$5B+", lbl: "Recovered" },
-            { num: "40+", lbl: "Years History" },
-            { num: "98%", lbl: "Success Rate" },
-            { num: "Top 50", lbl: "Global Ranking" }
+            { label: "Combined Experience", value: "50+ Years" },
+            { label: "Cases Won", value: "2,500+" },
+            { label: "Settlements", value: "$500M+" },
+            { label: "Client Satisfaction", value: "99%" }
           ].map((stat, i) => (
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: i * 0.1 }}
-              key={i} 
-              className={`text-center ${i === 0 ? "pl-0" : ""}`}
-            >
-              <div className="text-4xl md:text-5xl font-serif text-[#1A1515] mb-2">{stat.num}</div>
-              <div className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#4A0404]">{stat.lbl}</div>
-            </motion.div>
+            <div key={i} className={`text-center ${i === 0 ? "pl-0" : ""}`}>
+              <div className="text-3xl md:text-4xl font-serif text-[#B8985B] mb-2">{stat.value}</div>
+              <div className="text-xs font-semibold text-gray-400 uppercase tracking-widest">{stat.label}</div>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* PHILOSOPHY REVEAL */}
-      <section id="overview" className="py-32 lg:py-48 px-8 relative bg-[#FCFBF9]">
-        <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-24">
-          <div className="lg:w-1/3">
-            <div className="sticky top-40">
-              <motion.div 
-                initial={{ opacity: 0, width: 0 }}
-                whileInView={{ opacity: 1, width: "3rem" }}
-                viewport={{ once: true }}
-                transition={{ duration: 1 }}
-                className="h-[2px] bg-[#4A0404] mb-8"
-              ></motion.div>
-              <h2 className="text-5xl font-serif text-[#1A1515] uppercase tracking-tighter mb-6">Our Philosophy</h2>
-              <p className="text-gray-600 font-light leading-relaxed mb-8">
-                We believe that the best defense is an overwhelming offense. We leave nothing to chance. Our strategies are meticulous, aggressive, and highly bespoke.
-              </p>
-              <a href="#practices" className="text-[#4A0404] text-sm uppercase tracking-widest font-bold flex items-center gap-2 hover:gap-4 transition-all">
-                View Expertise <ArrowRight className="w-4 h-4" />
-              </a>
-            </div>
-          </div>
-          
-          <div className="lg:w-2/3 space-y-16">
-            <motion.p 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1 }}
-              className="text-3xl md:text-4xl lg:text-[2.75rem] font-serif text-[#1A1515] leading-[1.3] text-justify"
-            >
+      {/* ABOUT SECTION */}
+      <section id="about" className="py-32 px-8 bg-white relative">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={containerVariants} className="space-y-8">
+            <motion.div variants={itemVariants} className="flex items-center gap-4 text-[#B8985B]">
+              <div className="h-px w-8 bg-[#B8985B]"></div>
+              <span className="uppercase tracking-widest text-xs font-bold">Firm Overview</span>
+            </motion.div>
+            <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-serif text-[#111827] leading-[1.2]">
+              A legacy of uncompromising advocacy and legal brilliance.
+            </motion.h2>
+            <motion.p variants={itemVariants} className="text-gray-600 text-lg leading-relaxed font-light">
               {about}
             </motion.p>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 pt-16 border-t border-[#1A1515]/10">
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1, delay: 0.2 }}
-                className="bg-white p-10 border border-[#1A1515]/5 shadow-sm hover:shadow-xl transition-shadow duration-500"
-              >
-                <Shield className="w-10 h-10 text-[#4A0404] mb-6" />
-                <h3 className="text-2xl font-serif text-[#1A1515] mb-4">Uncompromising Defense</h3>
-                <p className="text-gray-600 font-light leading-relaxed text-sm">We construct impenetrable legal strategies designed to protect your assets, reputation, and freedom.</p>
-              </motion.div>
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1, delay: 0.4 }}
-                className="bg-white p-10 border border-[#1A1515]/5 shadow-sm hover:shadow-xl transition-shadow duration-500"
-              >
-                <Landmark className="w-10 h-10 text-[#4A0404] mb-6" />
-                <h3 className="text-2xl font-serif text-[#1A1515] mb-4">Strategic Offense</h3>
-                <p className="text-gray-600 font-light leading-relaxed text-sm">When conflict is unavoidable, we strike with precision and overwhelming legal force to secure favorable outcomes.</p>
-              </motion.div>
-            </div>
-          </div>
+            <motion.div variants={itemVariants} className="space-y-4 pt-4">
+              {[
+                "Award-winning trial attorneys",
+                "Aggressive negotiation strategies",
+                "Personalized attention to every case",
+                "Unwavering ethical standards"
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-4">
+                  <CheckCircle className="w-5 h-5 text-[#B8985B] flex-shrink-0" />
+                  <span className="text-gray-800 font-medium">{item}</span>
+                </div>
+              ))}
+            </motion.div>
+            
+            <motion.div variants={itemVariants} className="pt-8">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Signature_of_John_Hancock.svg" alt="Signature" className="h-16 opacity-40" />
+              <div className="mt-2 text-sm uppercase tracking-widest font-semibold text-gray-900">Managing Partner</div>
+            </motion.div>
+          </motion.div>
+
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={itemVariants} className="relative">
+            <div className="absolute -top-6 -left-6 w-32 h-32 border-t-2 border-l-2 border-[#B8985B]"></div>
+            <div className="absolute -bottom-6 -right-6 w-32 h-32 border-b-2 border-r-2 border-[#B8985B]"></div>
+            <img 
+              src="https://images.unsplash.com/photo-1556761175-5973dc0f32d7?w=800&q=80" 
+              alt="Lawyers in meeting" 
+              className="w-full h-auto grayscale relative z-10 shadow-2xl"
+            />
+          </motion.div>
         </div>
       </section>
 
-      {/* HORIZONTAL SCROLL PRACTICE AREAS */}
-      <section id="practice" ref={horizontalRef} className="h-[300vh] bg-white relative">
-        <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden px-8 border-y border-[#1A1515]/5">
-          <div className="max-w-[1400px] mx-auto w-full mb-16">
-            <h2 className="text-5xl font-serif text-[#1A1515] uppercase tracking-tighter">Areas of Practice</h2>
+      {/* PRACTICE AREAS */}
+      <section id="practice" className="py-32 px-8 bg-[#111827] relative">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-20 space-y-4">
+            <div className="flex items-center justify-center gap-4 text-[#B8985B]">
+              <div className="h-px w-8 bg-[#B8985B]"></div>
+              <span className="uppercase tracking-widest text-xs font-bold">Areas of Focus</span>
+              <div className="h-px w-8 bg-[#B8985B]"></div>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-serif text-white">Our Practice Areas</h2>
           </div>
-          
-          <motion.div style={{ x: xTransform }} className="flex gap-12 px-8 md:px-[calc((100vw-1400px)/2)] w-max">
-            {practiceAreas.map((area, idx) => (
-              <div 
-                key={idx} 
-                onMouseEnter={() => setHoveredPractice(idx)}
-                onMouseLeave={() => setHoveredPractice(null)}
-                className="w-[85vw] md:w-[600px] h-[550px] relative group overflow-hidden border border-[#1A1515]/10 bg-[#FCFBF9] flex flex-col"
+
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          >
+            {practiceAreas.map((area, i) => (
+              <motion.div 
+                key={i} 
+                variants={itemVariants}
+                className="group relative border border-white/10 p-10 bg-white/5 hover:bg-white/10 transition-colors duration-500 overflow-hidden cursor-pointer"
               >
-                <div className="h-1/2 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-[#4A0404]/10 mix-blend-multiply z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                  <img src={area.img} alt={area.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000" />
-                </div>
+                <div className="absolute top-0 left-0 w-full h-1 bg-[#B8985B] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                 
-                <div className="h-1/2 p-10 flex flex-col justify-between bg-white transition-colors duration-700">
-                  <div className="text-[#C19B6C] font-serif text-4xl italic mb-4">0{idx + 1}</div>
-                  <div>
-                    <h3 className="text-3xl font-serif text-[#1A1515] mb-4">{area.title}</h3>
-                    <p className="text-gray-600 font-light max-w-sm">{area.desc}</p>
-                  </div>
-                  <div className="mt-6">
-                    <span className="text-[#4A0404] text-xs font-bold uppercase tracking-widest flex items-center gap-2 group-hover:gap-4 transition-all">
-                      Read More <ArrowRight className="w-3 h-3" />
-                    </span>
-                  </div>
-                </div>
+                <area.icon className="w-12 h-12 text-[#B8985B] mb-6" />
+                <h3 className="text-2xl font-serif text-white mb-4">{area.title}</h3>
+                <p className="text-gray-400 font-light leading-relaxed mb-8">{area.desc}</p>
                 
-                <div className="absolute top-0 left-0 w-full h-1 bg-[#4A0404] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 z-30"></div>
-              </div>
+                <div className="flex items-center gap-2 text-sm text-[#B8985B] uppercase tracking-widest font-semibold group-hover:gap-4 transition-all duration-300">
+                  Learn More <ArrowRight className="w-4 h-4" />
+                </div>
+              </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* LEADERSHIP / PARTNERS */}
-      <section id="partners" className="py-32 lg:py-48 bg-[#FCFBF9]">
-        <div className="max-w-[1400px] mx-auto px-8">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-24 border-b border-[#1A1515]/10 pb-12">
-            <div>
-              <h2 className="text-5xl font-serif text-[#1A1515] uppercase tracking-tighter mb-4">Partners</h2>
-              <p className="text-gray-600 font-light max-w-xl">Our attorneys are recognized globally as leading authorities in their respective fields.</p>
+      {/* CONTACT */}
+      <section id="contact" className="py-32 px-8 bg-white">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={itemVariants} className="space-y-8">
+            <div className="flex items-center gap-4 text-[#B8985B]">
+              <div className="h-px w-8 bg-[#B8985B]"></div>
+              <span className="uppercase tracking-widest text-xs font-bold">Request Evaluation</span>
             </div>
-            <a href="#" className="hidden md:inline-flex border border-[#4A0404] text-[#4A0404] px-8 py-4 font-bold tracking-widest text-xs uppercase hover:bg-[#4A0404] hover:text-white transition-colors">
-              View All Attorneys
-            </a>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {[
-              { name: "Jonathan Sterling", role: "Senior Managing Partner", img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80" },
-              { name: "Eleanor Vance", role: "Head of Litigation", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80" },
-              { name: "Marcus Wright", role: "Corporate Chair", img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80" }
-            ].map((partner, i) => (
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: i * 0.2 }}
-                key={i} 
-                className="group cursor-pointer"
-              >
-                <div className="relative aspect-[3/4] overflow-hidden mb-8 border border-[#1A1515]/5 bg-gray-100">
-                  <div className="absolute inset-0 bg-[#4A0404]/20 mix-blend-overlay z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                  <img src={partner.img} alt={partner.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" />
-                </div>
-                <h3 className="text-2xl font-serif text-[#1A1515] mb-2 group-hover:text-[#4A0404] transition-colors">{partner.name}</h3>
-                <div className="text-xs font-bold tracking-[0.2em] uppercase text-[#C19B6C] mb-4">{partner.role}</div>
-                <div className="h-px w-12 bg-[#1A1515]/20 group-hover:w-full group-hover:bg-[#4A0404] transition-all duration-700"></div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* LUXURY CONTACT FORM */}
-      <section id="contact" className="bg-white py-32 px-8 border-t border-[#1A1515]/10 relative overflow-hidden">
-        {/* Abstract background element */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] border border-[#C19B6C]/20 rounded-full transform translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-[#FCFBF9] rounded-full transform -translate-x-1/2 translate-y-1/2 -z-10"></div>
-        
-        <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 relative z-10">
-          <div>
-            <div className="flex items-center gap-6 mb-8">
-              <div className="h-[2px] w-16 bg-[#4A0404]"></div>
-              <span className="text-[#4A0404] text-xs font-bold tracking-[0.3em] uppercase">Private Counsel</span>
-            </div>
-            <h2 className="text-5xl lg:text-7xl font-serif text-[#1A1515] uppercase tracking-tighter mb-12 leading-[0.9]">
-              Secure Your <br/> Representation.
+            <h2 className="text-4xl md:text-5xl font-serif text-[#111827] leading-[1.2]">
+              Confidential Case <br />Consultation
             </h2>
-            <p className="text-gray-600 font-light text-lg mb-16 max-w-md leading-relaxed">
-              We offer bespoke legal counsel for discerning clients. Reach out to schedule a private, strictly confidential consultation.
+            <p className="text-gray-600 leading-relaxed font-light text-lg">
+              Time is critical in legal matters. Contact our office immediately to schedule a private consultation with our managing partners.
             </p>
-            
-            <div className="space-y-10">
-              <div className="flex items-center gap-6 group cursor-pointer">
-                <div className="w-16 h-16 border border-[#1A1515]/10 flex items-center justify-center text-[#4A0404] group-hover:bg-[#4A0404] group-hover:text-white transition-colors duration-500">
-                  <Phone className="w-6 h-6" />
+
+            <div className="space-y-8 pt-8">
+              <div className="flex items-start gap-6">
+                <div className="w-12 h-12 border border-[#B8985B] flex items-center justify-center text-[#B8985B] flex-shrink-0">
+                  <Phone className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xs uppercase tracking-[0.2em] font-bold text-gray-500 mb-2 group-hover:text-[#4A0404] transition-colors">Priority Line</div>
-                  <div className="text-2xl font-serif text-[#1A1515]">{data?.phone || "+1 (800) 555-0199"}</div>
+                  <div className="text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">Call Our Office</div>
+                  <div className="font-serif text-2xl text-[#111827]">{phone}</div>
                 </div>
               </div>
-              <div className="flex items-center gap-6 group cursor-pointer">
-                <div className="w-16 h-16 border border-[#1A1515]/10 flex items-center justify-center text-[#4A0404] group-hover:bg-[#4A0404] group-hover:text-white transition-colors duration-500">
-                  <MapPin className="w-6 h-6" />
+              <div className="flex items-start gap-6">
+                <div className="w-12 h-12 border border-[#B8985B] flex items-center justify-center text-[#B8985B] flex-shrink-0">
+                  <Mail className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xs uppercase tracking-[0.2em] font-bold text-gray-500 mb-2 group-hover:text-[#4A0404] transition-colors">Global Headquarters</div>
-                  <div className="text-xl font-serif text-[#1A1515] max-w-xs leading-relaxed">{data?.address || "100 Prestige Tower, New York, NY"}</div>
+                  <div className="text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">Direct Email</div>
+                  <div className="font-serif text-xl text-[#111827]">{email}</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-6">
+                <div className="w-12 h-12 border border-[#B8985B] flex items-center justify-center text-[#B8985B] flex-shrink-0">
+                  <MapPin className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">Headquarters</div>
+                  <div className="font-serif text-xl text-[#111827] max-w-xs">{address}</div>
                 </div>
               </div>
             </div>
-          </div>
-          
-          <div className="bg-[#FCFBF9] p-12 lg:p-16 border border-[#1A1515]/10 relative shadow-2xl shadow-black/5">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#4A0404] to-transparent"></div>
-            <h3 className="text-3xl font-serif text-[#1A1515] mb-12">Confidential Inquiry</h3>
-            <form onSubmit={e => e.preventDefault()} className="space-y-10">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <div className="relative z-0 w-full group">
-                  <input type="text" className="block py-4 px-0 w-full text-lg text-[#1A1515] bg-transparent border-0 border-b border-[#1A1515]/20 appearance-none focus:outline-none focus:ring-0 focus:border-[#4A0404] peer" placeholder=" " required />
-                  <label className="absolute text-sm font-semibold text-gray-500 tracking-widest uppercase duration-300 transform -translate-y-6 scale-75 top-4 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-[#4A0404] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Full Name</label>
+          </motion.div>
+
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={itemVariants} className="bg-[#111827] p-12 relative overflow-hidden">
+            <div className="absolute inset-0 bg-[#B8985B] opacity-5"></div>
+            <h3 className="text-2xl font-serif text-white mb-8 relative z-10">Secure Your Rights</h3>
+            <form onSubmit={(e) => e.preventDefault()} className="space-y-6 relative z-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Full Name</label>
+                  <input type="text" className="w-full px-0 py-3 bg-transparent border-b border-gray-600 text-white focus:outline-none focus:border-[#B8985B] transition-colors" />
                 </div>
-                <div className="relative z-0 w-full group">
-                  <input type="text" className="block py-4 px-0 w-full text-lg text-[#1A1515] bg-transparent border-0 border-b border-[#1A1515]/20 appearance-none focus:outline-none focus:ring-0 focus:border-[#4A0404] peer" placeholder=" " required />
-                  <label className="absolute text-sm font-semibold text-gray-500 tracking-widest uppercase duration-300 transform -translate-y-6 scale-75 top-4 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-[#4A0404] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Company</label>
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Phone Number</label>
+                  <input type="text" className="w-full px-0 py-3 bg-transparent border-b border-gray-600 text-white focus:outline-none focus:border-[#B8985B] transition-colors" />
                 </div>
               </div>
-              <div className="relative z-0 w-full group">
-                <input type="email" className="block py-4 px-0 w-full text-lg text-[#1A1515] bg-transparent border-0 border-b border-[#1A1515]/20 appearance-none focus:outline-none focus:ring-0 focus:border-[#4A0404] peer" placeholder=" " required />
-                <label className="absolute text-sm font-semibold text-gray-500 tracking-widest uppercase duration-300 transform -translate-y-6 scale-75 top-4 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-[#4A0404] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Corporate Email</label>
+              <div className="space-y-2">
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Email Address</label>
+                <input type="email" className="w-full px-0 py-3 bg-transparent border-b border-gray-600 text-white focus:outline-none focus:border-[#B8985B] transition-colors" />
               </div>
-              <div className="relative z-0 w-full group pt-4">
-                <textarea rows={4} className="block py-4 px-0 w-full text-lg text-[#1A1515] bg-transparent border-0 border-b border-[#1A1515]/20 appearance-none focus:outline-none focus:ring-0 focus:border-[#4A0404] peer resize-none" placeholder=" " required></textarea>
-                <label className="absolute text-sm font-semibold text-gray-500 tracking-widest uppercase duration-300 transform -translate-y-6 scale-75 top-8 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-[#4A0404] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nature of Legal Matter</label>
+              <div className="space-y-2">
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Case Description</label>
+                <textarea rows={4} className="w-full px-0 py-3 bg-transparent border-b border-gray-600 text-white focus:outline-none focus:border-[#B8985B] transition-colors resize-none"></textarea>
               </div>
-              
-              <button className="w-full bg-[#4A0404] text-white py-6 font-bold tracking-widest uppercase text-sm hover:bg-[#1A1515] transition-colors mt-8 flex items-center justify-center gap-3">
-                Request Board Review <ArrowRight className="w-4 h-4" />
+              <button className="w-full bg-[#B8985B] text-[#111827] py-4 uppercase tracking-widest font-bold text-sm hover:bg-white transition-colors duration-300 mt-4">
+                Submit For Review
               </button>
             </form>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-[#1A1515] py-24 px-8 text-white">
-        <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
+      <footer className="bg-[#0A0F1A] text-gray-400 py-16 px-8 border-t border-white/5">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 border-b border-white/10 pb-12">
           <div className="flex items-center gap-4">
-            <Scale className="w-6 h-6 text-[#C19B6C]" />
-            <span className="font-serif text-3xl tracking-widest uppercase text-white">
-              {name.split(' ')[0]}
+            <Scale className="w-6 h-6 text-[#B8985B]" />
+            <span className="font-serif font-bold text-xl text-white tracking-tight">
+              {name.split(' ')[0]}<span className="font-light text-[#B8985B]">LAW</span>
             </span>
           </div>
-          
-          <div className="flex flex-wrap justify-center gap-12 text-xs font-bold tracking-[0.2em] uppercase text-gray-400">
-            <a href="#overview" className="hover:text-[#C19B6C] transition-colors">Overview</a>
-            <a href="#practice" className="hover:text-[#C19B6C] transition-colors">Expertise</a>
-            <a href="#contact" className="hover:text-[#C19B6C] transition-colors">Contact</a>
-            <a href="#" className="hover:text-[#C19B6C] transition-colors">Privacy</a>
+          <div className="flex gap-8 text-xs uppercase tracking-widest font-semibold">
+            <a href="#about" className="hover:text-[#B8985B] transition-colors">Firm Overview</a>
+            <a href="#practice" className="hover:text-[#B8985B] transition-colors">Practice Areas</a>
+            <a href="#contact" className="hover:text-[#B8985B] transition-colors">Contact</a>
           </div>
         </div>
-        <div className="max-w-[1400px] mx-auto mt-24 pt-12 border-t border-white/10 text-center text-xs font-medium text-gray-500 uppercase tracking-widest flex flex-col md:flex-row justify-between gap-4">
-          <span>&copy; {new Date().getFullYear()} {name}. All Rights Reserved.</span>
-          <span>Attorney Advertising. Prior results do not guarantee a similar outcome.</span>
+        <div className="max-w-7xl mx-auto pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-600 font-medium tracking-wide">
+          <p>&copy; {new Date().getFullYear()} {name}. Attorney Advertising.</p>
+          <div className="flex gap-8 mt-4 md:mt-0">
+            <span className="cursor-pointer hover:text-white transition-colors">Privacy Policy</span>
+            <span className="cursor-pointer hover:text-white transition-colors">Disclaimer</span>
+          </div>
         </div>
       </footer>
     </div>

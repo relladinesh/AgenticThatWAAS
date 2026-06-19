@@ -109,10 +109,10 @@ export function ResultsTable({ data }: { data: GeneratedWebsite[] }) {
                       rel="noreferrer"
                       className="text-blue-600 hover:text-blue-800 flex items-center gap-1 font-medium hover:underline break-all"
                     >
-                      {window.location.origin}{dynamicRoute} <ExternalLink className="w-3 h-3 flex-shrink-0" />
+                      {import.meta.env.VITE_VERCEL_URL || 'https://showcasepro.vercel.app'}{dynamicRoute} <ExternalLink className="w-3 h-3 flex-shrink-0" />
                     </a>
                   ) : (
-                    <span className="text-slate-400 italic break-all">{window.location.origin}{dynamicRoute}</span>
+                    <span className="text-slate-400 italic break-all">{import.meta.env.VITE_VERCEL_URL || 'https://showcasepro.vercel.app'}{dynamicRoute}</span>
                   )}
                 </td>
                 <td className="px-6 py-4">

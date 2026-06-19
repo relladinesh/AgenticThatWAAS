@@ -1,10 +1,10 @@
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TemplateProps } from "@/types";
 import { 
   Menu, X, Search, ShoppingBag, ArrowUpRight, 
-  Battery, Wifi, Cpu, Speaker, MoveRight
+  ChevronRight, Battery, Wifi, Cpu, Speaker, MoveRight
 } from "lucide-react";
 
 export default function ElectronicsMobileT2({ data }: TemplateProps) {
@@ -172,7 +172,9 @@ export default function ElectronicsMobileT2({ data }: TemplateProps) {
             <img
               src="https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?q=80&w=2000&auto=format&fit=crop"
               alt="High-end headphones"
-              className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-1000 ease-out mix-blend-multiply"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-1000 ease-out mix-blend-multiply"
+              priority
             />
             {/* Absolute Badge */}
             <div className="absolute top-8 right-8 bg-[#FAFAFA] border-2 border-[#0A0A0A] p-4 flex flex-col items-center justify-center shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] rotate-3">
@@ -216,7 +218,7 @@ export default function ElectronicsMobileT2({ data }: TemplateProps) {
                   {product.tag}
                 </div>
 
-                <img src={product.img} alt={product.name} className="object-cover w-full h-full mix-blend-multiply group-hover:scale-110 transition-transform duration-700" />
+                <img src={product.img} fill alt={product.name} className="object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" />
                 
                 {/* Hover Add to Cart */}
                 <button suppressHydrationWarning onClick={handleAddToCart} className="absolute bottom-4 left-4 right-4 bg-[#EA580C] text-white text-center py-4 font-black uppercase tracking-widest translate-y-24 group-hover:translate-y-0 transition-transform duration-300 shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] border-2 border-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#EA580C]">
@@ -254,7 +256,7 @@ export default function ElectronicsMobileT2({ data }: TemplateProps) {
           </div>
           
           <div className="relative h-[400px] lg:h-[600px] border-4 border-[#0A0A0A] bg-white shadow-[16px_16px_0px_0px_rgba(10,10,10,1)] rotate-2 hover:rotate-0 transition-transform duration-500">
-            <img src="https://images.unsplash.com/photo-1598331668908-1478631bece3?q=80&w=2000&auto=format&fit=crop" alt="Studio Gear" className="object-cover w-full h-full mix-blend-luminosity hover:mix-blend-normal transition-all duration-700" />
+            <img src="https://images.unsplash.com/photo-1598331668908-1478631bece3?q=80&w=2000&auto=format&fit=crop" fill alt="Studio Gear" className="object-cover mix-blend-luminosity hover:mix-blend-normal transition-all duration-700" />
             <div className="absolute bottom-6 left-6 bg-[#EA580C] text-white px-4 py-2 font-black uppercase tracking-widest text-sm border-2 border-[#0A0A0A]">
               Creator Series
             </div>

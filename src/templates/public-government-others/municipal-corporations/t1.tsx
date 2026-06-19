@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TemplateProps } from "@/types";
 import { 
@@ -135,10 +135,12 @@ export default function MunicipalCorpT1({ data }: TemplateProps) {
           </div>
 
           <div className="lg:col-span-5 relative w-full aspect-[4/5] lg:aspect-[3/4] bg-[#F8FAFC] rounded-[2.5rem] overflow-hidden group shadow-2xl">
-            <img
+            <img 
               src="https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=2000&auto=format&fit=crop" 
               alt="City Architecture" 
-              className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-[3s] ease-out" 
+              fill 
+              className="object-cover group-hover:scale-105 transition-transform duration-[3s] ease-out" 
+              priority
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/80 via-[#0A0A0A]/20 to-transparent"></div>
             
@@ -255,10 +257,11 @@ export default function MunicipalCorpT1({ data }: TemplateProps) {
         <div className="grid lg:grid-cols-2 gap-20 items-center">
           
           <div className="relative h-[600px] rounded-[2.5rem] overflow-hidden">
-            <img
+            <img 
               src="https://images.unsplash.com/photo-1577495508048-b635879837f1?q=80&w=2000&auto=format&fit=crop" 
               alt="Mayor's Office" 
-              className="object-cover w-full h-full"
+              fill 
+              className="object-cover"
             />
             <div className="absolute inset-0 bg-black/20"></div>
             <div className="absolute bottom-8 left-8 right-8 bg-white p-8 rounded-3xl">
@@ -307,7 +310,7 @@ export default function MunicipalCorpT1({ data }: TemplateProps) {
             <div className="flex flex-col gap-6">
               {newsItems.map((news, i) => (
                 <a key={i} href="#" className="group relative h-48 rounded-3xl overflow-hidden flex flex-col justify-end p-6 border border-white/10 hover:border-white/30 transition-colors">
-                  <img src={news.img} alt="News" className="object-cover w-full h-full opacity-40 group-hover:opacity-50 transition-opacity duration-500 mix-blend-luminosity" />
+                  <img src={news.img} fill alt="News" className="object-cover opacity-40 group-hover:opacity-50 transition-opacity duration-500 mix-blend-luminosity" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                   <div className="relative z-10">
                     <span className="inline-block px-3 py-1 bg-white/10 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-widest rounded-full mb-3">

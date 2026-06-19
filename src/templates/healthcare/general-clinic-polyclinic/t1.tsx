@@ -10,11 +10,25 @@ export default function DoctorTemplate1({ data }: TemplateProps) {
   const isCardiology = data.name?.toLowerCase().includes('cardiology') || data.specialization?.toLowerCase().includes('cardio');
 
   // Dynamic Content logic
-  const heroImage = data.image?.includes('.png') ? data.image : "https://pngimg.com/uploads/doctor/doctor_PNG15988.png";
+  const [heroImage, setHeroImage] = useState(data.image?.includes('.png') ? data.image : "https://purepng.com/public/uploads/large/purepng.com-doctorsdoctorsdoctors-and-nursesa-qualified-practitioner-of-medicine-aphysician-14215268569422rwtm.png");
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
   const sliderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Randomize Hero Image
+    if (!data.image?.includes('.png')) {
+      const DOCTOR_PNGS = [
+        "https://pngimg.com/uploads/doctor/doctor_PNG15988.png", // Full body standing doctor
+        "https://pngimg.com/uploads/doctor/doctor_PNG16031.png", // Female full body standing
+        "https://www.pngmart.com/files/21/Medical-Doctor-PNG-HD.png", // Standing male
+        "https://www.pngmart.com/files/21/Medical-Doctor-PNG-Clipart.png", // Standing female
+        "https://pngimg.com/uploads/doctor/doctor_PNG15959.png" // Standing
+      ];
+      setHeroImage(DOCTOR_PNGS[Math.floor(Math.random() * DOCTOR_PNGS.length)]);
+    } else {
+      setHeroImage(data.image);
+    }
+
     // Randomize Gallery (Now exclusively "Doctors Standing / Medical Teams")
     const POOL = [
       "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=800&auto=format&fit=crop", // Doctors standing
@@ -96,42 +110,40 @@ export default function DoctorTemplate1({ data }: TemplateProps) {
       </div>
 
       {/* HEADER WITH ACTIVE NAV AND MOBILE MENU */}
-      <div className="fixed top-0 left-0 w-full z-50 px-4 pt-4">
-        <header className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg border border-white">
-          <div className="flex items-center gap-2">
-            <Pill className="w-6 h-6 text-blue-500 transform -rotate-45" fill="currentColor" />
-            <span className="text-xl font-extrabold tracking-tight text-slate-900 uppercase">{data.name}</span>
-          </div>
-          
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-10 text-sm font-bold text-slate-400">
-            <a href="#home" className="text-slate-900 relative group">
-              Home
-              <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-blue-500 origin-left"></span>
-            </a>
-            <a href="#about" className="hover:text-blue-500 transition-colors">About Us</a>
-            <a href="#service" className="hover:text-blue-500 transition-colors">Service</a>
-            <a href="#contact" className="hover:text-blue-500 transition-colors">Contact Us</a>
-          </nav>
-          
-          <div className="hidden md:flex items-center gap-2 text-xs font-bold text-slate-700 bg-slate-50 px-4 py-2 rounded-full border border-slate-100">
-            <Phone className="w-4 h-4 text-slate-400" />
-            {data.phone || "+1 234 567 890"}
-          </div>
+      <header className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between relative z-50 bg-white/60 backdrop-blur-md rounded-b-3xl shadow-sm border border-white mt-4">
+        <div className="flex items-center gap-2">
+          <Pill className="w-6 h-6 text-blue-500 transform -rotate-45" fill="currentColor" />
+          <span className="text-xl font-extrabold tracking-tight text-slate-900 uppercase">{data.name}</span>
+        </div>
+        
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-10 text-sm font-bold text-slate-400">
+          <a href="#home" className="text-slate-900 relative">
+            Home
+            <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-blue-500"></span>
+          </a>
+          <a href="#about" className="hover:text-blue-500 transition-colors">About Us</a>
+          <a href="#service" className="hover:text-blue-500 transition-colors">Service</a>
+          <a href="#contact" className="hover:text-blue-500 transition-colors">Contact Us</a>
+        </nav>
+        
+        <div className="hidden md:flex items-center gap-2 text-xs font-bold text-slate-700">
+          <Phone className="w-4 h-4 text-slate-400" />
+          {data.phone || "+1 234 567 890"}
+        </div>
 
-          {/* Mobile Menu Button */}
-          <button 
-            className="md:hidden text-slate-900 p-2" 
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </header>
-      </div>
+        {/* Mobile Menu Button */}
+        <button 
+          className="md:hidden text-slate-900 p-2" 
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </header>
 
       {/* Mobile Nav Dropdown */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed top-24 left-4 right-4 bg-white/95 backdrop-blur-xl shadow-2xl rounded-2xl z-40 border border-slate-100 p-6 flex flex-col gap-6 font-bold text-slate-600 text-center text-lg">
+        <div className="md:hidden absolute top-24 left-0 w-full bg-white shadow-xl z-40 border-t border-slate-100 p-6 flex flex-col gap-6 font-bold text-slate-600 text-center text-lg">
           <a href="#home" onClick={() => setIsMobileMenuOpen(false)} className="text-blue-500 pb-4 border-b border-slate-100">Home</a>
           <a href="#about" onClick={() => setIsMobileMenuOpen(false)} className="pb-4 border-b border-slate-100">About Us</a>
           <a href="#service" onClick={() => setIsMobileMenuOpen(false)} className="pb-4 border-b border-slate-100">Service</a>
@@ -140,7 +152,7 @@ export default function DoctorTemplate1({ data }: TemplateProps) {
       )}
 
       {/* HERO SECTION */}
-      <section id="home" className="relative z-10 pt-32 pb-32 max-w-7xl mx-auto px-6">
+      <section id="home" className="relative z-10 pt-12 pb-32 max-w-7xl mx-auto px-6">
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
           

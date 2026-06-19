@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { TemplateProps } from "@/types";
 import { 
@@ -97,7 +97,9 @@ export default function PropertyDealerBrokerT1({ data }: TemplateProps) {
           <img
             src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2000&auto=format&fit=crop"
             alt="Luxury Estate"
-            className="object-cover w-full h-full"
+            fill
+            className="object-cover"
+            priority
           />
           <div className="absolute inset-0 bg-black/40"></div>
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80"></div>
@@ -146,7 +148,8 @@ export default function PropertyDealerBrokerT1({ data }: TemplateProps) {
               <img
                 src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=800&auto=format&fit=crop"
                 alt="Interior Design"
-                className="object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-700"
+                fill
+                className="object-cover grayscale hover:grayscale-0 transition-all duration-700"
               />
             </div>
           </div>
@@ -199,7 +202,8 @@ export default function PropertyDealerBrokerT1({ data }: TemplateProps) {
                   <img
                     src={prop.img}
                     alt={prop.title}
-                    className="object-cover w-full h-full scale-100 group-hover:scale-105 transition-transform duration-700 ease-out"
+                    fill
+                    className="object-cover scale-100 group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                   <div className="absolute top-4 right-4 z-20 bg-white px-4 py-2 text-sm font-semibold text-slate-900">
                     {prop.price}

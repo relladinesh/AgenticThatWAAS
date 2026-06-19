@@ -1,14 +1,16 @@
 
 import { TemplateProps } from "@/types";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Menu, X, ShoppingBag, Trash2, ArrowUpRight } from "lucide-react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { ArrowRight, Menu, X, ShoppingBag, Plus, Trash2, ArrowUpRight } from "lucide-react";
 
 const JewelryTemplate2 = ({ data }: TemplateProps) => {
   const { 
     name = "Aurélia", 
     about = "Born from a passion for the rarest gemstones, each piece is a masterpiece of architectural precision and poetic design. We don't just make jewelry; we craft heirlooms that capture the light of your most precious moments.", 
+    phone = "+1 234 567 890", 
     email = "hello@aurelia.com", 
+    address = "123 Diamond Avenue, NY 10001", 
     item_image 
   } = data;
   const brandName = name ? name.toUpperCase() : "AURELIA";
@@ -20,6 +22,9 @@ const JewelryTemplate2 = ({ data }: TemplateProps) => {
   const [cartItems, setCartItems] = useState<{ name: string, price: number, image: string }[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
+  const { scrollYProgress } = useScroll();
+  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
   // Pure Deterministic Image Logic
   let seed = 0;

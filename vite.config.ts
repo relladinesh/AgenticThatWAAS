@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import fs from 'fs';import { spawn } from 'child_process';
+import fs from 'fs';import { spawn, exec } from 'child_process';
 
 const masterCsvPath = path.resolve(__dirname, 'data/master_csv_of_templates.csv');
 
@@ -90,6 +90,17 @@ export default defineConfig({
                 
                 if (appendContent) {
                   fs.appendFileSync(masterCsvPath, appendContent);
+                  
+                  // Automatically commit and push to GitHub
+                  const gitCmd = `git add "${masterCsvPath}" && git commit -m "Auto-update master CSV with Vercel links" && git push`;
+                  
+                  exec(gitCmd, { cwd: __dirname }, (error: any, stdout: string, stderr: string) => {
+                    if (error) {
+                      console.error(`❌ GitHub Push Failed: ${error.message}`);
+                    } else {
+                      console.log(`✅ Automatically pushed updated CSV to GitHub`);
+                    }
+                  });
                 }
                 
                 res.statusCode = 200;

@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { TemplateProps } from "@/types";
 import { 
@@ -149,7 +149,9 @@ export default function DigitalMarketingT2({ data }: TemplateProps) {
             <img
               src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop"
               alt="Digital Marketing Dashboard"
-              className="object-cover w-full h-full"
+              fill
+              className="object-cover"
+              priority
             />
             {/* Floating UI Elements inside Hero Image */}
             <motion.div 

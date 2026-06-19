@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TemplateProps } from "@/types";
 import { 
@@ -126,7 +126,9 @@ export default function RentalPropertiesT2({ data }: TemplateProps) {
               <img
                 src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2000&auto=format&fit=crop"
                 alt="Luxury Property Exterior"
-                className="object-cover w-full h-full"
+                fill
+                className="object-cover"
+                priority
               />
               <div className="absolute inset-0 border border-[#1C1917]/10 m-4 lg:m-8 mix-blend-overlay pointer-events-none"></div>
             </motion.div>
@@ -180,7 +182,7 @@ export default function RentalPropertiesT2({ data }: TemplateProps) {
                   transition={{ duration: 0.5 }}
                   className="absolute inset-0"
                 >
-                  <img src={galleryImages[activeImage % galleryImages.length]} alt="Interior" className="object-cover w-full h-full" />
+                  <img src={galleryImages[activeImage % galleryImages.length]} alt="Interior" fill className="object-cover" />
                 </motion.div>
               </AnimatePresence>
             </div>

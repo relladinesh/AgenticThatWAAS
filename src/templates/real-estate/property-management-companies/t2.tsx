@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TemplateProps } from "@/types";
 import { 
@@ -171,7 +171,9 @@ export default function PropertyManagementT2({ data }: TemplateProps) {
               <img
                 src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2000&auto=format&fit=crop"
                 alt="Modern Real Estate"
-                className="object-cover w-full h-full"
+                fill
+                className="object-cover"
+                priority
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-[#064E3B]/40 to-transparent mix-blend-multiply"></div>
             </div>
@@ -266,7 +268,8 @@ export default function PropertyManagementT2({ data }: TemplateProps) {
                   <img
                     src={servicesTabs[activeTab].image}
                     alt={servicesTabs[activeTab].title}
-                    className="object-cover w-full h-full"
+                    fill
+                    className="object-cover"
                   />
                 </div>
               </motion.div>
