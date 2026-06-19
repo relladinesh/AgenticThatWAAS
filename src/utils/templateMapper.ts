@@ -4,7 +4,6 @@ export function getTemplateInfo(category: string, businessType?: string) {
   const normCat = (category || '').toLowerCase().trim();
   const normBiz = (businessType || '').toLowerCase().trim();
   
-  let matchPath = '/templates/general/general';
   let matchTemplates = [{ name: 't1', code: 'g-t1', path: '/templates/general/general/t1' }];
 
   const lines = businessTemplatesCsv.split('\n');

@@ -9,7 +9,6 @@ import {
   Globe2, 
   Layout, 
   Mail, 
-  MapPin, 
   Menu, 
   Phone, 
   Shield, 
@@ -27,8 +26,6 @@ const SoftwareDevT2 = ({ data }: TemplateProps) => {
 
   const { scrollYProgress } = useScroll();
   const yParallaxSlow = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
-  const yParallaxFast = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const scaleParallax = useTransform(scrollYProgress, [0, 1], [1, 1.2]);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -60,7 +57,6 @@ const SoftwareDevT2 = ({ data }: TemplateProps) => {
   ];
   const email = data?.email || "hello@nexus-engineering.com";
   const phone = data?.phone || "+1 (800) 123-4567";
-  const address = data?.address || "One Tech Plaza, Innovation District";
 
   // Framer variants
   const staggerContainer = {
@@ -71,11 +67,6 @@ const SoftwareDevT2 = ({ data }: TemplateProps) => {
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } }
-  };
-
-  const fadeRight = {
-    hidden: { opacity: 0, x: -30 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } }
   };
 
   // Tech images for the template
@@ -203,7 +194,7 @@ const SoftwareDevT2 = ({ data }: TemplateProps) => {
 
           {/* Visual Side */}
           <motion.div 
-            style={{ x: mousePosition.x * 2, y: mousePosition.y * 2, y: yParallaxSlow }}
+            style={{ x: mousePosition.x * 2, y: yParallaxSlow }}
             className="lg:col-span-5 relative hidden lg:block"
           >
             <div className="relative w-full aspect-[4/5]">
@@ -363,7 +354,7 @@ const SoftwareDevT2 = ({ data }: TemplateProps) => {
             variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            {services.map((service, i) => (
+            {services.map((service: string, i: number) => (
               <motion.div 
                 key={i} variants={fadeUp}
                 className="bg-white border border-slate-200 p-8 rounded-[2rem] group hover:-translate-y-2 transition-all duration-300 hover:shadow-[0_20px_40px_rgb(0,0,0,0.04)] hover:border-[#3B82F6]/30 relative"

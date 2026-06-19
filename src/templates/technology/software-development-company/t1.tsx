@@ -3,7 +3,6 @@ import { TemplateProps } from "@/types";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Building2, 
-  Briefcase, 
   Phone, 
   Mail, 
   ArrowRight, 
@@ -306,7 +305,7 @@ export default function TechnologySoftwareDevelopmentCompanyT1({ data }: Templat
             viewport={{ once: true, margin: "-50px" }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
           >
-            {services.slice(0, 4).map((service, i) => (
+            {services.slice(0, 4).map((service: string, i: number) => (
               <motion.div 
                 key={i} 
                 variants={itemVariants}
