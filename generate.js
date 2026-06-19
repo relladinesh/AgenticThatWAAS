@@ -255,8 +255,8 @@ for (const [category, businessTypes] of Object.entries(hierarchy)) {
 
     // Check if requested templates are missing and generate boilerplate for them
     let requested = [];
-    if (global.requestedTemplates && global.requestedTemplates[category] && global.requestedTemplates[category][businessType]) {
-      requested = Array.from(global.requestedTemplates[category][businessType]);
+    if (global.requestedTemplates && global.requestedTemplates[category] && global.requestedTemplates[category][bizType]) {
+      requested = Array.from(global.requestedTemplates[category][bizType]);
     }
     if (requested.length === 0) requested.push('t1');
 
