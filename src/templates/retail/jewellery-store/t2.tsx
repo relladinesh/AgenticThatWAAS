@@ -1,8 +1,8 @@
 
 import { TemplateProps } from "@/types";
 import { useState, useEffect } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { ArrowRight, Menu, X, ShoppingBag, Plus, Trash2, ArrowUpRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, Menu, X, ShoppingBag, Trash2, ArrowUpRight } from "lucide-react";
 
 const JewelryTemplate2 = ({ data }: TemplateProps) => {
   const { 
@@ -20,7 +20,6 @@ const JewelryTemplate2 = ({ data }: TemplateProps) => {
   const [cartItems, setCartItems] = useState<{ name: string, price: number, image: string }[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const { scrollYProgress } = useScroll();
 
   // Pure Deterministic Image Logic
   let seed = 0;

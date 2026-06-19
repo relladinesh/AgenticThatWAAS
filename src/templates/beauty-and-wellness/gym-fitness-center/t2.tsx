@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Phone, Mail, Clock, ChevronRight, Menu, X, ArrowRight, CheckCircle2, Star, Dumbbell, Users, Target, Activity, Quote, Instagram, Facebook, Twitter, Map, MessageCircle } from "lucide-react";
 import { TemplateProps } from "@/types";

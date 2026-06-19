@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Phone, Mail, Menu, X, Gem, ShoppingBag } from "lucide-react";
 import { TemplateProps } from "@/types";
@@ -7,7 +7,6 @@ import { TemplateProps } from "@/types";
 export default function JewelryTemplate1({ data }: TemplateProps) {
   const {
     name = "Aurélia",
-    about = "Discover our premier atelier in the heart of the city. With decades of experience, we meticulously select each gemstone for its purity and brilliance.",
     phone = "+1 234 567 890",
     email = "hello@aurelia.com",
     address = "123 Diamond Avenue, NY 10001",
@@ -82,11 +81,7 @@ export default function JewelryTemplate1({ data }: TemplateProps) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const image = item_image || "https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?q=80&w=800&auto=format&fit=crop";
-
-  // Colors
-  const navy = "#0A1526";
-  const roseGold = "#D4A373";
+  // Removed unused colors and variables
 
   return (
     <div className="min-h-screen bg-white text-[#1A1A1A] font-sans selection:bg-[#D4A373] selection:text-white">
@@ -269,14 +264,14 @@ export default function JewelryTemplate1({ data }: TemplateProps) {
           <h2 className="text-3xl md:text-5xl font-serif text-center text-[#1A1A1A] mb-16">The Collections</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {[
-              { name: "Diamond Solitaire Ring", price: 3200, img: getImg("https://images.unsplash.com/photo-1515562141207-7a8d73cbc646?q=80&w=800&auto=format&fit=crop", 5) },
-              { name: "Sapphire Halo Pendant", price: 1850, img: getImg("https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?q=80&w=800&auto=format&fit=crop", 6) },
-              { name: "Rose Gold Earrings", price: 950, img: getImg("https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=800&auto=format&fit=crop", 7) },
-              { name: "Interlocking Bracelets", price: 1400, img: getImg("https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=800&auto=format&fit=crop", 8) }
+              { name: "Diamond Solitaire Ring", price: 3200, image: getImg("https://images.unsplash.com/photo-1515562141207-7a8d73cbc646?q=80&w=800&auto=format&fit=crop", 5) },
+              { name: "Sapphire Halo Pendant", price: 1850, image: getImg("https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?q=80&w=800&auto=format&fit=crop", 6) },
+              { name: "Rose Gold Earrings", price: 950, image: getImg("https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=800&auto=format&fit=crop", 7) },
+              { name: "Interlocking Bracelets", price: 1400, image: getImg("https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=800&auto=format&fit=crop", 8) }
             ].map((item, i) => (
               <div key={i} className="flex flex-col group bg-[#FDFBF7] rounded-[2rem] p-4 lg:p-5 border border-[#D4A373]/20 hover:border-[#D4A373]/50 transition-colors shadow-sm hover:shadow-xl duration-500">
                 <div className="relative w-full aspect-square md:aspect-[4/5] rounded-[1.5rem] overflow-hidden mb-5 bg-white">
-                  <img src={item.img} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-95" />
+                  <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-95" />
 
                   {/* Desktop Add to Cart Hover */}
                   <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6 hidden lg:flex pointer-events-none">

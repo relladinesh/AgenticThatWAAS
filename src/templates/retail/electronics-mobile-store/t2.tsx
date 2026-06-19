@@ -1,10 +1,10 @@
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TemplateProps } from "@/types";
 import { 
   Menu, X, Search, ShoppingBag, ArrowUpRight, 
-  ChevronRight, Battery, Wifi, Cpu, Speaker, MoveRight
+  Battery, Wifi, Cpu, Speaker, MoveRight
 } from "lucide-react";
 
 export default function ElectronicsMobileT2({ data }: TemplateProps) {

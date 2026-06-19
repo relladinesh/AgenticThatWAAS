@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Phone, Mail, Menu, X, Gem, ShoppingBag } from "lucide-react";
 import { TemplateProps } from "@/types";

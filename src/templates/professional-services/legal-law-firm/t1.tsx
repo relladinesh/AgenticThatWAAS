@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { TemplateProps } from "@/types";
 import { motion, useScroll, useTransform, AnimatePresence, useSpring } from "framer-motion";
 import { 
