@@ -6,7 +6,7 @@
   "scripts": {
     "predev": "node generate.js",
     "dev": "vite",
-    "build": "node generate.js && node auto-screenshot.js && vite build",
+    "build": "node generate.js && node push-registry.js && node auto-screenshot.js && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
