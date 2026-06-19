@@ -19,7 +19,10 @@ async function captureScreenshots() {
   const lines = csvData.split('\n');
   
   console.log('⏳ Launching Headless Chrome Browser...');
-  const browser = await puppeteer.launch({ headless: 'new' });
+  const browser = await puppeteer.launch({ 
+    headless: 'new',
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
+  });
   const page = await browser.newPage();
   
   // Set viewport to exactly 1920x1080 (Full HD desktop)
@@ -78,8 +81,8 @@ async function captureScreenshots() {
     
     try {
       await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
-      // Wait an extra second for heavy framer-motion animations to settle before snapping
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Wait an extra 3 seconds for heavy framer-motion animations to settle before snapping
+      await new Promise(resolve => setTimeout(resolve, 3000));
       
       // Capture the top part of the screen exactly as the hero section
       await page.screenshot({ path: savePath, clip: { x: 0, y: 0, width: 1920, height: 1080 } });

@@ -5,10 +5,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-if (process.env.VERCEL || process.env.CI) {
-  console.log("⏭️ Skipping automated screenshots during CI/CD deployment.");
-  process.exit(0);
-}
+// Allowed to run on Vercel now.
 
 console.log("🚀 Starting background Vite server for automated screenshots...");
 
