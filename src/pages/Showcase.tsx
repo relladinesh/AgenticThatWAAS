@@ -102,17 +102,13 @@ export default function Showcase() {
   const handleSyncTemplates = async () => {
     setIsSyncing(true);
     try {
-      // Trigger our local Vite endpoint which automatically pushes to GitHub
-      const response = await fetch('/api/sync-business-templates', { method: 'POST' });
-      if (!response.ok) throw new Error('Failed to push to GitHub');
+      // Vercel deployments take time. We just show a nice loader and then refresh the page.
+      // Wait for 30 seconds to give Vercel time to deploy
+      await new Promise(resolve => setTimeout(resolve, 30000));
       
-      // Wait for 45 seconds to give Vercel time to detect the commit, build the site, and deploy
-      await new Promise(resolve => setTimeout(resolve, 45000));
-      
-      // Reload to show the new templates after deployment
+      // Force reload to get the new Vercel deployment
       window.location.reload();
     } catch (error: any) {
-      alert('Error triggering deployment: ' + error.message);
       setIsSyncing(false);
     }
   };
@@ -161,9 +157,9 @@ export default function Showcase() {
               <div className="absolute inset-0 border-4 border-indigo-100 rounded-full"></div>
               <div className="absolute inset-0 border-4 border-indigo-600 rounded-full border-t-transparent animate-spin"></div>
             </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-2">Syncing Deployment</h3>
+            <h3 className="text-xl font-bold text-slate-900 mb-2">Fetching Updates...</h3>
             <p className="text-sm text-slate-500 mb-6">
-              Please wait while the system updates the registry and rebuilds the showcase. The page will refresh automatically.
+              Please wait while Vercel finishes deploying the latest changes. The page will refresh automatically when ready.
             </p>
             <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden relative">
               <div className="absolute inset-0 bg-indigo-600 rounded-full animate-[progress_2s_ease-in-out_infinite]"></div>
@@ -200,7 +196,7 @@ export default function Showcase() {
               className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
             >
               <CheckCircle2 className="w-4 h-4" />
-              {isSyncing ? 'Syncing...' : 'Sync'}
+              {isSyncing ? 'Refreshing...' : 'Refresh Updates'}
             </button>
             <button
               onClick={handleDownloadMaster}
