@@ -8,6 +8,44 @@ const masterCsvPath = path.resolve(__dirname, 'data/master_csv_of_templates.csv'
 export default defineConfig({
   plugins: [
     react(),
+    {
+      name: 'auto-push-templates-plugin',
+      handleHotUpdate({ file, server }) {
+        const normalizedFile = file.replace(/\\/g, '/');
+        // Watch leads.csv or any other CSV except master
+        if (normalizedFile.endsWith('.csv') && !normalizedFile.includes('master_csv_of_templates')) {
+          const now = Date.now();
+          const lastRun = (globalThis as any).lastGenerateRun || 0;
+          
+          // Debounce by 10 seconds
+          if (now - lastRun > 10000) {
+             (globalThis as any).lastGenerateRun = now;
+             console.log(`\n🔄 CSV change detected: ${path.basename(file)}. Auto-generating and pushing...`);
+             
+             const isWindows = /^win/.test(process.platform);
+             const nodeCmd = isWindows ? 'node.exe' : 'node';
+             const cp = spawn(nodeCmd, ['generate.js'], { 
+                stdio: 'inherit',
+                cwd: process.cwd() 
+             });
+             
+             cp.on('close', () => {
+               server.ws.send({ type: 'full-reload' });
+               
+               // Automatically commit and push business_templates.csv to GitHub
+               const gitCmd = `git add "data csv/business_templates.csv" "src/registry.json" "src/templates/" && git commit -m "Auto-sync templates after CSV change" && git push`;
+               exec(gitCmd, { cwd: process.cwd() }, (error: any) => {
+                 if (error) {
+                   console.error(`❌ GitHub Push Failed: ${error.message}`);
+                 } else {
+                   console.log(`✅ Automatically pushed business_templates.csv to GitHub`);
+                 }
+               });
+             });
+          }
+        }
+      }
+    },
 
     {
       name: 'master-csv-writer',
