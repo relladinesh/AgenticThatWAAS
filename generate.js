@@ -146,14 +146,10 @@ if (fs.existsSync(sourceTemplatesDir)) {
       const displayCat = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
       
       const mappedKebab = getTargetCategoryKebab(cat);
-      // Smart deduplication: Does this category already exist in the CSV with special characters?
       let targetCat = Object.keys(hierarchy).find(k => toKebabCase(k) === mappedKebab);
-      
       if (!targetCat) {
-        // If not found even with mapping, try direct mapping
         targetCat = Object.keys(hierarchy).find(k => toKebabCase(k) === cat);
       }
-      
       if (!targetCat) {
         hierarchy[displayCat] = new Set();
         targetCat = displayCat;
@@ -165,12 +161,50 @@ if (fs.existsSync(sourceTemplatesDir)) {
         if (fs.statSync(bizPath).isDirectory()) {
           const displayBiz = biz.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
           
-          // Only process this folder if it matches a known business type from leads.csv!
-          // We DO NOT add unknown folders to the hierarchy, because they might be specific client names.
+          // Only add if it exists in leads.csv OR if the user is running this locally to import
           const existingBiz = Array.from(hierarchy[targetCat]).find(b => toKebabCase(b) === biz);
           if (!existingBiz) {
-             console.log(`Skipping custom folder in source: ${biz} (Not a recognized business type in leads.csv)`);
+             console.log(`Skipping custom folder in source: ${biz} (Not in leads.csv)`);
           }
+        }
+      }
+    }
+  }
+}
+
+// CRITICAL: ALWAYS SCAN src/templates TO REBUILD HIERARCHY!
+// This allows Vercel to rebuild business_templates.csv purely from the pushed React folders
+if (fs.existsSync(templatesDir)) {
+  const catFolders = fs.readdirSync(templatesDir);
+  for (const cat of catFolders) {
+    const catPath = path.join(templatesDir, cat);
+    if (fs.statSync(catPath).isDirectory()) {
+      const displayCat = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      
+      if (!hierarchy[displayCat]) {
+        hierarchy[displayCat] = new Set();
+      }
+      
+      const bizFolders = fs.readdirSync(catPath);
+      for (const biz of bizFolders) {
+        const bizPath = path.join(catPath, biz);
+        if (fs.statSync(bizPath).isDirectory()) {
+          // Read meta.json to get the exact proper display names if it exists
+          const metaPath = path.join(bizPath, 'meta.json');
+          let displayBiz = biz.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+          if (fs.existsSync(metaPath)) {
+            try {
+              const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+              if (meta.name) displayBiz = meta.name;
+              if (meta.category && !hierarchy[meta.category]) {
+                hierarchy[meta.category] = new Set();
+                hierarchy[displayCat] = hierarchy[meta.category]; // merge reference
+                delete hierarchy[displayCat];
+                displayCat = meta.category;
+              }
+            } catch(e) {}
+          }
+          hierarchy[displayCat].add(displayBiz);
         }
       }
     }
