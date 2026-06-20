@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import usersData from '../data/users.json';
 
 export interface User {
@@ -20,7 +20,17 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(() => {
+    const savedUser = localStorage.getItem('auth_user');
+    if (savedUser) {
+      try {
+        return JSON.parse(savedUser);
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  });
 
   const login = (username: string, password: string): boolean => {
     // Find user in predefined json
@@ -32,6 +42,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // Exclude password from the stored user object
       const { password: _, ...userWithoutPassword } = foundUser;
       setUser(userWithoutPassword as User);
+      localStorage.setItem('auth_user', JSON.stringify(userWithoutPassword));
       return true;
     }
     return false;
@@ -39,6 +50,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem('auth_user');
   };
 
   return (

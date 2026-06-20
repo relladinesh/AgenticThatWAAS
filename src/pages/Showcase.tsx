@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Search, ChevronDown, ChevronRight, ChevronLeft, ExternalLink, Eye, LayoutTemplate, ArrowLeft, Menu, X, HeartPulse, Car, ShoppingBag, Monitor, Home, Scissors, BookOpen, Utensils, Briefcase, Building2 } from 'lucide-react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import rawCsv from '../../data csv/business_templates.csv?raw';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -61,6 +62,7 @@ const registry = parseCSV(rawCsv);
 export default function Showcase() {
   const { category: urlCategory, business: urlBusiness } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [search, setSearch] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -88,6 +90,18 @@ export default function Showcase() {
         }
       }
     }
+  } else if (user?.role === 'client' && user.category && user.businessType) {
+    const searchPath = `${user.category}/${user.businessType}`;
+    for (const [cat, bizObj] of Object.entries(registry)) {
+      for (const [biz, data] of Object.entries(bizObj as any)) {
+        if ((data as any).path === searchPath) {
+          currentTemplates = data;
+          activeCatName = cat;
+          activeBizName = biz;
+          break;
+        }
+      }
+    }
   }
 
   const toggleCat = (cat: string) => {
@@ -101,10 +115,33 @@ export default function Showcase() {
   };
 
   const filteredRegistry = useMemo(() => {
-    if (!search.trim()) return registry;
+    let currentReg = registry as any;
+    
+    // Client specific filtering
+    if (user?.role === 'client' && user.category && user.businessType) {
+      let found = false;
+      const searchPath = `${user.category}/${user.businessType}`;
+      for (const [cat, bizObj] of Object.entries(registry)) {
+        for (const [biz, data] of Object.entries(bizObj as any)) {
+          if ((data as any).path === searchPath) {
+            currentReg = {
+              [cat]: {
+                [biz]: data
+              }
+            };
+            found = true;
+            break;
+          }
+        }
+        if (found) break;
+      }
+      if (!found) currentReg = {};
+    }
+
+    if (!search.trim()) return currentReg;
     const lowerSearch = search.toLowerCase();
     const result: any = {};
-    for (const [cat, bizObj] of Object.entries(registry)) {
+    for (const [cat, bizObj] of Object.entries(currentReg)) {
       if (cat.toLowerCase().includes(lowerSearch)) {
         result[cat] = bizObj;
       } else {
@@ -120,7 +157,7 @@ export default function Showcase() {
       }
     }
     return result;
-  }, [search]);
+  }, [search, user]);
 
   const getCategoryIcon = (catName: string) => {
     const c = catName.toLowerCase();
@@ -161,7 +198,7 @@ export default function Showcase() {
       </AnimatePresence>
 
       {/* Sidebar */}
-      <aside className={`fixed lg:static inset-y-0 left-0 w-80 bg-white border-r border-slate-200 flex flex-col shadow-xl lg:shadow-none z-50 transform transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+      <aside className={`fixed lg:static inset-y-0 left-0 w-80 bg-white border-r border-slate-200 flex flex-col shadow-xl lg:shadow-none z-50 transform transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} ${user?.role === 'client' ? 'hidden lg:flex' : ''}`}>
         <div className="p-6 border-b border-slate-100 flex items-center justify-between lg:block">
           <div className="flex items-center gap-3 mb-0 lg:mb-6">
             <Link to="/b2b" className="p-2 -ml-2 hover:bg-slate-50 rounded-lg text-slate-500 hover:text-slate-900 transition-colors" title="Back to Home">
@@ -251,9 +288,11 @@ export default function Showcase() {
             <LayoutTemplate className="w-6 h-6 text-[#2563EB]" />
             <span className="font-bold text-[#0F172A]">Showcase</span>
           </div>
-          <button onClick={() => setIsSidebarOpen(true)} className="p-2 bg-slate-50 rounded-lg border border-slate-200">
-            <Menu className="w-5 h-5 text-slate-600" />
-          </button>
+          {user?.role !== 'client' && (
+            <button onClick={() => setIsSidebarOpen(true)} className="p-2 bg-slate-50 rounded-lg border border-slate-200">
+              <Menu className="w-5 h-5 text-slate-600" />
+            </button>
+          )}
         </div>
 
         <div className="p-6 md:p-10 max-w-7xl mx-auto w-full">

@@ -1,35 +1,184 @@
 [
   {
-    "id": "1",
-    "username": "droneadmin",
-    "password": "password123",
-    "role": "client",
-    "category": "retail",
-    "businessType": "drone-store",
-    "template": "t1"
-  },
-  {
-    "id": "2",
-    "username": "lawfirm",
-    "password": "password123",
-    "role": "client",
-    "category": "professional-services",
-    "businessType": "legal-law-firm",
-    "template": "t3"
-  },
-  {
-    "id": "3",
-    "username": "mechanic",
-    "password": "password123",
-    "role": "client",
-    "category": "automotive",
-    "businessType": "car-bike-service-center",
-    "template": "t3"
-  },
-  {
-    "id": "4",
+    "id": "admin-1",
     "username": "admin",
     "password": "adminpassword",
     "role": "admin"
+  },
+  {
+    "id": "1",
+    "username": "amit",
+    "password": "password123",
+    "role": "client",
+    "category": "professional-services",
+    "businessType": "legal-law-firm"
+  },
+  {
+    "id": "2",
+    "username": "priya",
+    "password": "password123",
+    "role": "client",
+    "category": "healthcare",
+    "businessType": "general-clinic-polyclinic"
+  },
+  {
+    "id": "3",
+    "username": "rahul",
+    "password": "password123",
+    "role": "client",
+    "category": "healthcare",
+    "businessType": "pharmacy-medical-store"
+  },
+  {
+    "id": "4",
+    "username": "sneha",
+    "password": "password123",
+    "role": "client",
+    "category": "healthcare",
+    "businessType": "diagnostic-lab-pathology"
+  },
+  {
+    "id": "5",
+    "username": "vikram",
+    "password": "password123",
+    "role": "client",
+    "category": "healthcare",
+    "businessType": "dental-clinic"
+  },
+  {
+    "id": "6",
+    "username": "anjali",
+    "password": "password123",
+    "role": "client",
+    "category": "automotive",
+    "businessType": "two-wheeler-dealership"
+  },
+  {
+    "id": "7",
+    "username": "rohit",
+    "password": "password123",
+    "role": "client",
+    "category": "automotive",
+    "businessType": "car-bike-service-center"
+  },
+  {
+    "id": "8",
+    "username": "pooja",
+    "password": "password123",
+    "role": "client",
+    "category": "automotive",
+    "businessType": "car-dealership-new"
+  },
+  {
+    "id": "9",
+    "username": "karan",
+    "password": "password123",
+    "role": "client",
+    "category": "construction",
+    "businessType": "solar-panel-installer"
+  },
+  {
+    "id": "10",
+    "username": "neha",
+    "password": "password123",
+    "role": "client",
+    "category": "food-and-beverage",
+    "businessType": "restaurant-dine-in"
+  },
+  {
+    "id": "11",
+    "username": "arjun",
+    "password": "password123",
+    "role": "client",
+    "category": "retail",
+    "businessType": "jewellery-store"
+  },
+  {
+    "id": "12",
+    "username": "divya",
+    "password": "password123",
+    "role": "client",
+    "category": "retail",
+    "businessType": "electronics-mobile-store"
+  },
+  {
+    "id": "13",
+    "username": "suresh",
+    "password": "password123",
+    "role": "client",
+    "category": "retail",
+    "businessType": "drone-store"
+  },
+  {
+    "id": "14",
+    "username": "kavita",
+    "password": "password123",
+    "role": "client",
+    "category": "finance",
+    "businessType": "insurance-agency-broker"
+  },
+  {
+    "id": "15",
+    "username": "manish",
+    "password": "password123",
+    "role": "client",
+    "category": "finance",
+    "businessType": "chartered-accountant-firm"
+  },
+  {
+    "id": "16",
+    "username": "swati",
+    "password": "password123",
+    "role": "client",
+    "category": "education",
+    "businessType": "coaching-center-tuition"
+  },
+  {
+    "id": "17",
+    "username": "rajesh",
+    "password": "password123",
+    "role": "client",
+    "category": "beauty-and-wellness",
+    "businessType": "beauty-salon-parlour"
+  },
+  {
+    "id": "18",
+    "username": "meera",
+    "password": "password123",
+    "role": "client",
+    "category": "beauty-and-wellness",
+    "businessType": "gym-fitness-center"
+  },
+  {
+    "id": "19",
+    "username": "sanjay",
+    "password": "password123",
+    "role": "client",
+    "category": "it-and-technology",
+    "businessType": "software-development-company"
+  },
+  {
+    "id": "20",
+    "username": "risha",
+    "password": "password123",
+    "role": "client",
+    "category": "it-and-technology",
+    "businessType": "digital-marketing-agency"
+  },
+  {
+    "id": "21",
+    "username": "anil",
+    "password": "password123",
+    "role": "client",
+    "category": "real-estate",
+    "businessType": "property-dealer-broker"
+  },
+  {
+    "id": "22",
+    "username": "deepak",
+    "password": "password123",
+    "role": "client",
+    "category": "home-services",
+    "businessType": "plumber"
   }
 ]

@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Layout from './components/Layout';
 import Landing from './pages/Landing';
 import Showcase from './pages/Showcase';
 import TemplateViewer from './pages/TemplateViewer';
@@ -20,15 +21,17 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          
-          {/* Protected Routes */}
-          <Route path="/showcase" element={<ProtectedRoute><Showcase /></ProtectedRoute>} />
-          <Route path="/showcase/:category/:business" element={<ProtectedRoute><Showcase /></ProtectedRoute>} />
-          <Route path="/b2b" element={<ProtectedRoute requireAdmin><B2BHub /></ProtectedRoute>} />
-          <Route path="/b2b/templates" element={<ProtectedRoute requireAdmin><Showcase /></ProtectedRoute>} />
-          <Route path="/b2b/webgene" element={<ProtectedRoute requireAdmin><WebGenerator /></ProtectedRoute>} />
+          <Route element={<Layout />}>
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<Login />} />
+            
+            {/* Protected Routes */}
+            <Route path="/showcase" element={<ProtectedRoute><Showcase /></ProtectedRoute>} />
+            <Route path="/showcase/:category/:business" element={<ProtectedRoute><Showcase /></ProtectedRoute>} />
+            <Route path="/b2b" element={<ProtectedRoute><B2BHub /></ProtectedRoute>} />
+            <Route path="/b2b/templates" element={<ProtectedRoute><Showcase /></ProtectedRoute>} />
+            <Route path="/b2b/webgene" element={<ProtectedRoute><WebGenerator /></ProtectedRoute>} />
+          </Route>
           
           {/* Client Routes */}
           <Route path="/templates/:category/:business/:template" element={<ProtectedRoute><TemplateViewer /></ProtectedRoute>} />

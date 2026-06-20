@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { ArrowLeft } from 'lucide-react';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -16,35 +17,19 @@ const Login: React.FC = () => {
     const success = login(username, password);
 
     if (success) {
-      // Find the user again because context update might not be synchronous for the next lines
-      // Alternatively we can use the 'user' state from context but it updates on next render
-      // Let's redirect based on the login logic
-      import('../data/users.json').then((module) => {
-        const usersData = module.default;
-        const loggedInUser = usersData.find(u => u.username === username);
-        
-        if (loggedInUser?.role === 'admin') {
-          navigate('/showcase');
-        } else if (loggedInUser?.role === 'client') {
-          // Template loading based on category and businessType
-          const category = loggedInUser.category;
-          const businessType = loggedInUser.businessType;
-          const template = loggedInUser.template || 't1';
-          
-          if (category && businessType) {
-            navigate(`/templates/${category}/${businessType}/${template}`);
-          } else {
-            navigate('/showcase');
-          }
-        }
-      });
+      navigate('/');
     } else {
       setError('Invalid username or password');
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
+      <Link to="/" className="absolute top-6 left-6 md:top-8 md:left-8 flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors bg-white px-4 py-2 rounded-full border border-slate-200 shadow-sm hover:shadow-md">
+        <ArrowLeft className="w-4 h-4" />
+        Back to Home
+      </Link>
+
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
           Sign in to your account
@@ -106,21 +91,7 @@ const Login: React.FC = () => {
               </button>
             </div>
             
-            <div className="mt-6">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">Demo Accounts</span>
-                </div>
-              </div>
-              <div className="mt-6 text-sm text-gray-600">
-                <p><strong>Admin:</strong> admin / adminpassword</p>
-                <p><strong>Client 1:</strong> droneadmin / password123</p>
-                <p><strong>Client 2:</strong> lawfirm / password123</p>
-              </div>
-            </div>
+
           </form>
         </div>
       </div>
