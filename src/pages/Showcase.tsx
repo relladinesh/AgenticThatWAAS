@@ -1,7 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, ChevronDown, ChevronRight, ExternalLink, Eye, LayoutTemplate, CheckCircle2, ArrowLeft, Download } from 'lucide-react';
+import { Search, ChevronDown, ChevronRight, ExternalLink, Eye, LayoutTemplate, ArrowLeft, Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import rawCsv from '../../data csv/business_templates.csv?raw';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const toKebabCase = (str: string) => {
   if (!str) return '';
@@ -59,8 +60,7 @@ const registry = parseCSV(rawCsv);
 
 export default function Showcase() {
   const [search, setSearch] = useState('');
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [isSyncing, setIsSyncing] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [expandedCats, setExpandedCats] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
     Object.keys(registry).forEach(cat => {
@@ -74,77 +74,6 @@ export default function Showcase() {
     Object.keys(registry)[0] ? Object.keys((registry as any)[Object.keys(registry)[0]])[0] : null
   );
 
-  useEffect(() => {
-    let initialVersion: number | null = null;
-    
-    // Fetch initial version on mount
-    fetch('/version.json?t=' + Date.now())
-      .then(res => res.ok ? res.json() : null)
-      .then(data => {
-        if (data && data.version) initialVersion = data.version;
-      })
-      .catch(() => {});
-
-    // Poll every 10 seconds
-    const interval = setInterval(() => {
-      fetch('/version.json?t=' + Date.now())
-        .then(res => res.ok ? res.json() : null)
-        .then(data => {
-          if (data && data.version && initialVersion && data.version !== initialVersion) {
-            // New version detected from Vercel!
-            setIsSyncing(true);
-            setTimeout(() => {
-              window.location.reload();
-            }, 5000); // Show message for 5 seconds then reload
-          } else if (!initialVersion && data && data.version) {
-            initialVersion = data.version;
-          }
-        })
-        .catch(() => {});
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleDownloadMaster = async () => {
-    setIsDownloading(true);
-    try {
-      const response = await fetch('/api/download-master');
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || 'Failed to download master CSV');
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'master_csv_of_templates.csv';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-    } catch (error: any) {
-      alert('Error downloading CSV: ' + error.message);
-    } finally {
-      setIsDownloading(false);
-    }
-  };
-
-  const handleSyncTemplates = async () => {
-    setIsSyncing(true);
-    try {
-      // Vercel deployments take time. We just show a nice loader and then refresh the page.
-      // Wait for 30 seconds to give Vercel time to deploy
-      await new Promise(resolve => setTimeout(resolve, 30000));
-      
-      // Force reload to get the new Vercel deployment
-      window.location.reload();
-    } catch (error: any) {
-      setIsSyncing(false);
-    }
-  };
-
   const toggleCat = (cat: string) => {
     setExpandedCats(prev => ({ ...prev, [cat]: !prev[cat] }));
   };
@@ -152,6 +81,7 @@ export default function Showcase() {
   const selectBiz = (cat: string, biz: string) => {
     setSelectedCat(cat);
     setSelectedBiz(biz);
+    setIsSidebarOpen(false); // Close mobile sidebar on select
   };
 
   const filteredRegistry = useMemo(() => {
@@ -181,36 +111,38 @@ export default function Showcase() {
     : null;
 
   return (
-    <>
-      {isSyncing && (
-        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-slate-900/40 backdrop-blur-md transition-all">
-          <div className="bg-white p-8 rounded-2xl shadow-2xl flex flex-col items-center text-center max-w-sm border border-slate-100 animate-in fade-in zoom-in duration-300">
-            <div className="w-14 h-14 mb-6 text-indigo-600 relative">
-              <div className="absolute inset-0 border-4 border-indigo-100 rounded-full"></div>
-              <div className="absolute inset-0 border-4 border-indigo-600 rounded-full border-t-transparent animate-spin"></div>
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-2">New Update Detected!</h3>
-            <p className="text-sm text-slate-500 mb-6">
-              Vercel just finished deploying new templates. The page is automatically refreshing to show the latest changes...
-            </p>
-            <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden relative">
-              <div className="absolute inset-0 bg-indigo-600 rounded-full animate-[progress_2s_ease-in-out_infinite]"></div>
-            </div>
-          </div>
-        </div>
-      )}
-      <div className="flex h-screen bg-surface overflow-hidden font-sans">
-      <aside className="w-80 bg-white border-r border-border flex flex-col shadow-sm z-10 shrink-0">
-        <div className="p-6 border-b border-border">
-          <div className="flex items-center gap-3 mb-4">
-            <Link to="/" className="p-2 -ml-2 hover:bg-slate-100 rounded-lg text-slate-500 hover:text-slate-900 transition-colors" title="Back to Home">
+    <div className="flex h-screen bg-[#F8FAFC] overflow-hidden font-sans text-[#0F172A]">
+      {/* Mobile Sidebar Overlay */}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/50 z-40 lg:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Sidebar */}
+      <aside className={`fixed lg:static inset-y-0 left-0 w-80 bg-white border-r border-slate-200 flex flex-col shadow-xl lg:shadow-none z-50 transform transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+        <div className="p-6 border-b border-slate-100 flex items-center justify-between lg:block">
+          <div className="flex items-center gap-3 mb-0 lg:mb-6">
+            <Link to="/" className="p-2 -ml-2 hover:bg-slate-50 rounded-lg text-slate-500 hover:text-slate-900 transition-colors" title="Back to Home">
               <ArrowLeft className="w-5 h-5" />
             </Link>
-            <h1 className="text-xl font-semibold tracking-tight text-primary flex items-center gap-2">
-              <LayoutTemplate className="w-5 h-5 text-indigo-600" />
-              Showcase Pro
+            <h1 className="text-xl font-bold tracking-tight text-[#0F172A] flex items-center gap-2">
+              <LayoutTemplate className="w-6 h-6 text-[#2563EB]" />
+              Showcase
             </h1>
           </div>
+          <button className="p-2 -mr-2 text-slate-500 lg:hidden" onClick={() => setIsSidebarOpen(false)}>
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+        
+        <div className="p-4 border-b border-slate-100">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
@@ -218,19 +150,8 @@ export default function Showcase() {
               placeholder="Search businesses..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+              className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-all"
             />
-          </div>
-          <div className="mt-4 flex gap-2">
-
-            <button
-              onClick={handleDownloadMaster}
-              disabled={isDownloading}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-slate-900 hover:bg-indigo-600 text-white text-sm font-medium rounded-lg transition-all shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
-            >
-              <Download className="w-4 h-4" />
-              {isDownloading ? 'Downloading...' : 'Download'}
-            </button>
           </div>
         </div>
 
@@ -239,7 +160,7 @@ export default function Showcase() {
             <div key={cat} className="mb-2">
               <button
                 onClick={() => toggleCat(cat)}
-                className="w-full flex items-center justify-between py-2 px-3 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg transition-colors group"
+                className="w-full flex items-center justify-between py-2.5 px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 rounded-lg transition-colors group"
               >
                 <span className="capitalize">{cat.replace(/-/g, ' ')}</span>
                 {expandedCats[cat] ? (
@@ -249,53 +170,78 @@ export default function Showcase() {
                 )}
               </button>
 
-              {expandedCats[cat] && (
-                <div className="mt-1 ml-2 pl-2 border-l border-slate-100 flex flex-col gap-1">
-                  {Object.keys(bizObj as any).map(biz => {
-                    const isSelected = selectedCat === cat && selectedBiz === biz;
-                    return (
-                      <button
-                        key={biz}
-                        onClick={() => selectBiz(cat, biz)}
-                        className={`text-left px-3 py-2 text-sm rounded-md transition-all capitalize ${isSelected
-                            ? 'bg-indigo-50 text-indigo-700 font-medium'
-                            : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
-                          }`}
-                      >
-                        {biz.replace(/-/g, ' ')}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
+              <AnimatePresence>
+                {expandedCats[cat] && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="mt-1 ml-3 pl-3 border-l-2 border-slate-100 flex flex-col gap-1 py-1">
+                      {Object.keys(bizObj as any).map(biz => {
+                        const isSelected = selectedCat === cat && selectedBiz === biz;
+                        return (
+                          <button
+                            key={biz}
+                            onClick={() => selectBiz(cat, biz)}
+                            className={`text-left px-3 py-2 text-sm rounded-lg transition-all capitalize ${isSelected
+                                ? 'bg-[#2563EB]/10 text-[#2563EB] font-semibold'
+                                : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+                              }`}
+                          >
+                            {biz.replace(/-/g, ' ')}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           ))}
           {Object.keys(filteredRegistry).length === 0 && (
-            <div className="p-4 text-center text-sm text-slate-500">
-              No categories found.
+            <div className="p-8 text-center flex flex-col items-center justify-center">
+              <Search className="w-8 h-8 text-slate-300 mb-3" />
+              <p className="text-sm text-slate-500">No categories found.</p>
             </div>
           )}
         </div>
       </aside>
 
-      <main className="flex-1 overflow-y-auto bg-slate-50/50">
-        <div className="p-10 max-w-7xl mx-auto">
+      <main className="flex-1 overflow-y-auto flex flex-col relative w-full lg:w-auto">
+        {/* Mobile Header */}
+        <div className="lg:hidden bg-white border-b border-slate-200 px-4 py-4 flex items-center justify-between sticky top-0 z-30">
+          <div className="flex items-center gap-2">
+            <LayoutTemplate className="w-6 h-6 text-[#2563EB]" />
+            <span className="font-bold text-[#0F172A]">Showcase</span>
+          </div>
+          <button onClick={() => setIsSidebarOpen(true)} className="p-2 bg-slate-50 rounded-lg border border-slate-200">
+            <Menu className="w-5 h-5 text-slate-600" />
+          </button>
+        </div>
+
+        <div className="p-6 md:p-10 max-w-7xl mx-auto w-full">
           {currentTemplates ? (
-            <>
-              <div className="mb-10">
-                <div className="flex items-center gap-3 text-sm text-slate-500 mb-2">
-                  <span className="capitalize">{selectedCat?.replace(/-/g, ' ')}</span>
-                  <ChevronRight className="w-4 h-4" />
-                  <span className="capitalize text-slate-900 font-medium">{selectedBiz?.replace(/-/g, ' ')}</span>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              key={`${selectedCat}-${selectedBiz}`}
+            >
+              <div className="mb-8 md:mb-12">
+                <div className="flex flex-wrap items-center gap-2 text-sm text-[#2563EB] mb-3 font-medium">
+                  <span className="capitalize bg-[#2563EB]/10 px-3 py-1 rounded-full">{selectedCat?.replace(/-/g, ' ')}</span>
+                  <ChevronRight className="w-4 h-4 text-slate-400" />
+                  <span className="capitalize bg-[#06B6D4]/10 text-[#06B6D4] px-3 py-1 rounded-full">{selectedBiz?.replace(/-/g, ' ')}</span>
                 </div>
-                <h2 className="text-3xl font-semibold tracking-tight text-slate-900 capitalize">
+                <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-[#0F172A] capitalize mt-4">
                   {selectedBiz?.replace(/-/g, ' ')} Templates
                 </h2>
-                <p className="text-slate-500 mt-2">Premium Awwwards-quality designs ready for generation.</p>
+                <p className="text-slate-500 mt-4 text-lg max-w-2xl">Modern, high-conversion designs perfectly tailored for this business type. Ready to generate in seconds.</p>
               </div>
 
               {currentTemplates.templates.length > 0 ? (
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                   {currentTemplates.templates.map((tplObj: any, idx: number) => {
                     const tpl = tplObj.id || tplObj;
                     const tplCode = tplObj.code || `Template ${tpl}`;
@@ -303,68 +249,74 @@ export default function Showcase() {
                     const toPath = `/templates/${currentTemplates.path}/${urlSlug}`;
 
                     return (
-                      <div key={tpl} className="bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col">
+                      <motion.div 
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: idx * 0.1 }}
+                        key={tpl} 
+                        className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-300 group flex flex-col"
+                      >
                         <div className="aspect-[16/10] bg-slate-100 relative overflow-hidden">
                           <img
                             src={`/previews/${currentTemplates.path}/${tpl}.png?v=${new Date().getTime()}`}
                             onError={(e) => {
-                              // Use a generic valid Unsplash image as fallback if the preview is missing
                               (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80';
                             }}
                             alt={`${tplCode.toUpperCase()} Preview`}
                             className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        </div>
-
-                        <div className="p-6 flex-1 flex flex-col">
-                          <div className="flex justify-between items-start mb-4">
-                            <div>
-                              <h3 className="text-xl font-semibold text-slate-900 uppercase">{tplCode}</h3>
-                              <p className="text-sm text-slate-500 mt-1">Version 1.0 • Modern Minimal</p>
-                            </div>
-                            <span className="px-3 py-1 bg-indigo-50 text-indigo-700 text-xs font-semibold rounded-full">
-                              Premium
-                            </span>
-                          </div>
-
-                          <div className="mt-auto pt-6 border-t border-slate-100 flex items-center gap-3">
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
                             <Link
                               to={toPath}
                               target="_blank"
-                              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors"
+                              className="translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center gap-2 px-6 py-3 bg-white text-[#0F172A] hover:bg-slate-50 hover:text-[#2563EB] font-bold rounded-full shadow-xl"
                             >
                               <ExternalLink className="w-4 h-4" />
-                              Open Template
+                              View Live Demo
                             </Link>
-                            <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-sm font-medium rounded-lg transition-colors">
+                          </div>
+                        </div>
+
+                        <div className="p-6 flex-1 flex flex-col bg-white">
+                          <h3 className="text-xl font-bold text-[#0F172A] uppercase mb-2">{tplCode}</h3>
+                          <div className="mt-auto pt-6 border-t border-slate-100 grid grid-cols-1 gap-3">
+                            <button className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-sm font-bold rounded-xl transition-colors shadow-lg shadow-[#2563EB]/20">
                               <Eye className="w-4 h-4" />
-                              Use Template
+                              Select Template
                             </button>
                           </div>
                         </div>
-                      </div>
+                      </motion.div>
                     );
                   })}
                 </div>
               ) : (
-                <div className="bg-slate-50 border border-slate-200 border-dashed rounded-2xl p-12 text-center flex flex-col items-center justify-center">
-                  <LayoutTemplate className="w-12 h-12 text-slate-300 mb-4" />
-                  <h3 className="text-lg font-medium text-slate-900">No Templates Found</h3>
-                  <p className="text-slate-500 mt-1 max-w-md">There are no template files currently built for this business type in the newwebgene project.</p>
+                <div className="bg-white border border-slate-200 rounded-3xl p-16 text-center flex flex-col items-center justify-center shadow-sm">
+                  <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-6">
+                    <LayoutTemplate className="w-10 h-10 text-slate-300" />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#0F172A]">No Templates Generated Yet</h3>
+                  <p className="text-slate-500 mt-2 max-w-md text-lg">Templates for this business type haven't been compiled yet. Run the generator to create them.</p>
                 </div>
               )}
-            </>
+            </motion.div>
           ) : (
-            <div className="h-full flex flex-col items-center justify-center text-center pb-20">
-              <LayoutTemplate className="w-16 h-16 text-slate-200 mb-4" />
-              <h2 className="text-2xl font-semibold text-slate-900">Select a Business Type</h2>
-              <p className="text-slate-500 mt-2 max-w-sm">Choose a category and business from the sidebar to view available templates.</p>
+            <div className="h-full flex flex-col items-center justify-center text-center pb-20 px-4">
+              <div className="w-24 h-24 bg-white shadow-xl shadow-slate-200/50 rounded-3xl flex items-center justify-center mb-8 rotate-3">
+                <LayoutTemplate className="w-12 h-12 text-[#2563EB]" />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#0F172A] mb-4">Select a Business Type</h2>
+              <p className="text-slate-500 text-lg max-w-md">Choose a category from the sidebar to explore our stunning, dynamically generated templates.</p>
+              <button 
+                onClick={() => setIsSidebarOpen(true)}
+                className="mt-8 lg:hidden px-6 py-3 bg-[#2563EB] text-white font-semibold rounded-xl shadow-lg shadow-[#2563EB]/20"
+              >
+                Browse Categories
+              </button>
             </div>
           )}
         </div>
       </main>
     </div>
-    </>
   );
 }
