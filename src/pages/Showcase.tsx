@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, ChevronDown, ChevronRight, ExternalLink, Eye, LayoutTemplate, ArrowLeft, Menu, X, HeartPulse, Car, ShoppingBag, Monitor, Home, Scissors, BookOpen, Utensils, Briefcase, Building2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Search, ChevronDown, ChevronRight, ChevronLeft, ExternalLink, Eye, LayoutTemplate, ArrowLeft, Menu, X, HeartPulse, Car, ShoppingBag, Monitor, Home, Scissors, BookOpen, Utensils, Briefcase, Building2 } from 'lucide-react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import rawCsv from '../../data csv/business_templates.csv?raw';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -59,6 +59,9 @@ const parseCSV = (csvStr: string) => {
 const registry = parseCSV(rawCsv);
 
 export default function Showcase() {
+  const { category: urlCategory, business: urlBusiness } = useParams();
+  const navigate = useNavigate();
+
   const [search, setSearch] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [expandedCats, setExpandedCats] = useState<Record<string, boolean>>(() => {
@@ -69,18 +72,31 @@ export default function Showcase() {
     return initial;
   });
 
-  const [selectedCat, setSelectedCat] = useState<string | null>(Object.keys(registry)[0] || null);
-  const [selectedBiz, setSelectedBiz] = useState<string | null>(
-    Object.keys(registry)[0] ? Object.keys((registry as any)[Object.keys(registry)[0]])[0] : null
-  );
+  let currentTemplates: any = null;
+  let activeCatName: string | null = null;
+  let activeBizName: string | null = null;
+
+  if (urlCategory && urlBusiness) {
+    const searchPath = `${urlCategory}/${urlBusiness}`;
+    for (const [cat, bizObj] of Object.entries(registry)) {
+      for (const [biz, data] of Object.entries(bizObj as any)) {
+        if ((data as any).path === searchPath) {
+          currentTemplates = data;
+          activeCatName = cat;
+          activeBizName = biz;
+          break;
+        }
+      }
+    }
+  }
 
   const toggleCat = (cat: string) => {
     setExpandedCats(prev => ({ ...prev, [cat]: !prev[cat] }));
   };
 
   const selectBiz = (cat: string, biz: string) => {
-    setSelectedCat(cat);
-    setSelectedBiz(biz);
+    const path = (registry as any)[cat][biz].path;
+    navigate(`/showcase/${path}`);
     setIsSidebarOpen(false); // Close mobile sidebar on select
   };
 
@@ -106,22 +122,27 @@ export default function Showcase() {
     return result;
   }, [search]);
 
-  const currentTemplates = (selectedCat && selectedBiz && (registry as any)[selectedCat]?.[selectedBiz])
-    ? (registry as any)[selectedCat][selectedBiz]
-    : null;
-
   const getCategoryIcon = (catName: string) => {
     const c = catName.toLowerCase();
-    if (c.includes('health') || c.includes('clinic') || c.includes('dental')) return <HeartPulse className="w-8 h-8 text-rose-500" />;
-    if (c.includes('auto') || c.includes('car') || c.includes('vehicle')) return <Car className="w-8 h-8 text-blue-500" />;
-    if (c.includes('retail') || c.includes('store') || c.includes('shop')) return <ShoppingBag className="w-8 h-8 text-orange-500" />;
-    if (c.includes('it') || c.includes('tech') || c.includes('software')) return <Monitor className="w-8 h-8 text-indigo-500" />;
-    if (c.includes('real') || c.includes('estate') || c.includes('property')) return <Home className="w-8 h-8 text-emerald-500" />;
-    if (c.includes('beauty') || c.includes('wellness') || c.includes('salon')) return <Scissors className="w-8 h-8 text-pink-500" />;
-    if (c.includes('education') || c.includes('school') || c.includes('tutor')) return <BookOpen className="w-8 h-8 text-yellow-500" />;
-    if (c.includes('food') || c.includes('restaurant') || c.includes('cafe')) return <Utensils className="w-8 h-8 text-red-500" />;
-    if (c.includes('professional') || c.includes('service') || c.includes('law')) return <Briefcase className="w-8 h-8 text-slate-500" />;
-    return <Building2 className="w-8 h-8 text-slate-400" />;
+    const cls = "w-10 h-10 text-indigo-600";
+    if (c.includes('health') || c.includes('clinic') || c.includes('dental')) return <HeartPulse className={cls} />;
+    if (c.includes('auto') || c.includes('car') || c.includes('vehicle')) return <Car className={cls} />;
+    if (c.includes('retail') || c.includes('store') || c.includes('shop')) return <ShoppingBag className={cls} />;
+    if (c.includes('it') || c.includes('tech') || c.includes('software')) return <Monitor className={cls} />;
+    if (c.includes('real') || c.includes('estate') || c.includes('property')) return <Home className={cls} />;
+    if (c.includes('beauty') || c.includes('wellness') || c.includes('salon')) return <Scissors className={cls} />;
+    if (c.includes('education') || c.includes('school') || c.includes('tutor')) return <BookOpen className={cls} />;
+    if (c.includes('food') || c.includes('restaurant') || c.includes('cafe')) return <Utensils className={cls} />;
+    if (c.includes('professional') || c.includes('service') || c.includes('law')) return <Briefcase className={cls} />;
+    return <Building2 className={cls} />;
+  };
+
+  const scrollContainer = (id: string, direction: 'left' | 'right') => {
+    const container = document.getElementById(id);
+    if (container) {
+      const scrollAmount = 400;
+      container.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+    }
   };
 
   return (
@@ -194,7 +215,7 @@ export default function Showcase() {
                   >
                     <div className="mt-1 ml-3 pl-3 border-l-2 border-slate-100 flex flex-col gap-1 py-1">
                       {Object.keys(bizObj as any).map(biz => {
-                        const isSelected = selectedCat === cat && selectedBiz === biz;
+                        const isSelected = activeCatName === cat && activeBizName === biz;
                         return (
                           <button
                             key={biz}
@@ -240,22 +261,22 @@ export default function Showcase() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              key={`${selectedCat}-${selectedBiz}`}
+              key={`${activeCatName}-${activeBizName}`}
             >
               <div className="mb-8 md:mb-12">
                 <button 
-                  onClick={() => { setSelectedCat(null); setSelectedBiz(null); }}
+                  onClick={() => navigate('/showcase')}
                   className="flex items-center gap-2 text-sm text-slate-500 hover:text-[#2563EB] mb-6 transition-colors font-medium"
                 >
-                  <ArrowLeft className="w-4 h-4" /> Back to Dashboard
+                  <ArrowLeft className="w-4 h-4" /> Back to Showcase
                 </button>
                 <div className="flex flex-wrap items-center gap-2 text-sm text-[#2563EB] mb-3 font-medium">
-                  <span className="capitalize bg-[#2563EB]/10 px-3 py-1 rounded-full">{selectedCat?.replace(/-/g, ' ')}</span>
+                  <span className="capitalize bg-[#2563EB]/10 px-3 py-1 rounded-full">{activeCatName?.replace(/-/g, ' ')}</span>
                   <ChevronRight className="w-4 h-4 text-slate-400" />
-                  <span className="capitalize bg-[#06B6D4]/10 text-[#06B6D4] px-3 py-1 rounded-full">{selectedBiz?.replace(/-/g, ' ')}</span>
+                  <span className="capitalize bg-[#06B6D4]/10 text-[#06B6D4] px-3 py-1 rounded-full">{activeBizName?.replace(/-/g, ' ')}</span>
                 </div>
                 <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-[#0F172A] capitalize mt-4">
-                  {selectedBiz?.replace(/-/g, ' ')} Templates
+                  {activeBizName?.replace(/-/g, ' ')} Templates
                 </h2>
                 <p className="text-slate-500 mt-4 text-lg max-w-2xl">Modern, high-conversion designs perfectly tailored for this business type. Ready to generate in seconds.</p>
               </div>
@@ -321,54 +342,72 @@ export default function Showcase() {
               )}
             </motion.div>
           ) : (
-            <div className="pb-20">
-              <div className="mb-10 text-center md:text-left">
-                <h2 className="text-3xl md:text-4xl font-extrabold text-[#0F172A] mb-4">Business Categories</h2>
-                <p className="text-slate-500 text-lg max-w-2xl">Select a business type below to explore our premium, dynamically generated templates tailored for specific industries.</p>
-              </div>
+          <div className="pb-20">
+            <div className="mb-12">
+              <h2 className="text-4xl font-extrabold text-[#0F172A] tracking-tight">Ecosystem Showcase</h2>
+              <p className="text-slate-500 mt-2 text-lg">Premium UI components and templates sorted by industry.</p>
+            </div>
 
-              <div className="flex flex-col gap-12">
-                {Object.entries(filteredRegistry).map(([cat, bizObj]) => (
-                  <div key={cat} className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8">
-                    <div className="flex items-center gap-4 mb-8 pb-6 border-b border-slate-100">
-                      <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center">
-                        {getCategoryIcon(cat)}
-                      </div>
-                      <h3 className="text-2xl font-bold text-[#0F172A] capitalize">{cat.replace(/-/g, ' ')}</h3>
-                    </div>
+            <div className="flex flex-col gap-16">
+              {Object.entries(filteredRegistry).map(([cat, bizObj]) => (
+                <div key={cat}>
+                  <h3 className="text-2xl font-bold text-slate-900 capitalize mb-6 pl-2">{cat.replace(/-/g, ' ')}</h3>
+                  
+                  <div className="bg-white border border-[#e5e7eb] rounded-[32px] p-6 md:p-10 shadow-[0_10px_40px_rgba(0,0,0,0.05)] relative group/carousel">
+                    
+                    {/* Left Scroll Button */}
+                    <button 
+                      onClick={() => scrollContainer(`scroll-${cat}`, 'left')} 
+                      className="absolute left-0 top-1/2 -translate-y-1/2 -ml-5 z-10 p-3 rounded-full border border-gray-200 bg-white text-slate-600 shadow-[0_10px_20px_rgba(0,0,0,0.1)] hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-100 transition-all opacity-0 group-hover/carousel:opacity-100 hidden md:flex items-center justify-center"
+                    >
+                      <ChevronLeft className="w-6 h-6" />
+                    </button>
 
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {/* Right Scroll Button */}
+                    <button 
+                      onClick={() => scrollContainer(`scroll-${cat}`, 'right')} 
+                      className="absolute right-0 top-1/2 -translate-y-1/2 -mr-5 z-10 p-3 rounded-full border border-gray-200 bg-white text-slate-600 shadow-[0_10px_20px_rgba(0,0,0,0.1)] hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-100 transition-all opacity-0 group-hover/carousel:opacity-100 hidden md:flex items-center justify-center"
+                    >
+                      <ChevronRight className="w-6 h-6" />
+                    </button>
+
+                    <div id={`scroll-${cat}`} className="flex gap-8 overflow-x-auto pb-6 pt-2 scrollbar-hide snap-x">
                       {Object.keys(bizObj as any).map((biz) => {
-                        const templatesCount = (bizObj as any)[biz]?.templates?.length || 0;
                         return (
                           <div 
                             key={biz} 
                             onClick={() => selectBiz(cat, biz)}
-                            className="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-6 flex flex-col items-center text-center cursor-pointer hover:bg-white hover:border-[#2563EB] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
+                            className="flex flex-col items-center flex-shrink-0 w-max min-w-[140px] max-w-[240px] px-2 md:px-4 group cursor-pointer snap-start hover:-translate-y-2 transition-transform duration-300 ease-out"
                           >
-                            <div className="w-16 h-16 bg-white shadow-sm border border-slate-100 rounded-full flex items-center justify-center mb-4 text-slate-400 group-hover:text-[#2563EB] group-hover:scale-110 transition-all duration-300">
+                            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#eef2ff] to-[#dbeafe] flex items-center justify-center mb-5 group-hover:scale-[1.08] group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-300 ease-out">
                               {getCategoryIcon(cat)}
                             </div>
-                            <h4 className="font-bold text-slate-800 capitalize leading-tight mb-2 group-hover:text-[#2563EB] transition-colors">{biz.replace(/-/g, ' ')}</h4>
-                            <span className="inline-flex px-3 py-1 bg-slate-200 text-slate-600 text-xs font-bold rounded-full group-hover:bg-[#2563EB]/10 group-hover:text-[#2563EB] transition-colors">
-                              {templatesCount} Templates
-                            </span>
+                            <h4 className="text-[16px] font-semibold text-slate-900 text-center leading-snug capitalize mb-1">
+                              {biz.replace(/-/g, ' ')}
+                            </h4>
+                            <p className="text-sm text-slate-500 text-center">
+                              Modern responsive website
+                            </p>
+                            <button className="md:hidden mt-4 px-5 py-2 bg-[#eef2ff] text-indigo-600 rounded-full text-xs font-bold tracking-wide transition-colors">
+                              View Templates
+                            </button>
                           </div>
                         );
                       })}
                     </div>
                   </div>
-                ))}
+                </div>
+              ))}
 
-                {Object.keys(filteredRegistry).length === 0 && (
-                  <div className="text-center py-20 bg-white rounded-3xl border border-slate-200">
-                    <Search className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                    <h3 className="text-xl font-bold text-[#0F172A]">No categories found</h3>
-                    <p className="text-slate-500 mt-2">Try adjusting your search query.</p>
-                  </div>
-                )}
-              </div>
+              {Object.keys(filteredRegistry).length === 0 && (
+                <div className="text-center py-20 bg-white rounded-[32px] border border-[#e5e7eb]">
+                  <Search className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+                  <h3 className="text-xl font-bold text-slate-900">No categories found</h3>
+                  <p className="text-slate-500 mt-2">Try adjusting your search query.</p>
+                </div>
+              )}
             </div>
+          </div>
           )}
         </div>
       </main>

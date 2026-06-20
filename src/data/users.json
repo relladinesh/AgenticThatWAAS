@@ -1,0 +1,35 @@
+[
+  {
+    "id": "1",
+    "username": "droneadmin",
+    "password": "password123",
+    "role": "client",
+    "category": "retail",
+    "businessType": "drone-store",
+    "template": "t1"
+  },
+  {
+    "id": "2",
+    "username": "lawfirm",
+    "password": "password123",
+    "role": "client",
+    "category": "professional-services",
+    "businessType": "legal-law-firm",
+    "template": "t3"
+  },
+  {
+    "id": "3",
+    "username": "mechanic",
+    "password": "password123",
+    "role": "client",
+    "category": "automotive",
+    "businessType": "car-bike-service-center",
+    "template": "t3"
+  },
+  {
+    "id": "4",
+    "username": "admin",
+    "password": "adminpassword",
+    "role": "admin"
+  }
+]
