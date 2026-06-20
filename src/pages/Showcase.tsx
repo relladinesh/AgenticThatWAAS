@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, ChevronDown, ChevronRight, ExternalLink, Eye, LayoutTemplate, ArrowLeft, Menu, X } from 'lucide-react';
+import { Search, ChevronDown, ChevronRight, ExternalLink, Eye, LayoutTemplate, ArrowLeft, Menu, X, HeartPulse, Car, ShoppingBag, Monitor, Home, Scissors, BookOpen, Utensils, Briefcase, Building2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import rawCsv from '../../data csv/business_templates.csv?raw';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -110,6 +110,20 @@ export default function Showcase() {
     ? (registry as any)[selectedCat][selectedBiz]
     : null;
 
+  const getCategoryIcon = (catName: string) => {
+    const c = catName.toLowerCase();
+    if (c.includes('health') || c.includes('clinic') || c.includes('dental')) return <HeartPulse className="w-8 h-8 text-rose-500" />;
+    if (c.includes('auto') || c.includes('car') || c.includes('vehicle')) return <Car className="w-8 h-8 text-blue-500" />;
+    if (c.includes('retail') || c.includes('store') || c.includes('shop')) return <ShoppingBag className="w-8 h-8 text-orange-500" />;
+    if (c.includes('it') || c.includes('tech') || c.includes('software')) return <Monitor className="w-8 h-8 text-indigo-500" />;
+    if (c.includes('real') || c.includes('estate') || c.includes('property')) return <Home className="w-8 h-8 text-emerald-500" />;
+    if (c.includes('beauty') || c.includes('wellness') || c.includes('salon')) return <Scissors className="w-8 h-8 text-pink-500" />;
+    if (c.includes('education') || c.includes('school') || c.includes('tutor')) return <BookOpen className="w-8 h-8 text-yellow-500" />;
+    if (c.includes('food') || c.includes('restaurant') || c.includes('cafe')) return <Utensils className="w-8 h-8 text-red-500" />;
+    if (c.includes('professional') || c.includes('service') || c.includes('law')) return <Briefcase className="w-8 h-8 text-slate-500" />;
+    return <Building2 className="w-8 h-8 text-slate-400" />;
+  };
+
   return (
     <div className="flex h-screen bg-[#F8FAFC] overflow-hidden font-sans text-[#0F172A]">
       {/* Mobile Sidebar Overlay */}
@@ -129,7 +143,7 @@ export default function Showcase() {
       <aside className={`fixed lg:static inset-y-0 left-0 w-80 bg-white border-r border-slate-200 flex flex-col shadow-xl lg:shadow-none z-50 transform transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
         <div className="p-6 border-b border-slate-100 flex items-center justify-between lg:block">
           <div className="flex items-center gap-3 mb-0 lg:mb-6">
-            <Link to="/" className="p-2 -ml-2 hover:bg-slate-50 rounded-lg text-slate-500 hover:text-slate-900 transition-colors" title="Back to Home">
+            <Link to="/b2b" className="p-2 -ml-2 hover:bg-slate-50 rounded-lg text-slate-500 hover:text-slate-900 transition-colors" title="Back to Home">
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <h1 className="text-xl font-bold tracking-tight text-[#0F172A] flex items-center gap-2">
@@ -141,7 +155,7 @@ export default function Showcase() {
             <X className="w-6 h-6" />
           </button>
         </div>
-        
+
         <div className="p-4 border-b border-slate-100">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -186,8 +200,8 @@ export default function Showcase() {
                             key={biz}
                             onClick={() => selectBiz(cat, biz)}
                             className={`text-left px-3 py-2 text-sm rounded-lg transition-all capitalize ${isSelected
-                                ? 'bg-[#2563EB]/10 text-[#2563EB] font-semibold'
-                                : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+                              ? 'bg-[#2563EB]/10 text-[#2563EB] font-semibold'
+                              : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
                               }`}
                           >
                             {biz.replace(/-/g, ' ')}
@@ -229,6 +243,12 @@ export default function Showcase() {
               key={`${selectedCat}-${selectedBiz}`}
             >
               <div className="mb-8 md:mb-12">
+                <button 
+                  onClick={() => { setSelectedCat(null); setSelectedBiz(null); }}
+                  className="flex items-center gap-2 text-sm text-slate-500 hover:text-[#2563EB] mb-6 transition-colors font-medium"
+                >
+                  <ArrowLeft className="w-4 h-4" /> Back to Dashboard
+                </button>
                 <div className="flex flex-wrap items-center gap-2 text-sm text-[#2563EB] mb-3 font-medium">
                   <span className="capitalize bg-[#2563EB]/10 px-3 py-1 rounded-full">{selectedCat?.replace(/-/g, ' ')}</span>
                   <ChevronRight className="w-4 h-4 text-slate-400" />
@@ -249,11 +269,11 @@ export default function Showcase() {
                     const toPath = `/templates/${currentTemplates.path}/${urlSlug}`;
 
                     return (
-                      <motion.div 
+                      <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: idx * 0.1 }}
-                        key={tpl} 
+                        key={tpl}
                         className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-300 group flex flex-col"
                       >
                         <div className="aspect-[16/10] bg-slate-100 relative overflow-hidden">
@@ -280,10 +300,10 @@ export default function Showcase() {
                         <div className="p-6 flex-1 flex flex-col bg-white">
                           <h3 className="text-xl font-bold text-[#0F172A] uppercase mb-2">{tplCode}</h3>
                           <div className="mt-auto pt-6 border-t border-slate-100 grid grid-cols-1 gap-3">
-                            <button className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-sm font-bold rounded-xl transition-colors shadow-lg shadow-[#2563EB]/20">
+                            <Link to={toPath} target="_blank" className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-sm font-bold rounded-xl transition-colors shadow-lg shadow-[#2563EB]/20">
                               <Eye className="w-4 h-4" />
-                              Select Template
-                            </button>
+                              View Template
+                            </Link>
                           </div>
                         </div>
                       </motion.div>
@@ -301,18 +321,53 @@ export default function Showcase() {
               )}
             </motion.div>
           ) : (
-            <div className="h-full flex flex-col items-center justify-center text-center pb-20 px-4">
-              <div className="w-24 h-24 bg-white shadow-xl shadow-slate-200/50 rounded-3xl flex items-center justify-center mb-8 rotate-3">
-                <LayoutTemplate className="w-12 h-12 text-[#2563EB]" />
+            <div className="pb-20">
+              <div className="mb-10 text-center md:text-left">
+                <h2 className="text-3xl md:text-4xl font-extrabold text-[#0F172A] mb-4">Business Categories</h2>
+                <p className="text-slate-500 text-lg max-w-2xl">Select a business type below to explore our premium, dynamically generated templates tailored for specific industries.</p>
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#0F172A] mb-4">Select a Business Type</h2>
-              <p className="text-slate-500 text-lg max-w-md">Choose a category from the sidebar to explore our stunning, dynamically generated templates.</p>
-              <button 
-                onClick={() => setIsSidebarOpen(true)}
-                className="mt-8 lg:hidden px-6 py-3 bg-[#2563EB] text-white font-semibold rounded-xl shadow-lg shadow-[#2563EB]/20"
-              >
-                Browse Categories
-              </button>
+
+              <div className="flex flex-col gap-12">
+                {Object.entries(filteredRegistry).map(([cat, bizObj]) => (
+                  <div key={cat} className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8">
+                    <div className="flex items-center gap-4 mb-8 pb-6 border-b border-slate-100">
+                      <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center">
+                        {getCategoryIcon(cat)}
+                      </div>
+                      <h3 className="text-2xl font-bold text-[#0F172A] capitalize">{cat.replace(/-/g, ' ')}</h3>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                      {Object.keys(bizObj as any).map((biz) => {
+                        const templatesCount = (bizObj as any)[biz]?.templates?.length || 0;
+                        return (
+                          <div 
+                            key={biz} 
+                            onClick={() => selectBiz(cat, biz)}
+                            className="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-6 flex flex-col items-center text-center cursor-pointer hover:bg-white hover:border-[#2563EB] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
+                          >
+                            <div className="w-16 h-16 bg-white shadow-sm border border-slate-100 rounded-full flex items-center justify-center mb-4 text-slate-400 group-hover:text-[#2563EB] group-hover:scale-110 transition-all duration-300">
+                              {getCategoryIcon(cat)}
+                            </div>
+                            <h4 className="font-bold text-slate-800 capitalize leading-tight mb-2 group-hover:text-[#2563EB] transition-colors">{biz.replace(/-/g, ' ')}</h4>
+                            <span className="inline-flex px-3 py-1 bg-slate-200 text-slate-600 text-xs font-bold rounded-full group-hover:bg-[#2563EB]/10 group-hover:text-[#2563EB] transition-colors">
+                              {templatesCount} Templates
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+
+                {Object.keys(filteredRegistry).length === 0 && (
+                  <div className="text-center py-20 bg-white rounded-3xl border border-slate-200">
+                    <Search className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+                    <h3 className="text-xl font-bold text-[#0F172A]">No categories found</h3>
+                    <p className="text-slate-500 mt-2">Try adjusting your search query.</p>
+                  </div>
+                )}
+              </div>
             </div>
           )}
         </div>
