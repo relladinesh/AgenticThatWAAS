@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predev": "node generate.js",
+    "predev": "node clean-folders.js && node generate.js",
     "dev": "vite",
     "auto-sync": "node generate.js && git add src/templates/ \"data csv/\" public/previews/ && git commit -m \"Auto-sync templates from local\" && git push",
-    "build": "node generate.js && node push-registry.js && vite build",
+    "build": "node clean-folders.js && node generate.js && node push-registry.js && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

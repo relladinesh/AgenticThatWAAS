@@ -75,6 +75,9 @@ if (fs.existsSync(csvOutPath)) {
 
 
 // Only attempt to read the raw leads CSV if it actually exists (e.g. locally)
+// We are disabling this so that business_templates.csv acts as the absolute single source of truth.
+// If you want to bulk-import again, you can re-enable this.
+/*
 if (fs.existsSync(csvFilePath)) {
   const csvContent = fs.readFileSync(csvFilePath, 'utf8');
   const lines = csvContent.split('\n');
@@ -117,6 +120,7 @@ if (fs.existsSync(csvFilePath)) {
     }
   }
 }
+*/
 
 
 
@@ -146,6 +150,9 @@ const getSourceCategoryKebab = (csvKebab) => {
 };
 
 // SCAN NEWWEBGENE DIRECTORY AND ADD TO HIERARCHY
+// Disabled: We no longer pull in unlisted folders from newwebgene.
+// If it's not in business_templates.csv, it doesn't exist.
+/*
 if (fs.existsSync(sourceTemplatesDir)) {
   const catFolders = fs.readdirSync(sourceTemplatesDir);
   for (const cat of catFolders) {
@@ -179,9 +186,10 @@ if (fs.existsSync(sourceTemplatesDir)) {
     }
   }
 }
+*/
 
 // We no longer scan src/templates to add to the hierarchy.
-// leads.csv is the STRICT single source of truth. Any folder not defined in leads.csv will be permanently ignored.
+// business_templates.csv is the STRICT single source of truth. Any folder not defined there will be deleted.
 
 if (!fs.existsSync(templatesDir)) {
   fs.mkdirSync(templatesDir, { recursive: true });

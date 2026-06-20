@@ -1,11 +1,10 @@
 {
-  "name": "Electronics Mobile Store",
-  "category": "Retail And Stores",
+  "name": "legal /aw firm",
+  "category": "finance and professional services",
   "theme": "Light",
   "responsive": true,
   "animations": true,
   "templates": [
-    "t1",
     "t2"
   ]
 }
