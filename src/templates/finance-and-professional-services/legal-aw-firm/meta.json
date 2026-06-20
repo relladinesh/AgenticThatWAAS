@@ -5,6 +5,7 @@
   "responsive": true,
   "animations": true,
   "templates": [
+    "t1",
     "t2"
   ]
 }

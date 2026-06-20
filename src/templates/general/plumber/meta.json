@@ -1,0 +1,10 @@
+{
+  "name": "Plumber",
+  "category": "General",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1"
+  ]
+}
