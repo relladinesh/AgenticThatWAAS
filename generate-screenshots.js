@@ -76,8 +76,13 @@ async function captureScreenshots() {
 
     const savePath = path.join(saveDir, `${tplName}.png`);
     
-    // Removed the skip check so it forces a fresh high-fidelity screenshot over the old generic ones
-    console.log(`[${i}/${lines.length-1}] 📸 Capturing: ${catSlug} / ${bizSlug} / ${tplName} ...`);
+    // Check if screenshot already exists. If yes, skip to save time!
+    if (fs.existsSync(savePath)) {
+      console.log(`[${i}/${lines.length-1}] ⏭️ Skipping: ${catSlug} / ${bizSlug} / ${tplName} (Screenshot already exists)`);
+      continue;
+    }
+
+    console.log(`[${i}/${lines.length-1}] 📸 Capturing New Template: ${catSlug} / ${bizSlug} / ${tplName} ...`);
     
     try {
       // Increase timeout to allow Vite time to compile new routes on the first hit

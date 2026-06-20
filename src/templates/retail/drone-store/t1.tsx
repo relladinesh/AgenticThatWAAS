@@ -14,7 +14,7 @@ export default function Template(props: any) {
           {props.data?.about || 'This is a freshly generated template. Replace this boilerplate with your premium Awwwards-quality design.'}
         </p>
         <div className="inline-flex bg-indigo-50 text-indigo-700 px-6 py-3 rounded-full text-sm font-semibold tracking-wide">
-          Ready for Development
+          Ready for Developmentyugtyutyutytrytrftgfdgtrdgtrd
         </div>
       </div>
     </div>

@@ -29,6 +29,26 @@ const csvOutPath = path.join(csvOutputDir, 'business_templates.csv');
 // Initialize hierarchy before parsing existing records
 const hierarchy = {};
 
+// Deduplication Helper
+const addUniqueToHierarchy = (cat, biz) => {
+  if (!cat) return { targetCat: null, targetBiz: null };
+  let targetCat = Object.keys(hierarchy).find(k => toKebabCase(k) === toKebabCase(cat));
+  if (!targetCat) {
+    hierarchy[cat] = new Set();
+    targetCat = cat;
+  }
+  
+  let targetBiz = null;
+  if (biz) {
+    targetBiz = Array.from(hierarchy[targetCat]).find(b => toKebabCase(b) === toKebabCase(biz));
+    if (!targetBiz) {
+      hierarchy[targetCat].add(biz);
+      targetBiz = biz;
+    }
+  }
+  return { targetCat, targetBiz };
+};
+
 // Read existing CSV to find diffs and populate hierarchy with manual additions
 let existingRecords = new Set();
 if (fs.existsSync(csvOutPath)) {
@@ -59,15 +79,12 @@ if (fs.existsSync(csvOutPath)) {
       let templateId = parts[3] ? parts[3].replace(/^"|"$/g, '').trim() : '';
 
       if (category && businessType) {
-        if (!hierarchy[category]) {
-          hierarchy[category] = new Set();
-        }
-        hierarchy[category].add(businessType);
+        const { targetCat, targetBiz } = addUniqueToHierarchy(category, businessType);
         
         if (!global.requestedTemplates) global.requestedTemplates = {};
-        if (!global.requestedTemplates[category]) global.requestedTemplates[category] = {};
-        if (!global.requestedTemplates[category][businessType]) global.requestedTemplates[category][businessType] = new Set();
-        if (templateId) global.requestedTemplates[category][businessType].add(templateId);
+        if (!global.requestedTemplates[targetCat]) global.requestedTemplates[targetCat] = {};
+        if (!global.requestedTemplates[targetCat][targetBiz]) global.requestedTemplates[targetCat][targetBiz] = new Set();
+        if (templateId) global.requestedTemplates[targetCat][targetBiz].add(templateId);
       }
     }
   }
@@ -75,9 +92,7 @@ if (fs.existsSync(csvOutPath)) {
 
 
 // Only attempt to read the raw leads CSV if it actually exists (e.g. locally)
-// We are disabling this so that business_templates.csv acts as the absolute single source of truth.
-// If you want to bulk-import again, you can re-enable this.
-/*
+// We re-enabled this so new rows in leads.csv auto-generate folders and get pushed to business_templates.csv
 if (fs.existsSync(csvFilePath)) {
   const csvContent = fs.readFileSync(csvFilePath, 'utf8');
   const lines = csvContent.split('\n');
@@ -112,23 +127,16 @@ if (fs.existsSync(csvFilePath)) {
       let businessType = parts[3] ? parts[3].replace(/^"|"$/g, '').trim() : '';
 
       if (category && businessType) {
-        if (!hierarchy[category]) {
-          hierarchy[category] = new Set();
-        }
-        hierarchy[category].add(businessType);
+        addUniqueToHierarchy(category, businessType);
       }
     }
   }
 }
-*/
 
 
 
 // Force inject Legal / Law Firm so it can be previewed even if not in CSV
-if (!hierarchy['Finance and Professional Services']) {
-  hierarchy['Finance and Professional Services'] = new Set();
-}
-hierarchy['Finance and Professional Services'].add('Legal / Law Firm');
+addUniqueToHierarchy('Finance and Professional Services', 'Legal / Law Firm');
 
 // Map source category back to CSV category (for deduplication when scanning source)
 const getTargetCategoryKebab = (sourceKebab) => {
@@ -188,8 +196,48 @@ if (fs.existsSync(sourceTemplatesDir)) {
 }
 */
 
-// We no longer scan src/templates to add to the hierarchy.
-// business_templates.csv is the STRICT single source of truth. Any folder not defined there will be deleted.
+// SCAN src/templates DIRECTORY FOR MANUALLY ADDED FOLDERS
+if (fs.existsSync(templatesDir)) {
+  const catFolders = fs.readdirSync(templatesDir);
+  for (const cat of catFolders) {
+    const catPath = path.join(templatesDir, cat);
+    if (fs.statSync(catPath).isDirectory()) {
+      
+      // Check if this is actually a Business Type folder (contains .tsx directly)
+      const hasTsxFiles = fs.readdirSync(catPath).some(f => f.endsWith('.tsx'));
+      
+      if (hasTsxFiles) {
+        // Auto-correct: The user skipped the Category folder.
+        // We will assign it to 'General' and move the folder.
+        const displayBiz = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        const { targetCat } = addUniqueToHierarchy('General', null);
+        addUniqueToHierarchy(targetCat, displayBiz);
+        
+        const generalDir = path.join(templatesDir, 'general');
+        if (!fs.existsSync(generalDir)) fs.mkdirSync(generalDir, { recursive: true });
+        
+        const newBizDir = path.join(generalDir, cat);
+        console.log(`[Auto-Correct] Moving ${catPath} to ${newBizDir}`);
+        
+        // Move the folder to enforce the 3-level structure
+        fs.renameSync(catPath, newBizDir);
+      } else {
+        // It's a normal Category folder
+        const displayCat = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        const { targetCat } = addUniqueToHierarchy(displayCat, null);
+
+        const bizFolders = fs.readdirSync(catPath);
+        for (const biz of bizFolders) {
+          const bizPath = path.join(catPath, biz);
+          if (fs.statSync(bizPath).isDirectory()) {
+            const displayBiz = biz.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            addUniqueToHierarchy(targetCat, displayBiz);
+          }
+        }
+      }
+    }
+  }
+}
 
 if (!fs.existsSync(templatesDir)) {
   fs.mkdirSync(templatesDir, { recursive: true });

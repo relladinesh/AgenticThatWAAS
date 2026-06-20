@@ -19,15 +19,34 @@ export default defineConfig({
     {
       name: 'force-generate-on-build',
       buildStart() {
-        console.log('🚀 [Vite Plugin] Forcing template cleanup & generation...');
+        console.log('🚀 [Vite Plugin] Forcing template generation...');
         try {
           const isWindows = /^win/.test(process.platform);
           const nodeCmd = isWindows ? 'node.exe' : 'node';
-          execSync(`${nodeCmd} clean-folders.js && ${nodeCmd} generate.js`, { cwd: process.cwd(), stdio: 'inherit' });
+          execSync(`${nodeCmd} generate.js`, { cwd: process.cwd(), stdio: 'inherit' });
           console.log('✅ [Vite Plugin] Generation complete!');
         } catch (error) {
           console.error('❌ [Vite Plugin] Failed to generate templates:', error);
         }
+      }
+    },
+    {
+      name: 'auto-run-add-on-start',
+      configureServer(server) {
+        server.httpServer?.once('listening', () => {
+          console.log('\n🤖 [Vite Plugin] Dev server is live! Automatically starting background screenshot & sync engine...\n');
+          const isWindows = /^win/.test(process.platform);
+          const npmCmd = isWindows ? 'npm.cmd' : 'npm';
+          
+          // We use spawn with stdio: 'inherit' so you can see the screenshot logs directly in your terminal
+          const child = spawn(npmCmd, ['run', 'add'], { cwd: process.cwd(), stdio: 'inherit', shell: true });
+          
+          child.on('close', (code) => {
+             if (code !== 0 && code !== 1) { // 1 is usually git 'nothing to commit'
+                console.log(`⚠️ Background sync completed with code ${code}.`);
+             }
+          });
+        });
       }
     },
     {
@@ -40,7 +59,7 @@ export default defineConfig({
               console.log('🔄 Triggered Git Push from UI...');
               const isWindows = /^win/.test(process.platform);
               const nodeCmd = isWindows ? 'node.exe' : 'node';
-              const gitCmd = `${nodeCmd} clean-folders.js && ${nodeCmd} generate.js && git add "data csv/" "src/templates/" generate.js clean-folders.js push-registry.js package.json vite.config.ts && git commit -m "Auto-sync templates from local UI" && git push`;
+              const gitCmd = `${nodeCmd} generate.js && git add "data csv/" "src/templates/" generate.js push-registry.js package.json vite.config.ts && git commit -m "Auto-sync templates from local UI" && git pull --rebase && git push`;
 
               exec(gitCmd, { cwd: process.cwd() }, (error: any, stdout: string, stderr: string) => {
                 if (error && !stdout.includes('nothing to commit') && !stderr.includes('nothing to commit')) {
