@@ -304,10 +304,10 @@ export default function Showcase() {
             >
               <div className="mb-8 md:mb-12">
                 <button 
-                  onClick={() => navigate('/showcase')}
-                  className="flex items-center gap-2 text-sm text-slate-500 hover:text-[#2563EB] mb-6 transition-colors font-medium"
+                  onClick={() => navigate('/b2b')}
+                  className="flex lg:hidden items-center gap-2 text-sm text-slate-500 hover:text-[#2563EB] mb-6 transition-colors font-medium"
                 >
-                  <ArrowLeft className="w-4 h-4" /> Back to Showcase
+                  <ArrowLeft className="w-4 h-4" /> Back to Dashboard
                 </button>
                 <div className="flex flex-wrap items-center gap-2 text-sm text-[#2563EB] mb-3 font-medium">
                   <span className="capitalize bg-[#2563EB]/10 px-3 py-1 rounded-full">{activeCatName?.replace(/-/g, ' ')}</span>

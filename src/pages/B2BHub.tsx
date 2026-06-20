@@ -6,22 +6,17 @@ import { motion } from 'framer-motion';
 export default function B2BHub() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-20">
-      <div className="bg-white border-b border-slate-200 sticky top-0 z-20 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link to="/" className="text-slate-500 hover:text-slate-900 transition-colors p-2 rounded-full hover:bg-slate-100">
-              <ArrowLeft className="w-5 h-5" />
-            </Link>
-            <div>
-              <h1 className="text-xl font-bold text-slate-800">TinitiateAI Platform</h1>
-              <p className="text-sm text-slate-500">Manage your templates and bulk generate websites.</p>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="py-12">
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 relative">
+        <Link to="/" className="inline-flex items-center gap-2 text-slate-500 hover:text-[#2563EB] transition-colors font-semibold group mb-8">
+          <div className="p-2 bg-white rounded-full shadow-sm border border-slate-200 group-hover:border-[#2563EB]/30 group-hover:shadow-md transition-all">
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+          </div>
+          Back to Home
+        </Link>
+        
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Select a Tool</h2>
             <p className="text-slate-500 max-w-2xl mx-auto text-lg">Access the Template Gallery or use the Website Generator engine to bulk process new leads.</p>
