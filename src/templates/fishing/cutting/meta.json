@@ -1,0 +1,10 @@
+{
+  "name": "cutting",
+  "category": "fishing",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "t1"
+  ]
+}
