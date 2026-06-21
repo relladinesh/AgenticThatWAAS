@@ -220,7 +220,17 @@ if (fs.existsSync(templatesDir)) {
         console.log(`[Auto-Correct] Moving ${catPath} to ${newBizDir}`);
         
         // Move the folder to enforce the 3-level structure
-        fs.renameSync(catPath, newBizDir);
+        try {
+          fs.renameSync(catPath, newBizDir);
+        } catch (err) {
+          console.error(`[Warning] Could not rename ${catPath}. Retrying with cp/rm...`);
+          try {
+            fs.cpSync(catPath, newBizDir, { recursive: true });
+            fs.rmSync(catPath, { recursive: true, force: true });
+          } catch (e) {
+            console.error(`[Error] Failed to move ${catPath} completely. Make sure the folder is not open in your editor!`, e.message);
+          }
+        }
       } else {
         // It's a normal Category folder
         const displayCat = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');

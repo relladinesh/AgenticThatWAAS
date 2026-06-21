@@ -33,9 +33,9 @@ function App() {
             <Route path="/b2b/webgene" element={<ProtectedRoute><WebGenerator /></ProtectedRoute>} />
           </Route>
           
-          {/* Client Routes */}
-          <Route path="/templates/:category/:business/:template" element={<ProtectedRoute><TemplateViewer /></ProtectedRoute>} />
-          <Route path="/templates/:category/:business/:template/:slug" element={<ProtectedRoute><TemplateViewer /></ProtectedRoute>} />
+          {/* Client Routes - Public for Previewing */}
+          <Route path="/templates/:category/:business/:template" element={<TemplateViewer />} />
+          <Route path="/templates/:category/:business/:template/:slug" element={<TemplateViewer />} />
         </Routes>
       </Router>
     </AuthProvider>
