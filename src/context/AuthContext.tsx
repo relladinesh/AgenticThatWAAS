@@ -67,6 +67,42 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     localStorage.removeItem('auth_user');
   };
 
+  useEffect(() => {
+    const checkSession = () => {
+      const savedUser = localStorage.getItem('auth_user');
+      if (savedUser) {
+        try {
+          const parsed = JSON.parse(savedUser);
+          if (!parsed.expiresAt || Date.now() >= parsed.expiresAt) {
+            setUser(null);
+            localStorage.removeItem('auth_user');
+          }
+        } catch (e) {
+          setUser(null);
+          localStorage.removeItem('auth_user');
+        }
+      } else {
+        setUser(null);
+      }
+    };
+
+    // Check expiration every 5 seconds
+    const intervalId = setInterval(checkSession, 5000);
+
+    // Sync auth state across multiple browser tabs
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'auth_user') {
+        checkSession();
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      clearInterval(intervalId);
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
   return (
     <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>
       {children}
