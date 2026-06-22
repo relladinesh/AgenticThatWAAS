@@ -66,7 +66,5 @@ id,category,business_type,template_name,template_path,template_code
 65,"home services","plumber","t1","/templates/home-services/plumber/t1","p-t1"
 66,"finance and professional services","legal / law firm","t1","/templates/finance-and-professional-services/legal-law-firm/t1","l-t1"
 67,"finance and professional services","legal / law firm","t2","/templates/finance-and-professional-services/legal-law-firm/t2","l-t2"
-68,"finance and professional services","legal aw firm","t1","/templates/finance-and-professional-services/legal-aw-firm/t1","laf-t1"
-69,"finance and professional services","legal aw firm","t2","/templates/finance-and-professional-services/legal-aw-firm/t2","laf-t2"
 70,"general","plumber","t1","/templates/general/plumber/t1","p-t1"
 80,"hhj bn ","bbn bn ","bb","/templates/hhj-bn/bbn-bn/t80","bb-t80"
