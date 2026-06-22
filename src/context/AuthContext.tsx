@@ -24,7 +24,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const savedUser = localStorage.getItem('auth_user');
     if (savedUser) {
       try {
-        return JSON.parse(savedUser);
+        const parsed = JSON.parse(savedUser);
+        // Check if the session has an expiration and is still valid
+        if (parsed.expiresAt && Date.now() < parsed.expiresAt) {
+          return parsed.user as User;
+        } else {
+          // Clear expired or invalid session format
+          localStorage.removeItem('auth_user');
+          return null;
+        }
       } catch (e) {
         return null;
       }
@@ -42,7 +50,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // Exclude password from the stored user object
       const { password: _, ...userWithoutPassword } = foundUser;
       setUser(userWithoutPassword as User);
-      localStorage.setItem('auth_user', JSON.stringify(userWithoutPassword));
+      
+      // Store user data with a 24-hour expiration timestamp
+      const authData = {
+        user: userWithoutPassword,
+        expiresAt: Date.now() + 24 * 60 * 60 * 1000 // 24 hours in milliseconds
+      };
+      localStorage.setItem('auth_user', JSON.stringify(authData));
       return true;
     }
     return false;
