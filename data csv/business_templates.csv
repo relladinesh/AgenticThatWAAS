@@ -37,7 +37,6 @@ id,category,business_type,template_name,template_path,template_code
 36,"retail","electronics / mobile store","t1","/templates/retail/electronics-mobile-store/t1","e-t1"
 37,"retail","electronics / mobile store","t2","/templates/retail/electronics-mobile-store/t2","e-t2"
 38,"retail","electronics / mobile store","t3","/templates/retail/electronics-mobile-store/t3","e-t3"
-39,"retail","drone store","t1","/templates/retail/drone-store/t1","ds-t1"
 40,"finance","insurance agency / broker","t1","/templates/finance/insurance-agency-broker/t1","ia-t1"
 41,"finance","insurance agency / broker","t2","/templates/finance/insurance-agency-broker/t2","ia-t2"
 42,"finance","insurance agency / broker","t3","/templates/finance/insurance-agency-broker/t3","ia-t3"
