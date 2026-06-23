@@ -260,5 +260,21 @@
     "role": "client",
     "category": "gfgtfd",
     "businessType": "gschsvchav"
+  },
+  {
+    "id": "33",
+    "username": "kabir",
+    "password": "kabir123",
+    "role": "client",
+    "category": "client",
+    "businessType": "client123"
+  },
+  {
+    "id": "34",
+    "username": "karan",
+    "password": "karan123",
+    "role": "client",
+    "category": "client",
+    "businessType": "client123"
   }
 ]
