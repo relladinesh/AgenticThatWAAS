@@ -300,5 +300,21 @@
     "role": "client",
     "category": "education",
     "businessType": "school"
+  },
+  {
+    "id": "38",
+    "username": "amit",
+    "password": "amit123",
+    "role": "client",
+    "category": "a",
+    "businessType": "a1"
+  },
+  {
+    "id": "39",
+    "username": "vihaan",
+    "password": "vihaan123",
+    "role": "client",
+    "category": "a",
+    "businessType": "a1"
   }
 ]
