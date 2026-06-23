@@ -300,5 +300,21 @@
     "role": "client",
     "category": "admi",
     "businessType": "admi"
+  },
+  {
+    "id": "42",
+    "username": "isha39",
+    "password": "isha39123",
+    "role": "client",
+    "category": "fcfgcf",
+    "businessType": "hvghvg"
+  },
+  {
+    "id": "43",
+    "username": "vivaan",
+    "password": "vivaan123",
+    "role": "client",
+    "category": "fcfgcf",
+    "businessType": "hvghvg"
   }
 ]
