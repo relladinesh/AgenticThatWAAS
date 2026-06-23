@@ -300,5 +300,21 @@
     "role": "client",
     "category": "admi",
     "businessType": "admi"
+  },
+  {
+    "id": "42",
+    "username": "aarav",
+    "password": "aarav123",
+    "role": "client",
+    "category": "bbb",
+    "businessType": "n"
+  },
+  {
+    "id": "43",
+    "username": "simran36",
+    "password": "simran36123",
+    "role": "client",
+    "category": "bbb",
+    "businessType": "n"
   }
 ]
