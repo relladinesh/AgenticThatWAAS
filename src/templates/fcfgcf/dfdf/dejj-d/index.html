@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brew & Bean | Artisanal Coffee</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container nav-container">
+            <div class="brand">Brew & Bean</div>
+            <nav class="nav">
+                <a href="#about">Our Story</a>
+                <a href="#menu">Menu</a>
+                <a href="#visit">Visit Us</a>
+            </nav>
+            <button class="order-btn">Order Online</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-overlay"></div>
+            <div class="container hero-content">
+                <span class="subtitle">EST. 2024</span>
+                <h1>Crafted with Passion. <br> Served with Love.</h1>
+                <p>Experience the finest single-origin beans roasted to perfection in the heart of the city.</p>
+                <div class="hero-buttons">
+                    <a href="#menu" class="btn btn-primary">View Menu</a>
+                    <a href="#about" class="btn btn-outline">Our Story</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="menu" class="menu-section">
+            <div class="container text-center">
+                <h2 class="section-title">Signature Blends</h2>
+                <div class="menu-grid">
+                    <div class="menu-item" onclick="showDetails('Espresso')">
+                        <img src="https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Espresso">
+                        <h3>Classic Espresso</h3>
+                        <p class="price">$4.50</p>
+                    </div>
+                    <div class="menu-item" onclick="showDetails('Latte')">
+                        <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Latte">
+                        <h3>Vanilla Bean Latte</h3>
+                        <p class="price">$5.50</p>
+                    </div>
+                    <div class="menu-item" onclick="showDetails('Pour Over')">
+                        <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Pour Over">
+                        <h3>Ethiopian Pour Over</h3>
+                        <p class="price">$6.00</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
