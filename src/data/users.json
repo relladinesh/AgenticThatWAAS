@@ -244,5 +244,21 @@
     "role": "client",
     "category": "ghvgc",
     "businessType": "g-cfvcvfcfvc"
+  },
+  {
+    "id": "31",
+    "username": "simran",
+    "password": "simran123",
+    "role": "client",
+    "category": "gfgtfd",
+    "businessType": "gschsvchav"
+  },
+  {
+    "id": "32",
+    "username": "rohan",
+    "password": "rohan123",
+    "role": "client",
+    "category": "gfgtfd",
+    "businessType": "gschsvchav"
   }
 ]
