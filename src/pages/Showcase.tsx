@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, ChevronDown, ChevronRight, ChevronLeft, ExternalLink, Eye, LayoutTemplate, ArrowLeft, Menu, X, HeartPulse, Car, ShoppingBag, Monitor, Home, Scissors, BookOpen, Utensils, Briefcase, Building2 } from 'lucide-react';
+import { Search, ChevronDown, ChevronRight, ChevronLeft, ExternalLink, Eye, LayoutTemplate, ArrowLeft, Menu, X, HeartPulse, Car, ShoppingBag, Monitor, Home, Scissors, BookOpen, Utensils, Briefcase, Building2, RefreshCw } from 'lucide-react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import rawCsv from '../../data csv/business_templates.csv?raw';
@@ -59,26 +59,49 @@ const initialRegistry = parseCSV(rawCsv);
 
 export default function Showcase() {
   const [registry, setRegistry] = useState(initialRegistry);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [lastKnownCsv, setLastKnownCsv] = useState(rawCsv);
 
-  // Poll for live updates to the CSV so users don't need to manually refresh the page
-  // after Vercel finishes building
-  useEffect(() => {
-    const fetchLiveCsv = async () => {
+  const checkForUpdates = async () => {
+    if (isSyncing) return;
+    setIsSyncing(true);
+
+    let attempts = 0;
+    const maxAttempts = 24; // 2 minutes total (5s * 24)
+    
+    const pollInterval = setInterval(async () => {
+      attempts++;
       try {
         const res = await fetch(`/business_templates.csv?t=${Date.now()}`);
         if (res.ok) {
           const text = await res.text();
-          const newRegistry = parseCSV(text);
-          setRegistry(newRegistry);
+          if (text !== lastKnownCsv) {
+            // Found a change!
+            clearInterval(pollInterval);
+            const newRegistry = parseCSV(text);
+            setRegistry(newRegistry);
+            setLastKnownCsv(text);
+            setIsSyncing(false);
+            
+            // Expand all categories so the new one shows
+            const initial: Record<string, boolean> = {};
+            Object.keys(newRegistry).forEach(cat => initial[cat] = true);
+            setExpandedCats(initial);
+            
+            alert('Success! New templates have been loaded live.');
+            return;
+          }
         }
-      } catch (err) {
-        // Silently fail, keep using existing registry
-      }
-    };
+      } catch (err) {}
 
-    const interval = setInterval(fetchLiveCsv, 10000); // Check every 10 seconds
-    return () => clearInterval(interval);
-  }, []);
+      if (attempts >= maxAttempts) {
+        clearInterval(pollInterval);
+        setIsSyncing(false);
+        alert('Timeout: Could not find any new templates yet. Vercel might still be building.');
+      }
+    }, 5000);
+  };
+
   const { category: urlCategory, business: urlBusiness } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -314,14 +337,34 @@ export default function Showcase() {
           )}
         </div>
 
-        <div className="p-6 md:p-10 max-w-7xl mx-auto w-full">
+        <div className="p-6 md:p-10 max-w-7xl mx-auto w-full relative">
+          <div className="absolute top-6 right-6 md:top-10 md:right-10 z-20">
+            <button
+              onClick={checkForUpdates}
+              disabled={isSyncing}
+              className="flex items-center gap-2 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 shadow-sm border border-indigo-100"
+            >
+              {isSyncing ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+                  Waiting for Vercel...
+                </>
+              ) : (
+                <>
+                  <RefreshCw className="w-4 h-4" />
+                  Load New Templates
+                </>
+              )}
+            </button>
+          </div>
+
           {currentTemplates ? (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               key={`${activeCatName}-${activeBizName}`}
             >
-              <div className="mb-8 md:mb-12">
+              <div className="mb-8 md:mb-12 pt-12 md:pt-0">
                 <button 
                   onClick={() => navigate('/b2b')}
                   className="flex lg:hidden items-center gap-2 text-sm text-slate-500 hover:text-[#2563EB] mb-6 transition-colors font-medium"
