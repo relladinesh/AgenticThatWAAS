@@ -75,3 +75,4 @@ id,category,business_type,template_name,template_path,template_code
 74,"fcfgcf","dfdf","t1","/templates/fcfgcf/dfdf/t1","d-t1"
 75,"dddes","QQQ","2","/templates/dddes/qqq/2/index.html","q-2"
 76,"fcfgcf","dfdf","66","/templates/fcfgcf/dfdf/66/index.html","d-66"
+77,"fcfgcf","dfdf","w2","/templates/fcfgcf/dfdf/w2/index.html","d-w2"
