@@ -196,5 +196,21 @@
     "role": "client",
     "category": "carrr",
     "businessType": "carrrr"
+  },
+  {
+    "id": "25",
+    "username": "gauri",
+    "password": "gauri123",
+    "role": "client",
+    "category": "dedhvh",
+    "businessType": "bn-svb"
+  },
+  {
+    "id": "26",
+    "username": "diya",
+    "password": "diya123",
+    "role": "client",
+    "category": "dedhvh",
+    "businessType": "bn-svb"
   }
 ]
