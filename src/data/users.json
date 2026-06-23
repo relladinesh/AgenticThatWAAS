@@ -212,5 +212,21 @@
     "role": "client",
     "category": "dedhvh",
     "businessType": "bn-svb"
+  },
+  {
+    "id": "27",
+    "username": "karan",
+    "password": "karan123",
+    "role": "client",
+    "category": "gfgfhg",
+    "businessType": "fvccvcxv"
+  },
+  {
+    "id": "28",
+    "username": "diya",
+    "password": "diya123",
+    "role": "client",
+    "category": "gfgfhg",
+    "businessType": "fvccvcxv"
   }
 ]
