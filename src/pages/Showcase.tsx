@@ -48,7 +48,7 @@ const parseCSV = (csvStr: string) => {
     if (tpl) {
       const existing = reg[cat][biz].templates.find((t: any) => t.id === tpl);
       if (!existing) {
-        reg[cat][biz].templates.push({ id: tpl, code: code || '' });
+        reg[cat][biz].templates.push({ id: tpl, path: path || '', code: code || '' });
       }
     }
   }
@@ -324,7 +324,7 @@ export default function Showcase() {
                     const tpl = tplObj.id || tplObj;
                     const tplCode = tplObj.code || `Template ${tpl}`;
                     const urlSlug = tplObj.code ? tplObj.code.toLowerCase() : tpl;
-                    const toPath = `/templates/${currentTemplates.path}/${urlSlug}`;
+                    const toPath = tplObj.path || `/templates/${currentTemplates.path}/${urlSlug}`;
 
                     return (
                       <motion.div
