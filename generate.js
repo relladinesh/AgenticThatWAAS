@@ -307,13 +307,35 @@ for (const [category, businessTypes] of Object.entries(hierarchy)) {
     }
 
     // After copying, scan the local bizDir to include any files that were already there
+    // We now look for both .tsx files AND directories containing index.html
+    const isHtmlTemplate = {};
     if (fs.existsSync(bizDir)) {
-      const localFiles = fs.readdirSync(bizDir);
-      for (const file of localFiles) {
-        if (file.endsWith('.tsx') && file.startsWith('t')) {
-          const templateName = file.replace('.tsx', '');
+      const localItems = fs.readdirSync(bizDir);
+      for (const item of localItems) {
+        const itemPath = path.join(bizDir, item);
+        const stat = fs.statSync(itemPath);
+        
+        if (stat.isFile() && item.endsWith('.tsx') && item.startsWith('t')) {
+          const templateName = item.replace('.tsx', '');
           if (!foundTemplates.includes(templateName)) {
             foundTemplates.push(templateName);
+          }
+        } else if (stat.isDirectory()) {
+          // Check if it's an HTML template (has index.html)
+          const indexPath = path.join(itemPath, 'index.html');
+          if (fs.existsSync(indexPath)) {
+            const templateName = item; // Folder name is the template ID (e.g. 'vbgcfgff')
+            if (!foundTemplates.includes(templateName)) {
+              foundTemplates.push(templateName);
+              isHtmlTemplate[templateName] = true;
+              
+              // Copy to public/templates so Vercel can serve it
+              const publicBizDir = path.join(__dirname, 'public', 'templates', catKebab, bizKebab, templateName);
+              if (!fs.existsSync(publicBizDir)) {
+                fs.mkdirSync(publicBizDir, { recursive: true });
+              }
+              fs.cpSync(itemPath, publicBizDir, { recursive: true });
+            }
           }
         }
       }
@@ -406,7 +428,15 @@ for (const [category, businesses] of Object.entries(templatesRegistry)) {
   for (const [businessName, data] of Object.entries(businesses)) {
     if (data.templates && data.templates.length > 0) {
       for (const tpl of data.templates) {
-        const fullPath = `/templates/${data.path}/${tpl}`;
+        // If it was detected as an HTML template, the path should include /index.html
+        // We know if it's HTML if there's a directory in src/templates with index.html
+        const srcTplDir = path.join(__dirname, 'src', 'templates', data.path, tpl);
+        const isHtml = fs.existsSync(srcTplDir) && fs.statSync(srcTplDir).isDirectory() && fs.existsSync(path.join(srcTplDir, 'index.html'));
+        
+        const fullPath = isHtml 
+          ? `/templates/${data.path}/${tpl}/index.html`
+          : `/templates/${data.path}/${tpl}`;
+          
         const tplCode = `${getInitials(businessName)}-${tpl.toUpperCase()}`;
         const row = `${sno},"${category.toLowerCase()}","${businessName.toLowerCase()}","${tpl.toLowerCase()}","${fullPath.toLowerCase()}","${tplCode.toLowerCase()}"`;
         csvOutput += row + '\n';
