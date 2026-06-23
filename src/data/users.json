@@ -300,21 +300,5 @@
     "role": "client",
     "category": "education",
     "businessType": "school"
-  },
-  {
-    "id": "38",
-    "username": "simran",
-    "password": "simran123",
-    "role": "client",
-    "category": "ghv-ghv-g-vgv-gf",
-    "businessType": "b-vb-vb-vb-vbgcfgff"
-  },
-  {
-    "id": "39",
-    "username": "vikram",
-    "password": "vikram123",
-    "role": "client",
-    "category": "ghv-ghv-g-vgv-gf",
-    "businessType": "b-vb-vb-vb-vbgcfgff"
   }
 ]
