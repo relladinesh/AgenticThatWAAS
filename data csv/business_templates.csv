@@ -66,4 +66,3 @@ id,category,business_type,template_name,template_path,template_code
 69,"client","client123","v1","/templates/client/client123/cl-v1/index.html","cl-v1"
 70,"client","client123","v1","/templates/client/client123/cl-v1/index.html","cl-v1"
 71,"clcllc","clclcl","clc","/templates/clcllc/clclcl/clc-clc/index.html","clc-clc"
-72,"ghvghv","b b","gv","/templates/ghvghv/b-b/bb-gv/index.html","bb-gv"
