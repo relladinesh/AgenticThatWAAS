@@ -9,10 +9,8 @@ const toKebabCase = (str: string) => {
   if (!str) return '';
   return str
     .toLowerCase()
-    .replace(/&/g, 'and')
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
     .trim();
 };
 
@@ -79,7 +77,7 @@ export default function Showcase() {
   let activeBizName: string | null = null;
 
   if (urlCategory && urlBusiness) {
-    const searchPath = `${urlCategory}/${urlBusiness}`;
+    const searchPath = `${toKebabCase(urlCategory)}/${toKebabCase(urlBusiness)}`;
     for (const [cat, bizObj] of Object.entries(registry)) {
       for (const [biz, data] of Object.entries(bizObj as any)) {
         if ((data as any).path === searchPath) {
@@ -91,7 +89,7 @@ export default function Showcase() {
       }
     }
   } else if (user?.role === 'client' && user.category && user.businessType) {
-    const searchPath = `${user.category}/${user.businessType}`;
+    const searchPath = `${toKebabCase(user.category)}/${toKebabCase(user.businessType)}`;
     for (const [cat, bizObj] of Object.entries(registry)) {
       for (const [biz, data] of Object.entries(bizObj as any)) {
         if ((data as any).path === searchPath) {
@@ -120,7 +118,7 @@ export default function Showcase() {
     // Client specific filtering
     if (user?.role === 'client' && user.category && user.businessType) {
       let found = false;
-      const searchPath = `${user.category}/${user.businessType}`;
+      const searchPath = `${toKebabCase(user.category)}/${toKebabCase(user.businessType)}`;
       for (const [cat, bizObj] of Object.entries(registry)) {
         for (const [biz, data] of Object.entries(bizObj as any)) {
           if ((data as any).path === searchPath) {
