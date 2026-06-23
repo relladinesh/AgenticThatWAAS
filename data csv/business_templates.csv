@@ -65,3 +65,4 @@ id,category,business_type,template_name,template_path,template_code
 66,"finance and professional services","legal / law firm","t1","/templates/finance-and-professional-services/legal-law-firm/t1","l-t1"
 67,"finance and professional services","legal / law firm","t2","/templates/finance-and-professional-services/legal-law-firm/t2","l-t2"
 4,"carrr","carrrr","t1","/templates/carrr/carrrr/c-t4/index.html","c-t4"
+5,"carrr","carrrr","t1","/templates/carrr/carrrr/c-t5/index.html","c-t5"

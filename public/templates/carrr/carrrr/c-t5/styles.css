@@ -1,0 +1,156 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #0a0a0a;
+    color: #ffffff;
+}
+
+h1, h2, h3 {
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background-color: rgba(0, 0, 0, 0.9);
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 28px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.logo span {
+    color: #e63946;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #e63946;
+}
+
+.cta-btn {
+    background: transparent;
+    border: 2px solid #e63946;
+    color: #e63946;
+    padding: 10px 25px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.cta-btn:hover {
+    background: #e63946;
+    color: #fff;
+}
+
+.hero {
+    height: 100vh;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.hero-content h1 {
+    font-size: 70px;
+    margin-bottom: 20px;
+    letter-spacing: 4px;
+}
+
+.hero-content h1 span {
+    color: #e63946;
+}
+
+.hero-content p {
+    font-size: 20px;
+    max-w: 600px;
+    margin: 0 auto 40px;
+    color: #ccc;
+    line-height: 1.6;
+}
+
+.cta-btn.primary {
+    background: #e63946;
+    color: #fff;
+    padding: 15px 40px;
+    font-size: 18px;
+    border: none;
+}
+
+.cta-btn.primary:hover {
+    background: #b32b36;
+}
+
+.classes-section {
+    padding: 100px 50px;
+    text-align: center;
+    background: #111;
+}
+
+.classes-section h2 {
+    font-size: 40px;
+    margin-bottom: 50px;
+    color: #fff;
+}
+
+.class-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-w: 1200px;
+    margin: 0 auto;
+}
+
+.class-card {
+    background: #1a1a1a;
+    padding: 40px 30px;
+    border-bottom: 4px solid #e63946;
+    transition: transform 0.3s;
+}
+
+.class-card:hover {
+    transform: translateY(-10px);
+}
+
+.class-card h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #e63946;
+}
+
+.class-card p {
+    color: #999;
+    line-height: 1.6;
+}
