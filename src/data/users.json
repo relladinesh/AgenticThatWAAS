@@ -316,5 +316,21 @@
     "role": "client",
     "category": "fcfgcf",
     "businessType": "hvghvg"
+  },
+  {
+    "id": "44",
+    "username": "vihaan13",
+    "password": "vihaan13123",
+    "role": "client",
+    "category": "fcfgcf",
+    "businessType": "dddd"
+  },
+  {
+    "id": "45",
+    "username": "ananya",
+    "password": "ananya123",
+    "role": "client",
+    "category": "fcfgcf",
+    "businessType": "dddd"
   }
 ]
