@@ -14,18 +14,32 @@ export default function TemplateViewer() {
       .catch((e) => {
         console.error("Failed to load template:", e);
         return { 
-          default: () => (
+          default: () => {
+            React.useEffect(() => {
+              alert("Template is still building on Vercel! Please wait 1-2 minutes and refresh the page.");
+            }, []);
+            return (
             <div className="min-h-screen flex items-center justify-center bg-slate-50 text-slate-500 p-8 text-center flex-col gap-4">
               <div className="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mb-4">
                 <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-semibold text-slate-900">Template not found</h2>
+              <h2 className="text-2xl font-semibold text-slate-900">Template is Still Building</h2>
               <p>Path: <code>/templates/{category}/{business}/{template}</code></p>
-              <p className="text-sm max-w-md">Make sure you have run the generation script to create the template files.</p>
+              <div className="text-sm max-w-md bg-amber-50 text-amber-800 p-4 rounded-xl border border-amber-200 mt-2">
+                <p className="font-semibold mb-1">Why am I seeing this?</p>
+                <p>You just uploaded this template to the Admin Dashboard, but Vercel needs 1-2 minutes to compile the new React files into the live website.</p>
+              </div>
+              <button 
+                onClick={() => window.location.reload()}
+                className="mt-4 px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium transition-colors"
+              >
+                Refresh Page
+              </button>
             </div>
-          ) 
+            );
+          }
         };
       })
   );
