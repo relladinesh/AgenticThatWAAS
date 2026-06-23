@@ -183,7 +183,6 @@
   },
   {
     "id": "23",
-<<<<<<< HEAD
     "username": "varun",
     "password": "varun123",
     "role": "client",
@@ -277,7 +276,9 @@
     "role": "client",
     "category": "client",
     "businessType": "client123"
-=======
+  },
+  {
+    "id": "35",
     "username": "test_fff",
     "password": "password123",
     "role": "client",
@@ -285,7 +286,7 @@
     "businessType": "fishinggg"
   },
   {
-    "id": "24",
+    "id": "36",
     "username": "test_random",
     "password": "password123",
     "role": "client",
@@ -293,12 +294,11 @@
     "businessType": "Qghfsqtfstqftqf"
   },
   {
-    "id": "25",
+    "id": "37",
     "username": "school_admin",
     "password": "password123",
     "role": "client",
     "category": "education",
     "businessType": "school"
->>>>>>> 12497cb (Auto-sync templates and screenshots)
   }
 ]
