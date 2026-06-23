@@ -6,8 +6,9 @@
   "scripts": {
     "predev": "node generate.js",
     "dev": "vite",
-    "add": "node generate.js && node generate-screenshots.js && git add . && git commit -m \"Auto-sync templates and screenshots\" && git pull --rebase && git push",
-    "auto-sync": "node generate.js && git add . && git commit -m \"Auto-sync templates from local\" && git pull --rebase && git push",
+    "add": "node generate.js && node generate-screenshots.js && git add . && git commit -m \"Auto-sync templates and screenshots\" && git pull origin main --no-rebase && git push origin main",
+    "auto-sync": "node generate.js && git add . && git commit -m \"Auto-sync templates from local\" && git pull origin main --no-rebase && git push origin main",
+    "sync": "git add . && git commit -m \"Auto-sync code\" && git pull origin main --no-rebase && git push origin main",
     "build": "node generate.js && node push-registry.js && vite build",
     "preview": "vite preview"
   },
