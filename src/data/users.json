@@ -284,5 +284,21 @@
     "role": "client",
     "category": "a",
     "businessType": "a1"
+  },
+  {
+    "id": "40",
+    "username": "vihaan",
+    "password": "vihaan123",
+    "role": "client",
+    "category": "admi",
+    "businessType": "admi"
+  },
+  {
+    "id": "41",
+    "username": "diya",
+    "password": "diya123",
+    "role": "client",
+    "category": "admi",
+    "businessType": "admi"
   }
 ]
