@@ -401,9 +401,17 @@ export default function Showcase() {
                       >
                         <div className="aspect-[16/10] bg-slate-100 relative overflow-hidden">
                           <img
-                            src={`/previews/${currentTemplates.path}/${tplCode.toLowerCase().split('-').pop() || tplCode.toLowerCase()}.png?v=${new Date().getTime()}`}
+                            src={`/previews/${currentTemplates.path}/${tplCode.toLowerCase().split('-').pop() || tplCode.toLowerCase()}.png`}
                             onError={(e) => {
-                              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80';
+                              const target = e.target as HTMLImageElement;
+                              if (!target.dataset.triedThum) {
+                                target.dataset.triedThum = 'true';
+                                // The static image isn't deployed yet! Fallback to live thumbnail generation
+                                const siteUrl = `https://tinitiate-ai.vercel.app${actualPath}`;
+                                target.src = `https://image.thum.io/get/width/1200/crop/800/noanimate/${siteUrl}`;
+                              } else {
+                                target.src = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80';
+                              }
                             }}
                             alt={`${tplCode.toUpperCase()} Preview`}
                             className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"

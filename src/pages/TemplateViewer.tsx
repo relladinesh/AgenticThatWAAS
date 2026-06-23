@@ -25,11 +25,11 @@ export default function TemplateViewer() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-semibold text-slate-900">Template is Still Building</h2>
+              <h2 className="text-2xl font-semibold text-slate-900">Template Not Ready</h2>
               <p>Path: <code>/templates/{category}/{business}/{template}</code></p>
               <div className="text-sm max-w-md bg-amber-50 text-amber-800 p-4 rounded-xl border border-amber-200 mt-2">
-                <p className="font-semibold mb-1">Why am I seeing this?</p>
-                <p>You just uploaded this template to the Admin Dashboard, but Vercel needs 1-2 minutes to compile the new React files into the live website.</p>
+                <p className="font-semibold mb-1">Still Building?</p>
+                <p>If you just uploaded this to the Admin Dashboard, Vercel needs 1-2 minutes to compile it into the live website.</p>
               </div>
               <button 
                 onClick={() => window.location.reload()}
@@ -37,6 +37,16 @@ export default function TemplateViewer() {
               >
                 Refresh Page
               </button>
+              
+              <div className="mt-8 border-t pt-8">
+                <p className="text-sm text-slate-500 mb-4">Or is this an HTML Template?</p>
+                <a 
+                  href={`/templates/${category}/${business}/${actualTemplateFile}/index.html`}
+                  className="px-6 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 font-medium transition-colors inline-block"
+                >
+                  View as HTML
+                </a>
+              </div>
             </div>
             );
           }
