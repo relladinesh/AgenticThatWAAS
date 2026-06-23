@@ -358,7 +358,7 @@ export default function Showcase() {
                       >
                         <div className="aspect-[16/10] bg-slate-100 relative overflow-hidden">
                           <img
-                            src={`/previews/${currentTemplates.path}/${tpl}.png?v=${new Date().getTime()}`}
+                            src={`/previews/${currentTemplates.path}/${tplCode.toLowerCase().split('-').pop() || tplCode.toLowerCase()}.png?v=${new Date().getTime()}`}
                             onError={(e) => {
                               (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80';
                             }}
