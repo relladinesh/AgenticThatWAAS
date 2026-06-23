@@ -64,3 +64,4 @@ id,category,business_type,template_name,template_path,template_code
 67,"finance and professional services","legal / law firm","t2","/templates/finance-and-professional-services/legal-law-firm/t2","l-t2"
 68,"ghvgc","g cfvcvfcfvc","ghvghvghv","/templates/ghvgc/g-cfvcvfcfvc/ghvghvghv/index.html","ghvghvghv"
 69,"client","client123","v1","/templates/client/client123/cl-v1/index.html","cl-v1"
+70,"client","client123","v1","/templates/client/client123/cl-v1/index.html","cl-v1"
