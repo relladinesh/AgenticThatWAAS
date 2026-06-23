@@ -180,5 +180,21 @@
     "role": "client",
     "category": "home-services",
     "businessType": "plumber"
+  },
+  {
+    "id": "23",
+    "username": "varun",
+    "password": "varun123",
+    "role": "client",
+    "category": "carrr",
+    "businessType": "carrrr"
+  },
+  {
+    "id": "24",
+    "username": "diya",
+    "password": "diya123",
+    "role": "client",
+    "category": "carrr",
+    "businessType": "carrrr"
   }
 ]
