@@ -232,8 +232,8 @@ for (const [category, businessTypes] of Object.entries(hierarchy)) {
     if (fs.existsSync(sourceBizDir)) {
       const files = fs.readdirSync(sourceBizDir);
       for (const file of files) {
-        if (file.endsWith('.tsx') && file.startsWith('t')) {
-          const templateName = file.replace('.tsx', '');
+        if (file.endsWith('.tsx') || file.endsWith('.jsx')) {
+          const templateName = file.replace('.tsx', '').replace('.jsx', '');
           foundTemplates.push(templateName);
 
           // Copy and clean up Next.js specific things
@@ -266,8 +266,8 @@ for (const [category, businessTypes] of Object.entries(hierarchy)) {
         const itemPath = path.join(bizDir, item);
         const stat = fs.statSync(itemPath);
         
-        if (stat.isFile() && item.endsWith('.tsx') && item.startsWith('t')) {
-          const templateName = item.replace('.tsx', '');
+        if (stat.isFile() && (item.endsWith('.tsx') || item.endsWith('.jsx'))) {
+          const templateName = item.replace('.tsx', '').replace('.jsx', '');
           if (!foundTemplates.includes(templateName)) {
             foundTemplates.push(templateName);
           }
