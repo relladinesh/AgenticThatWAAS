@@ -364,77 +364,10 @@ for (const [category, businessTypes] of Object.entries(hierarchy)) {
 
 
 
-// Generate Business Templates CSV
-let csvOutput = "id,category,business_type,template_name,template_path,template_code\n";
-let newRecords = [];
-let sno = 1;
-
-const getInitials = (name) => {
-  let base = name.split(/[\/(]/)[0].trim();
-  base = base.replace(/-/g, ' ');
-  return base.split(/\s+/).filter(Boolean).map(w => w[0].toUpperCase()).join('');
-};
-
-for (const [category, businesses] of Object.entries(templatesRegistry)) {
-  for (const [businessName, data] of Object.entries(businesses)) {
-    if (data.templates && data.templates.length > 0) {
-      for (const tpl of data.templates) {
-        // If it was detected as an HTML template, the path should include /index.html
-        // We know if it's HTML if there's a directory in src/templates with index.html
-        const srcTplDir = path.join(__dirname, 'src', 'templates', data.path, tpl);
-        const isHtml = fs.existsSync(srcTplDir) && fs.statSync(srcTplDir).isDirectory() && fs.existsSync(path.join(srcTplDir, 'index.html'));
-        
-        const fullPath = isHtml 
-          ? `/templates/${data.path}/${tpl}/index.html`
-          : `/templates/${data.path}/${tpl}`;
-          
-        const tplCode = `${getInitials(businessName)}-${tpl.toUpperCase()}`;
-        const row = `${sno},"${category.toLowerCase()}","${businessName.toLowerCase()}","${tpl.toLowerCase()}","${fullPath.toLowerCase()}","${tplCode.toLowerCase()}"`;
-        csvOutput += row + '\n';
-        if (!existingRecords.has(row)) {
-          newRecords.push({ type: 'Template', category, businessName, detail: tpl });
-        }
-        sno++;
-      }
-    } else {
-      // Even if 0 templates, output a row with empty template info
-      const tplCode = `${getInitials(businessName)}-00`;
-      const row = `${sno},"${category.toLowerCase()}","${businessName.toLowerCase()}","","","${tplCode.toLowerCase()}"`;
-      csvOutput += row + '\n';
-      if (!existingRecords.has(row)) {
-        newRecords.push({ type: 'Business Type', category, businessName, detail: 'No templates yet' });
-      }
-      sno++;
-    }
-  }
-}
-
-try {
-  fs.writeFileSync(csvOutPath, csvOutput);
-} catch (error) {
-  if (error.code === 'EBUSY') {
-    console.error('\n❌ ERROR: Cannot update business_templates.csv because the file is open in another program (like Excel).');
-    console.error('Please close the file and run `npm run dev` again.\n');
-    process.exit(1);
-  } else {
-    throw error;
-  }
-}
+// Copy business_templates.csv to public so the frontend can poll it live
+const publicCsvPath = path.join(__dirname, 'public', 'business_templates.csv');
+fs.copyFileSync(csvOutPath, publicCsvPath);
 
 console.log('\n==================================================');
-console.log('🔄 SYNC COMPLETE: Website Generator Registry Updated');
+console.log('🔄 SYNC COMPLETE: Template folders prepared');
 console.log('==================================================');
-
-if (newRecords.length > 0) {
-  console.log('\n✨ NEW ADDITIONS DETECTED:');
-  newRecords.forEach(record => {
-    if (record.type === 'Template') {
-      console.log(`  + New Template: [${record.category}] ${record.businessName} -> ${record.detail.toUpperCase()}`);
-    } else {
-      console.log(`  + New Business: [${record.category}] ${record.businessName}`);
-    }
-  });
-  console.log();
-} else {
-  console.log('\n✓ No new categories or templates detected.\n');
-}

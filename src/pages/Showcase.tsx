@@ -55,9 +55,30 @@ const parseCSV = (csvStr: string) => {
   return reg;
 };
 
-const registry = parseCSV(rawCsv);
+const initialRegistry = parseCSV(rawCsv);
 
 export default function Showcase() {
+  const [registry, setRegistry] = useState(initialRegistry);
+
+  // Poll for live updates to the CSV so users don't need to manually refresh the page
+  // after Vercel finishes building
+  useEffect(() => {
+    const fetchLiveCsv = async () => {
+      try {
+        const res = await fetch(`/business_templates.csv?t=${Date.now()}`);
+        if (res.ok) {
+          const text = await res.text();
+          const newRegistry = parseCSV(text);
+          setRegistry(newRegistry);
+        }
+      } catch (err) {
+        // Silently fail, keep using existing registry
+      }
+    };
+
+    const interval = setInterval(fetchLiveCsv, 10000); // Check every 10 seconds
+    return () => clearInterval(interval);
+  }, []);
   const { category: urlCategory, business: urlBusiness } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
