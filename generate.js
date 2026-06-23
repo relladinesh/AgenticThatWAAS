@@ -196,58 +196,9 @@ if (fs.existsSync(sourceTemplatesDir)) {
 }
 */
 
-// SCAN src/templates DIRECTORY FOR MANUALLY ADDED FOLDERS
-if (fs.existsSync(templatesDir)) {
-  const catFolders = fs.readdirSync(templatesDir);
-  for (const cat of catFolders) {
-    const catPath = path.join(templatesDir, cat);
-    if (fs.statSync(catPath).isDirectory()) {
-      
-      // Check if this is actually a Business Type folder (contains .tsx directly)
-      const hasTsxFiles = fs.readdirSync(catPath).some(f => f.endsWith('.tsx'));
-      
-      if (hasTsxFiles) {
-        // Auto-correct: The user skipped the Category folder.
-        // We will assign it to 'General' and move the folder.
-        const displayBiz = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-        const { targetCat } = addUniqueToHierarchy('General', null);
-        addUniqueToHierarchy(targetCat, displayBiz);
-        
-        const generalDir = path.join(templatesDir, 'general');
-        if (!fs.existsSync(generalDir)) fs.mkdirSync(generalDir, { recursive: true });
-        
-        const newBizDir = path.join(generalDir, cat);
-        console.log(`[Auto-Correct] Moving ${catPath} to ${newBizDir}`);
-        
-        // Move the folder to enforce the 3-level structure
-        try {
-          fs.renameSync(catPath, newBizDir);
-        } catch (err) {
-          console.error(`[Warning] Could not rename ${catPath}. Retrying with cp/rm...`);
-          try {
-            fs.cpSync(catPath, newBizDir, { recursive: true });
-            fs.rmSync(catPath, { recursive: true, force: true });
-          } catch (e) {
-            console.error(`[Error] Failed to move ${catPath} completely. Make sure the folder is not open in your editor!`, e.message);
-          }
-        }
-      } else {
-        // It's a normal Category folder
-        const displayCat = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-        const { targetCat } = addUniqueToHierarchy(displayCat, null);
-
-        const bizFolders = fs.readdirSync(catPath);
-        for (const biz of bizFolders) {
-          const bizPath = path.join(catPath, biz);
-          if (fs.statSync(bizPath).isDirectory()) {
-            const displayBiz = biz.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-            addUniqueToHierarchy(targetCat, displayBiz);
-          }
-        }
-      }
-    }
-  }
-}
+// The src/templates folder scanning has been removed.
+// business_templates.csv is now the absolute Single Source of Truth.
+// The Admin dashboard explicitly updates the CSV, so we no longer need to guess from the filesystem.
 
 if (!fs.existsSync(templatesDir)) {
   fs.mkdirSync(templatesDir, { recursive: true });
