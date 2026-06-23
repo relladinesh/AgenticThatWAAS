@@ -1,10 +1,11 @@
 {
-  "name": "qghfsqtfstqftqf",
-  "category": "ghtftyhfgeydgydg",
+  "name": "Trone",
+  "category": "Ret",
   "theme": "Light",
   "responsive": true,
   "animations": true,
   "templates": [
-    "t1"
+    "t1",
+    "t81"
   ]
 }

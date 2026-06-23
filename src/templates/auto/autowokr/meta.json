@@ -1,10 +1,11 @@
 {
-  "name": "qghfsqtfstqftqf",
-  "category": "ghtftyhfgeydgydg",
+  "name": "Autowokr",
+  "category": "Auto",
   "theme": "Light",
   "responsive": true,
   "animations": true,
   "templates": [
+    "a-t1",
     "t1"
   ]
 }

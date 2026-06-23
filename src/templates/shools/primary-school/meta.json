@@ -1,10 +1,11 @@
 {
-  "name": "qghfsqtfstqftqf",
-  "category": "ghtftyhfgeydgydg",
+  "name": "Primary School",
+  "category": "Shools",
   "theme": "Light",
   "responsive": true,
   "animations": true,
   "templates": [
-    "t1"
+    "t1",
+    "t81"
   ]
 }
