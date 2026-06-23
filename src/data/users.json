@@ -230,22 +230,6 @@
     "businessType": "fvccvcxv"
   },
   {
-    "id": "29",
-    "username": "varun",
-    "password": "varun123",
-    "role": "client",
-    "category": "ghvgc",
-    "businessType": "g-cfvcvfcfvc"
-  },
-  {
-    "id": "30",
-    "username": "pooja",
-    "password": "pooja123",
-    "role": "client",
-    "category": "ghvgc",
-    "businessType": "g-cfvcvfcfvc"
-  },
-  {
     "id": "31",
     "username": "simran",
     "password": "simran123",
@@ -260,22 +244,6 @@
     "role": "client",
     "category": "gfgtfd",
     "businessType": "gschsvchav"
-  },
-  {
-    "id": "33",
-    "username": "kabir",
-    "password": "kabir123",
-    "role": "client",
-    "category": "client",
-    "businessType": "client123"
-  },
-  {
-    "id": "34",
-    "username": "karan",
-    "password": "karan123",
-    "role": "client",
-    "category": "client",
-    "businessType": "client123"
   },
   {
     "id": "35",
@@ -300,5 +268,37 @@
     "role": "client",
     "category": "education",
     "businessType": "school"
+  },
+  {
+    "id": "38",
+    "username": "amit",
+    "password": "amit123",
+    "role": "client",
+    "category": "a",
+    "businessType": "a1"
+  },
+  {
+    "id": "39",
+    "username": "vihaan",
+    "password": "vihaan123",
+    "role": "client",
+    "category": "a",
+    "businessType": "a1"
+  },
+  {
+    "id": "40",
+    "username": "vikram",
+    "password": "vikram123",
+    "role": "client",
+    "category": "aaa",
+    "businessType": "aa"
+  },
+  {
+    "id": "41",
+    "username": "ananya",
+    "password": "ananya123",
+    "role": "client",
+    "category": "aaa",
+    "businessType": "aa"
   }
 ]
