@@ -300,5 +300,37 @@
     "role": "client",
     "category": "admi",
     "businessType": "admi"
+  },
+  {
+    "id": "42",
+    "username": "isha39",
+    "password": "isha39123",
+    "role": "client",
+    "category": "fcfgcf",
+    "businessType": "hvghvg"
+  },
+  {
+    "id": "43",
+    "username": "vivaan",
+    "password": "vivaan123",
+    "role": "client",
+    "category": "fcfgcf",
+    "businessType": "hvghvg"
+  },
+  {
+    "id": "44",
+    "username": "vihaan13",
+    "password": "vihaan13123",
+    "role": "client",
+    "category": "fcfgcf",
+    "businessType": "dddd"
+  },
+  {
+    "id": "45",
+    "username": "ananya",
+    "password": "ananya123",
+    "role": "client",
+    "category": "fcfgcf",
+    "businessType": "dddd"
   }
 ]
