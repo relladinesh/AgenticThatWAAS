@@ -87,21 +87,6 @@ export default function TemplateViewer() {
     }>
       <div id="template-loaded-marker">
         <TemplateComponent data={templateData} />
-        
-        <button
-          id="back-to-showcase-btn"
-          onClick={() => {
-            window.close();
-            // Fallback in case the browser prevents closing tabs not opened by JS
-            setTimeout(() => {
-              window.location.href = '/showcase';
-            }, 100);
-          }}
-          className="fixed bottom-8 right-8 z-[9999] bg-[#0F172A] hover:bg-[#2563EB] text-white shadow-2xl px-6 py-4 rounded-full font-bold text-sm tracking-widest uppercase flex items-center gap-3 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_30px_rgba(37,99,235,0.3)] border border-white/10"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Showcase
-        </button>
       </div>
     </Suspense>
   );

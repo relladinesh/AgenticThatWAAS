@@ -3,6 +3,7 @@ import Layout from './components/Layout';
 import Landing from './pages/Landing';
 import Showcase from './pages/Showcase';
 import TemplateViewer from './pages/TemplateViewer';
+import PreviewWrapper from './pages/PreviewWrapper';
 import WebGenerator from './pages/WebGenerator';
 import B2BHub from './pages/B2BHub';
 import Login from './pages/Login';
@@ -34,6 +35,7 @@ function App() {
           </Route>
           
           {/* Client Routes - Public for Previewing */}
+          <Route path="/preview" element={<PreviewWrapper />} />
           <Route path="/templates/:category/:business/:template" element={<TemplateViewer />} />
           <Route path="/templates/:category/:business/:template/:slug" element={<TemplateViewer />} />
         </Routes>

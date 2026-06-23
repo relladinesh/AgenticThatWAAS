@@ -324,7 +324,8 @@ export default function Showcase() {
                     const tpl = tplObj.id || tplObj;
                     const tplCode = tplObj.code || `Template ${tpl}`;
                     const urlSlug = tplObj.code ? tplObj.code.toLowerCase() : tpl;
-                    const toPath = tplObj.path || `/templates/${currentTemplates.path}/${urlSlug}`;
+                    const actualPath = tplObj.path || `/templates/${currentTemplates.path}/${urlSlug}`;
+                    const toPath = `/preview?url=${encodeURIComponent(actualPath)}`;
 
                     return (
                       <motion.div
