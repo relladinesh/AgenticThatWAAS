@@ -1,0 +1,10 @@
+{
+  "name": "QQQ",
+  "category": "dddes",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "2"
+  ]
+}

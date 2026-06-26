@@ -1,0 +1,10 @@
+{
+  "name": "Admi",
+  "category": "Admi",
+  "theme": "Light",
+  "responsive": true,
+  "animations": true,
+  "templates": [
+    "v1"
+  ]
+}

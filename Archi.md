@@ -1,71 +1,8 @@
-# Agentic That W.A.A.S
-> Dinesh Rellla
-
-## Prereqs
-* Software Needed: Node.js (v18+), Git
-* Libraries Needed: React, Vite, Tailwind CSS, Framer Motion, Puppeteer
-
-## Deploy to Local
-* Step 1: Clone to Local
-```bash
-git clone git@github.com:relladinesh/AgenticThatWAAS.git
-```
-* Step 2: Install dependencies and start the local development server
-```bash
-cd AgenticThatWAAS
-git pull
-npm install
-npm run dev
-```
-
-## Push to GitHub
-
-Before deploying, you must push your project to a new GitHub repository. This is critical as the platform relies heavily on Git for its automated database operations.
-
-1. Go to [GitHub](https://github.com/) and log in.
-2. Click the **+** icon in the top right corner and select **New repository**.
-3. Name your repository (e.g., `showcasepro-platform`), leave it Public or Private, and click **Create repository**.
-4. Once created, run the following commands in your terminal to initialize, commit, and push your entire project:
-
-```bash
-git init
-git add .
-# Note: You can customize your commit message (e.g., git commit -m "Initial upload of ShowcasePro code")
-git commit -m "first commit"
-git branch -M main
-# Note: You can copy this exact 'git remote add origin' line directly from the GitHub page after creating your repo!
-git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPOSITORY-NAME.git
-git push -u origin main
-```
-
-*Note: If you have already linked your repository and just need to push new changes, simply run:*
-```bash
-git add .
-git commit -m "Prepare for deployment"
-git push origin main
-```
-
-## Deploy to Vercel
-
-Deploying via the Vercel Dashboard using your GitHub repository is required for this project's architecture.
-1. Ensure your code is pushed to GitHub (see step above).
-2. Go to your [Vercel Dashboard](https://vercel.com/dashboard) and click **Add New...** -> **Project**.
-3. Import your GitHub repository.
-4. **CRITICAL - Add Environment Variables**: Before clicking deploy, expand the "Environment Variables" section and add the keys required for the Vercel backend to read/write to your repository:
-   * `GITHUB_TOKEN`: A GitHub Personal Access Token with repo permissions. *(How to get: Go to GitHub Settings -> Developer settings -> Personal access tokens -> Tokens (classic) -> Generate new token with the `repo` scope).*
-   * `GITHUB_REPO_OWNER`: Your GitHub username. *(How to get: Look at your repository URL, e.g., in `github.com/relladinesh/AgenticThatWAAS`, the owner is `relladinesh`).*
-   * `GITHUB_REPO_NAME`: Your repository name. *(How to get: Look at the end of your repository URL, e.g., in `github.com/relladinesh/AgenticThatWAAS`, the name is `AgenticThatWAAS`).*
-   
-   > **⚠️ IMPORTANT NOTE:** These environment variables are **mandatory**, even if your repository is public! When you generate new templates, the Vercel backend API needs to push the updated data back into your GitHub repository. GitHub strictly requires authentication (via the token) for any write/push operations. Without these variables, your application will fail to save new generated websites.
-
-5. Ensure the framework preset is set correctly (Vite) and click **Deploy**.
-6. *Note: Any future changes made through the local UI will automatically trigger a git push and rebuild Vercel.*
-
----
-
 # ShowcasePro System Architecture & Technical Blueprint
 
 This document is a comprehensive, enterprise-level guide to the **ShowcasePro** system architecture, built to parse CSV files containing business leads and instantly generate, deploy, and showcase React-based website templates for each lead. 
+
+---
 
 ## 1. Project Overview
 
